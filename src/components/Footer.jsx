@@ -1,6 +1,7 @@
 // Footer.jsx
 
 import logo from "../assets/logo.png";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -31,13 +32,28 @@ function Footer() {
       <h3>QUICK LINKS</h3>
 
       <ul>
-        <li>Home</li>
-        <li>About Us</li>
-        <li>Services</li>
-        <li>Projects</li>
-        <li>Contact Us</li>
-      </ul>
 
+  <li>
+    <Link to="/">Home</Link>
+  </li>
+
+  <li>
+    <Link to="/about">About Us</Link>
+  </li>
+
+  <li>
+    <Link to="/services">Services</Link>
+  </li>
+
+  <li>
+    <Link to="/projects">Projects</Link>
+  </li>
+
+  <li>
+    <Link to="/contact">Contact Us</Link>
+  </li>
+
+</ul>
     </div>
 
     <div className="footer-column">
@@ -45,13 +61,38 @@ function Footer() {
       <h3>OUR SERVICES</h3>
 
       <ul>
-        <li>Epoxy Flooring</li>
-        <li>Concrete Polishing</li>
-        <li>Concrete Stamping</li>
-        <li>Terrazzo Flooring</li>
-        <li>Waterproofing</li>
-      </ul>
 
+  <li>
+    <Link to="/services/epoxy-flooring">
+      Epoxy Flooring
+    </Link>
+  </li>
+
+  <li>
+    <Link to="/services/concrete-polishing">
+      Concrete Polishing
+    </Link>
+  </li>
+
+  <li>
+    <Link to="/services/concrete-stamping">
+      Concrete Stamping
+    </Link>
+  </li>
+
+  <li>
+    <Link to="/services/terrazzo-flooring">
+      Terrazzo Flooring
+    </Link>
+  </li>
+
+  <li>
+    <Link to="/services/waterproofing">
+      Waterproofing
+    </Link>
+  </li>
+
+</ul>
     </div>
 
     <div className="footer-column">
@@ -59,10 +100,30 @@ function Footer() {
       <h3>CONTACT INFO</h3>
 
       <ul>
-        <li>+256 780 662 557</li>
-        <li>info@concretefinisherug.com</li>
-        <li>Kampala, Uganda</li>
-      </ul>
+
+  <li>
+    <a href="tel:+256780662557">
+      +256 780 662 557
+    </a>
+  </li>
+
+  <li>
+    <a href="mailto:info@concretefinisherug.com">
+      info@concretefinisherug.com
+    </a>
+  </li>
+
+  <li>
+    <a
+      href="https://maps.google.com/?q=Concrete+Finisher+Uganda+Kampala"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Kampala, Uganda
+    </a>
+  </li>
+
+</ul>
 
     </div>
 

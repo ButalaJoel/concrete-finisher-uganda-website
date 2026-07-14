@@ -1,5 +1,7 @@
 // ProjectsSection.jsx
 
+import { Link } from "react-router-dom";
+
 import drivewayImg from "../assets/projects/driveway-stamping.jpg";
 import warehouseImg from "../assets/projects/warehouse-epoxy.jpg";
 import commercialImg from "../assets/projects/commercial-polishing.jpg";
@@ -24,46 +26,61 @@ function ProjectsSection() {
       Finishing With Pride
     </h2>
 
-    <button className="projects-btn">
-      VIEW ALL PROJECTS
-      <ArrowRight size={14}/>
-    </button>
+    <Link
+  to="/projects"
+  className="projects-btn"
+>
+  VIEW ALL PROJECTS
+  <ArrowRight size={14} />
+</Link>
 
   </div>
 
   <div className="projects-gallery">
 
-    <div className="project-item">
+    <Link
+  to="/projects/commercial-floor-coating"
+  className="project-item"
+>
       <img src={warehouseImg} alt="" />
       <div className="project-overlay">
         <h4>INDUSTRIAL WAREHOUSE</h4>
         <p>EPOXY FLOORING</p>
       </div>
-    </div>
+    </Link>
 
-    <div className="project-item">
+    <Link
+  to="/projects/modern-polished-floor"
+  className="project-item"
+>
       <img src={commercialImg} alt="" />
       <div className="project-overlay">
         <h4>COMMERCIAL BUILDING</h4>
         <p>POLISHED CONCRETE</p>
       </div>
-    </div>
+    </Link>
 
-    <div className="project-item">
+    <Link
+  to="/projects/decorative-outdoor-finish"
+  className="project-item"
+>
       <img src={drivewayImg} alt="" />
       <div className="project-overlay">
         <h4>RESIDENTIAL DRIVEWAY</h4>
         <p>CONCRETE STAMPING</p>
       </div>
-    </div>
+   </Link>
 
-    <div className="project-item">
+    <Link
+  to="/projects/concrete-grinding-and-repair"
+  className="project-item"
+>
       <img src={grindingProjectImg} alt="" />
       <div className="project-overlay">
         <h4>INDUSTRIAL FACILITY</h4>
         <p>CONCRETE GRINDING</p>
       </div>
-    </div>
+    </Link>
 
   </div>
 

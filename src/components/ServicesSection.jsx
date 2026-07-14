@@ -1,5 +1,7 @@
 // ServicesSection.jsx
 
+import { Link } from "react-router-dom";
+
 import epoxyImg from "../assets/services/epoxy.jpg";
 import polishingImg from "../assets/services/polishing.jpg";
 import stampingImg from "../assets/services/stamping.jpg";
@@ -8,6 +10,7 @@ import waterproofingImg from "../assets/services/waterproofing.jpg";
 import grindingImg from "../assets/services/grinding.jpg";
 
 import { ArrowRight } from "lucide-react";
+
 
 function ServicesSection() {
   return (
@@ -32,81 +35,102 @@ function ServicesSection() {
       and residential spaces.
     </p>
 
-    <button className="services-btn">
+    <Link
+     to="/services"
+     className="services-btn"
+     >
       EXPLORE SERVICES
       <ArrowRight size={14} />
-    </button>
+    </Link>
 
-  </div>
+    </div>
 
   <div className="services-grid">
 
-    <div className="service-card">
-      <img src={epoxyImg} alt="Epoxy Flooring" />
+    <Link
+  to="/services/epoxy-flooring"
+  className="service-card"
+>
+  <img src={epoxyImg} alt="Epoxy Flooring" />
 
-      <div className="service-content">
-        <h3>EPOXY FLOORING</h3>
+  <div className="service-content">
+    <h3>EPOXY FLOORING</h3>
 
-        <p>
-          Durable, seamless and chemical-resistant
-          flooring solutions.
-        </p>
-      </div>
-    </div>
+    <p>
+      Durable, seamless and chemical-resistant
+      flooring solutions.
+    </p>
+  </div>
+</Link>
 
-    <div className="service-card">
-      <img src={polishingImg} alt="Polishing" />
+    <Link
+  to="/services/concrete-polishing"
+  className="service-card"
+>
+  <img src={polishingImg} alt="Polishing" />
 
-      <div className="service-content">
-        <h3>CONCRETE POLISHING</h3>
+  <div className="service-content">
+    <h3>CONCRETE POLISHING</h3>
 
-        <p>
-          High-gloss polished concrete for modern
-          and long-lasting floors.
-        </p>
-      </div>
-    </div>
+    <p>
+      High-gloss polished concrete for modern
+      and long-lasting floors.
+    </p>
+  </div>
+</Link>
 
-    <div className="service-card">
-      <img src={stampingImg} alt="Stamping" />
+    <Link
+  to="/services/concrete-stamping"
+  className="service-card"
+>
+  <img src={stampingImg} alt="Stamping" />
 
-      <div className="service-content">
-        <h3>CONCRETE STAMPING</h3>
+  <div className="service-content">
+    <h3>CONCRETE STAMPING</h3>
 
-        <p>
-          Decorative patterns and textures that
-          enhance concrete surfaces.
-        </p>
-      </div>
-    </div>
+    <p>
+      Decorative patterns and textures that
+      enhance concrete surfaces.
+    </p>
+  </div>
+</Link>
 
-    <div className="service-card">
-      <img src={terrazzoImg} alt="Terrazzo" />
+    <Link
+  to="/services/terrazzo-flooring"
+  className="service-card"
+>
+  <img src={terrazzoImg} alt="Terrazzo" />
 
-      <div className="service-content">
-        <h3>TERRAZZO FLOORING</h3>
+  <div className="service-content">
+    <h3>TERRAZZO FLOORING</h3>
 
-        <p>
-          Elegant terrazzo finishes for commercial
-          and residential spaces.
-        </p>
-      </div>
-    </div>
+    <p>
+      Elegant terrazzo finishes for commercial
+      and residential spaces.
+    </p>
+  </div>
+</Link>
 
-    <div className="service-card">
-      <img src={waterproofingImg} alt="Waterproofing" />
+    <Link
+  to="/services/waterproofing"
+  className="service-card"
+>
+  <img src={waterproofingImg} alt="Waterproofing" />
 
-      <div className="service-content">
-        <h3>WATERPROOFING</h3>
+  <div className="service-content">
+    <h3>WATERPROOFING</h3>
 
-        <p>
-          Protect concrete surfaces from moisture
-          and water damage.
-        </p>
-      </div>
-    </div>
+    <p>
+      Protect concrete surfaces from moisture
+      and water damage.
+    </p>
+  </div>
+</Link>
 
-    <div className="service-card">
+    <Link
+  to="/services/surface-preparation"
+  className="service-card"
+>
       <img src={grindingImg} alt="Grinding" />
       <div className="service-content">
         <h3>GRINDING & SURFACE PREPARATION</h3>
@@ -116,7 +140,7 @@ function ServicesSection() {
           flooring installations.
         </p>
       </div>
-    </div>
+    </Link>
 
   </div>
 

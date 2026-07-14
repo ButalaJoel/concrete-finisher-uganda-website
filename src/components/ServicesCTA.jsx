@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function ServicesCTA() {
   return (
     <section className="services-cta">
@@ -13,9 +15,12 @@ function ServicesCTA() {
           and quotation.
         </p>
 
-        <button>
-          GET A FREE QUOTE
-        </button>
+        <Link
+  to="/contact"
+  className="services-cta-btn"
+>
+  GET A FREE QUOTE
+</Link>
 
       </div>
 

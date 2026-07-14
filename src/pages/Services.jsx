@@ -15,11 +15,27 @@ function Services() {
       <Navbar />
 
       <ServicesHero />
-      <ServicesGrid />
-      <ServicesBenefits />
-      <ServiceProcess />
-      <IndustriesSection />
-      <ServicesFAQ />
+
+      <section id="services">
+        <ServicesGrid />
+      </section>
+
+      <section id="benefits">
+        <ServicesBenefits />
+      </section>
+
+      <section id="process">
+        <ServiceProcess />
+      </section>
+
+      <section id="industries">
+        <IndustriesSection />
+      </section>
+
+      <section id="faq">
+        <ServicesFAQ />
+      </section>
+
       <ServicesCTA />
 
       <Footer />

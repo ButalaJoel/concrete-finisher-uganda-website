@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function AboutCTA() {
   return (
     <section className="about-cta">
@@ -13,9 +15,12 @@ function AboutCTA() {
         space.
       </p>
 
-      <button>
-        GET A FREE QUOTE
-      </button>
+      <Link
+  to="/contact"
+  className="about-cta-btn"
+>
+  GET A FREE QUOTE
+</Link>
 
     </section>
   );

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import heroImage from "../assets/hero.png";
 
 import {
@@ -44,53 +45,69 @@ function HeroSection() {
           </p>
 
           <div className="hero-buttons">
-            <button className="primary-btn">
-              GET FREE QUOTE
-              <ArrowRight size={15} />
-            </button>
+            <Link to="/contact" className="primary-btn">
+             GET FREE QUOTE
+            <ArrowRight size={15} />
+            </Link>
 
-            <button className="secondary-btn">
+            <Link to="/projects" className="secondary-btn">
               VIEW OUR PROJECTS
-              <ArrowRight size={15} />
-            </button>
+            <ArrowRight size={15} />
+            </Link>
           </div>
 
           <div className="contact-bar">
-            <div className="contact-card">
+            <a
+             href="tel:+256780662557"
+             className="contact-card"
+>
               <h4>
                 <Phone size={15} strokeWidth={2} />
                 CALL US
               </h4>
 
               <p>+256 780 662 557</p>
-            </div>
+            </a>
 
-            <div className="contact-card">
-              <h4>
-                <MessageCircleMore size={15} strokeWidth={2} />
-                WHATSAPP US
-              </h4>
+            <a
+              href="https://wa.me/256780662557"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-card"
+            >
+             <h4>
+            <MessageCircleMore size={15} strokeWidth={2} />
+             WHATSAPP US
+            </h4>
 
-              <p>Chat on WhatsApp</p>
-            </div>
+             <p>Chat on WhatsApp</p>
+            </a>
 
-            <div className="contact-card">
-              <h4>
-                <Mail size={15} strokeWidth={2} />
-                EMAIL US
-              </h4>
+            <a
+             href="mailto:info@concretefinisherug.com"
+             className="contact-card"
+            >
+          <h4>
+          <Mail size={15} strokeWidth={2} />
+           EMAIL US
+          </h4>
 
-              <p>info@concretefinisherug.com</p>
-            </div>
+           <p>info@concretefinisherug.com</p>
+          </a>
 
-            <div className="contact-card">
-              <h4>
-                <MapPin size={15} strokeWidth={2} />
-                LOCATION
-              </h4>
+            <a
+             href="https://maps.google.com/?q=Kampala,Uganda"
+             target="_blank"
+             rel="noopener noreferrer"
+             className="contact-card"
+            >
+           <h4>
+            <MapPin size={15} strokeWidth={2} />
+            LOCATION
+            </h4>
 
-              <p>Kampala, Uganda</p>
-            </div>
+           <p>Kampala, Uganda</p>
+          </a>
           </div>
         </div>
       </section> 
