@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { servicesData } from "../data/servicesData";
 import "../App.css";
 
@@ -66,7 +66,12 @@ function ServiceDetail() {
         <p>
           Talk to our team about the right flooring system for your space.
         </p>
-        <button>Request a Site Inspection</button>
+        <Link
+    to="/contact"
+    className="service-detail-btn"
+>
+    Request a Site Inspection
+</Link>
       </section>
     </main>
   );

@@ -393,3 +393,76 @@
     font-size:28px;
     cursor:pointer;
 }
+
+@media(max-width:768px){
+
+    .project-detail-hero{
+        min-height:320px;
+    }
+
+    .project-detail-content h1{
+        font-size:42px;
+    }
+
+    .project-detail-content p:not(.section-label){
+        font-size:16px;
+    }
+
+    .project-detail-section{
+        padding:50px 0;
+    }
+
+    .project-detail-section h2{
+        font-size:34px;
+    }
+
+    .project-info-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:16px;
+    }
+
+    .project-info-card{
+        padding:20px;
+    }
+
+    .project-info-card h3{
+        font-size:18px;
+    }
+
+    .project-detail-approach-grid{
+        grid-template-columns:1fr;
+        gap:18px;
+    }
+
+    .project-detail-approach-card{
+        padding:24px;
+    }
+
+    .project-detail-products-grid{
+        grid-template-columns:1fr;
+        gap:18px;
+    }
+
+    .project-gallery-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
+    }
+
+    .project-gallery-image{
+        height:140px;
+    }
+
+    .project-detail-related-grid{
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    .project-detail-cta{
+        padding:70px 6%;
+    }
+
+    .project-detail-cta h2{
+        font-size:36px;
+    }
+
+}
