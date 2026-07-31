@@ -1,0 +1,304 @@
+/* ==========================================================
+   FILE: Dashboard.css
+
+   PROJECT:
+   Concrete Finisher Uganda Website
+
+   PURPOSE:
+   Enterprise Dashboard Styling
+
+   AUTHOR:
+   Joel Butala
+
+   ========================================================== */
+
+
+/* ==========================================================
+   GLOBAL RESET
+========================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Inter,Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+
+    background:#f5f7fa;
+
+    color:#222;
+
+}
+
+
+/* ==========================================================
+   DASHBOARD LAYOUT
+========================================================== */
+
+.dashboard{
+
+    display:flex;
+
+    min-height:100vh;
+
+    background:#f5f7fa;
+
+}
+
+
+/* ==========================================================
+   SIDEBAR
+========================================================== */
+
+.sidebar{
+
+    width:270px;
+
+    background:#2E1B12;
+
+    color:white;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    padding:35px 25px;
+
+    position:fixed;
+
+    left:0;
+
+    top:0;
+
+    bottom:0;
+
+    box-shadow:4px 0 25px rgba(0,0,0,.08);
+
+}
+
+
+.sidebar-logo{
+
+    margin-bottom:50px;
+
+}
+
+.sidebar-logo h2{
+
+    font-size:30px;
+
+    line-height:1.2;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+}
+
+
+/* ==========================================================
+   SIDEBAR MENU
+========================================================== */
+
+.sidebar nav{
+
+    flex:1;
+
+}
+
+.sidebar ul{
+
+    list-style:none;
+
+}
+
+.sidebar li{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:16px 18px;
+
+    margin-bottom:10px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    transition:.30s;
+
+    font-size:16px;
+
+    font-weight:500;
+
+}
+
+
+.sidebar li:hover{
+
+    background:#4A2D1E;
+
+    transform:translateX(6px);
+
+}
+
+
+.sidebar li svg{
+
+    flex-shrink:0;
+
+}
+
+
+/* ==========================================================
+   SIDEBAR FOOTER
+========================================================== */
+
+.sidebar-footer{
+
+    margin-top:40px;
+
+}
+
+
+.sidebar-footer button{
+
+    width:100%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:12px;
+
+    background:#d6843a;
+
+    color:white;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:15px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.30s;
+
+}
+
+
+.sidebar-footer button:hover{
+
+    background:#e29652;
+
+}
+
+
+/* ==========================================================
+   DASHBOARD CONTENT
+========================================================== */
+
+.dashboard-content{
+
+    flex:1;
+
+    margin-left:270px;
+
+    padding:35px;
+
+}
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.dashboard-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:30px 35px;
+
+    margin-bottom:35px;
+
+    box-shadow:0 12px 35px rgba(0,0,0,.06);
+
+}
+
+
+.dashboard-header h1{
+
+    font-size:34px;
+
+    margin-bottom:8px;
+
+    color:#123026;
+
+}
+
+
+.dashboard-header p{
+
+    color:#666;
+
+    font-size:15px;
+
+}
+
+
+/* ==========================================================
+   HEADER ACTIONS
+========================================================== */
+
+.header-actions{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:22px;
+
+}
+
+
+.header-actions svg{
+
+    cursor:pointer;
+
+    color:#555;
+
+    transition:.25s;
+
+}
+
+
+.header-actions svg:hover{
+
+    color:#d6843a;
+
+    transform:scale(1.1);
+
+}

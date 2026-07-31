@@ -10,6 +10,7 @@ import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
 import Contact from "./pages/Contact";
 import CompanyPage from "./pages/CompanyPage";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -35,7 +36,10 @@ function App() {
 
         <Route path="/company" element={<CompanyPage />} />
 
+        <Route path="/dashboard" element={<Dashboard />} />
+
       </Routes>
+      
     </BrowserRouter>
   );
 }
