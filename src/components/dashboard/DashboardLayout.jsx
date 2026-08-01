@@ -20,7 +20,7 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 import DashboardHome from "./DashboardHome";
 
-import "../../styles/Dashboard.css";
+import "../../styles/dashboard/Dashboard.css";
 
 function DashboardLayout() {
 

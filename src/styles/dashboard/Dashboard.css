@@ -1,0 +1,114 @@
+/* ==========================================================
+   FILE: Dashboard.css
+
+   PROJECT:
+   Concrete Finisher Uganda Website
+
+   PURPOSE:
+   Dashboard Layout Styling
+
+   AUTHOR:
+   Joel Butala
+========================================================== */
+
+
+/* ==========================================================
+   DASHBOARD WRAPPER
+========================================================== */
+
+.dashboard{
+
+    display:flex;
+
+    min-height:100vh;
+
+    background:#F5F5F5;
+
+}
+
+
+/* ==========================================================
+   MAIN CONTENT AREA
+========================================================== */
+
+.dashboard-content{
+
+    flex:1;
+
+    margin-left:280px;
+
+    padding:35px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:30px;
+
+    overflow-x:hidden;
+
+}
+
+
+/* ==========================================================
+   DASHBOARD HOME
+========================================================== */
+
+.dashboard-home{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:30px;
+
+    width:100%;
+
+}
+
+
+/* ==========================================================
+   COMMON SECTION
+========================================================== */
+
+.dashboard-section{
+
+    background:#FFFFFF;
+
+    border-radius:22px;
+
+    padding:28px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+
+    border:1px solid #ECECEC;
+
+}
+
+
+/* ==========================================================
+   SECTION HEADINGS
+========================================================== */
+
+.dashboard-section h2{
+
+    font-size:22px;
+
+    color:#1F1F1F;
+
+    margin-bottom:10px;
+
+    font-weight:700;
+
+}
+
+
+.dashboard-section p{
+
+    color:#666;
+
+    line-height:1.6;
+
+    font-size:15px;
+
+}

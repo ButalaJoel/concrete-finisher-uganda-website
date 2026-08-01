@@ -20,9 +20,12 @@ import {
 
     Search,
     Bell,
-    UserCircle
+    UserCircle,
+    Plus
 
 } from "lucide-react";
+
+import "../../styles/dashboard/Header.css";
 
 function Header() {
 
@@ -30,25 +33,52 @@ function Header() {
 
         <header className="dashboard-header">
 
-            <div>
+    <div className="header-left">
 
-                <h1>Dashboard</h1>
+        <h1>Dashboard</h1>
 
-                <p>Welcome back, Erisha.</p>
+        <p>
 
-            </div>
+            Welcome back, Erisha.
 
-            <div className="header-actions">
+        </p>
 
-                <Search size={20} />
+    </div>
 
-                <Bell size={20} />
+    <div className="header-right">
 
-                <UserCircle size={30} />
+        <div className="search-box">
 
-            </div>
+            <Search size={18} />
 
-        </header>
+            <input
+                type="text"
+                placeholder="Search projects..."
+            />
+
+        </div>
+
+        <button className="new-project-btn">
+
+            <Plus size={18} />
+
+            New Project
+
+        </button>
+
+        <Bell
+            size={22}
+            className="header-icon"
+        />
+
+        <UserCircle
+            size={34}
+            className="header-profile"
+        />
+
+    </div>
+
+</header>
 
     );
 

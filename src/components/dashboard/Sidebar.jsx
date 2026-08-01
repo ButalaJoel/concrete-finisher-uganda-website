@@ -15,6 +15,9 @@
 // AUTHOR:
 // Joel Butala
 // ======================================================
+import logo from "../../assets/logo.png";
+
+import "../../styles/dashboard/Sidebar.css";
 
 import {
 
@@ -26,6 +29,9 @@ import {
     LogOut
 
 } from "lucide-react";
+
+
+
 
 const menuItems = [
 
@@ -64,10 +70,12 @@ function Sidebar() {
 
             <div className="sidebar-logo">
 
-                <h2>Concrete Finisher</h2>
+    <img
+        src={logo}
+        alt="Concrete Finisher Uganda"
+    />
 
-            </div>
-
+</div>
             <nav>
 
                 <ul>
@@ -78,7 +86,10 @@ function Sidebar() {
 
                         return (
 
-                            <li key={item.title}>
+                            <li
+                            key={item.title}
+                            className={item.title === "Dashboard" ? "active" : ""}
+                            >
 
                                 <Icon size={20} />
 

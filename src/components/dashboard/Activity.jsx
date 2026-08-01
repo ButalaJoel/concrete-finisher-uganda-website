@@ -8,6 +8,8 @@
 // Joel Butala
 // ======================================================
 
+import "../../styles/dashboard/Activity.css";
+
 function Activity() {
 
     return (

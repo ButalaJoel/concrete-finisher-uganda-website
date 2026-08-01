@@ -1,0 +1,256 @@
+/* ==========================================================
+   FILE: Sidebar.css
+
+   PROJECT:
+   Concrete Finisher Uganda Website
+
+   PURPOSE:
+   Sidebar Navigation Styling
+
+   AUTHOR:
+   Joel Butala
+========================================================== */
+
+
+/* ==========================================================
+   SIDEBAR
+========================================================== */
+
+.sidebar{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:280px;
+
+    height:100vh;
+
+    background:#2E1B12;
+
+    color:#FFFFFF;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    padding:32px 24px;
+
+    box-shadow:8px 0 30px rgba(0,0,0,.12);
+
+    z-index:1000;
+
+}
+
+
+/* ==========================================================
+   LOGO
+========================================================== */
+
+.sidebar-logo{
+
+    margin-bottom:50px;
+
+}
+
+
+.sidebar-logo h2{
+
+    font-size:2rem;
+
+    font-weight:700;
+
+    line-height:1.2;
+
+    color:#FFFFFF;
+
+    letter-spacing:-.5px;
+
+}
+
+
+/* ==========================================================
+   NAVIGATION
+========================================================== */
+
+.sidebar nav{
+
+    flex:1;
+
+}
+
+
+.sidebar ul{
+
+    list-style:none;
+
+}
+
+
+.sidebar li{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:16px 18px;
+
+    border-radius:16px;
+
+    margin-bottom:12px;
+
+    cursor:pointer;
+
+    transition:all .30s ease;
+
+    color:#E6E6E6;
+
+    font-size:15px;
+
+    font-weight:500;
+
+}
+
+
+/* ==========================================================
+   ICONS
+========================================================== */
+
+.sidebar li svg{
+
+    width:20px;
+
+    height:20px;
+
+    flex-shrink:0;
+
+}
+
+
+/* ==========================================================
+   HOVER
+========================================================== */
+
+.sidebar li:hover{
+
+    background:#493025;
+
+    transform:translateX(6px);
+
+    color:#FFFFFF;
+
+}
+
+
+/* ==========================================================
+   ACTIVE ITEM
+========================================================== */
+
+.sidebar li.active{
+
+    background:#B87333;
+
+    color:#FFFFFF;
+
+    box-shadow:0 10px 25px rgba(184,115,51,.35);
+
+}
+
+
+/* ==========================================================
+   FOOTER
+========================================================== */
+
+.sidebar-footer{
+
+    margin-top:30px;
+
+}
+
+
+/* ==========================================================
+   LOGOUT BUTTON
+========================================================== */
+
+.sidebar-footer button{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:#B87333;
+
+    color:#FFFFFF;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:all .30s ease;
+
+}
+
+
+.sidebar-footer button:hover{
+
+    background:#C98445;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 12px 30px rgba(184,115,51,.35);
+
+}
+
+/* =========================================
+   LOGO
+========================================= */
+
+.sidebar-logo{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin-bottom:45px;
+
+}
+
+.sidebar-logo img{
+
+    width:180px;
+
+    height:auto;
+
+    object-fit:contain;
+
+    transition:.3s;
+
+}
+
+.sidebar-logo img:hover{
+
+    transform:scale(1.03);
+
+}

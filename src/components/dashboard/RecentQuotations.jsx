@@ -8,6 +8,8 @@
 // Joel Butala
 // ======================================================
 
+import "../../styles/dashboard/RecentQuotations.css";
+
 function RecentQuotations() {
 
     return (

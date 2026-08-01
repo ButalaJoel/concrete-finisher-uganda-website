@@ -17,6 +17,8 @@ import {
 
 } from "lucide-react";
 
+import "../../styles/dashboard/StatsCards.css";
+
 const cards = [
 
     {
@@ -74,18 +76,25 @@ function StatsCards() {
                 return (
 
                     <div
-                        className="stat-card"
-                        key={card.title}
-                    >
+    className="stat-card"
+    key={card.title}
+>
 
-                        <Icon size={28} />
+    <div className="stat-icon">
 
-                        <h3>{card.value}</h3>
+        <Icon size={26} />
 
-                        <p>{card.title}</p>
+    </div>
 
-                    </div>
+    <div className="stat-content">
 
+        <h2>{card.value}</h2>
+
+        <p>{card.title}</p>
+
+    </div>
+
+</div>
                 );
 
             })}
