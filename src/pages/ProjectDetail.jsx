@@ -1,30 +1,241 @@
 import "../styles/ProjectDetail.css";
 
-import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { projectsData } from "../data/projectsData";
+import { useEffect, useState } from "react";
+
+import {
+  useParams,
+  Link,
+} from "react-router-dom";
+
+
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 function ProjectDetail() {
+
   const { slug } = useParams();
-  const [selectedImage, setSelectedImage] = useState(null);
 
-  const project = projectsData.find(
-    (project) => project.slug === slug
-  );
+  const [project, setProject] = useState(null);
 
-  if (!project) {
-    return <h2>Project not found.</h2>;
+  const [relatedProjects, setRelatedProjects] =
+    useState([]);
+
+  const [selectedImage, setSelectedImage] =
+    useState(null);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
+
+  // ======================================================
+  // IMAGE URL HELPER
+  // ======================================================
+
+  const getImageUrl = (image) => {
+
+    if (!image) {
+      return "";
+    }
+
+    if (image.startsWith("http")) {
+      return image;
+    }
+
+    return `${API_URL}${image}`;
+
+  };
+
+
+  // ======================================================
+  // FETCH PROJECT
+  // ======================================================
+
+  useEffect(() => {
+
+    const fetchProject = async () => {
+
+      try {
+
+        setLoading(true);
+
+        setError("");
+
+        const response = await fetch(
+          `${API_URL}/api/projects/${encodeURIComponent(slug)}`
+        );
+
+        if (!response.ok) {
+
+          if (response.status === 404) {
+
+            throw new Error(
+              "Project not found."
+            );
+
+          }
+
+          throw new Error(
+            "Unable to load project."
+          );
+
+        }
+
+        const result = await response.json();
+
+        setProject(result.data);
+
+
+      } catch (error) {
+
+        console.error(
+          "Project detail error:",
+          error
+        );
+
+        setError(
+          error.message ||
+          "Unable to load project."
+        );
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    };
+
+
+    if (slug) {
+      fetchProject();
+    }
+
+  }, [slug]);
+
+
+  // ======================================================
+  // FETCH RELATED PROJECTS
+  // ======================================================
+
+  useEffect(() => {
+
+    const fetchRelatedProjects = async () => {
+
+      try {
+
+        const response = await fetch(
+          `${API_URL}/api/projects`
+        );
+
+        if (!response.ok) {
+          return;
+        }
+
+        const result = await response.json();
+
+        setRelatedProjects(
+          result.data || []
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Related projects error:",
+          error
+        );
+
+      }
+
+    };
+
+    fetchRelatedProjects();
+
+  }, []);
+
+
+  // ======================================================
+  // LOADING
+  // ======================================================
+
+  if (loading) {
+
+    return (
+      <div className="project-detail-page">
+
+        <div className="project-detail-container">
+
+          <h2>
+            Loading project...
+          </h2>
+
+        </div>
+
+      </div>
+    );
+
   }
 
+
+  // ======================================================
+  // ERROR
+  // ======================================================
+
+  if (error || !project) {
+
+    return (
+      <div className="project-detail-page">
+
+        <div className="project-detail-container">
+
+          <h2>
+            {error || "Project not found."}
+          </h2>
+
+          <Link to="/projects">
+            Back to Projects
+          </Link>
+
+        </div>
+
+      </div>
+    );
+
+  }
+
+
+  // ======================================================
+  // RELATED PROJECTS
+  // ======================================================
+
+  const filteredRelatedProjects =
+    relatedProjects
+      .filter(
+        (item) => item._id !== project._id
+      )
+      .slice(0, 3);
+
+
   return (
+
     <div className="project-detail-page">
 
-      {/* ================= HERO ================= */}
 
-      <section className="project-detail-hero"
-           style={{
-           backgroundImage: `url(${project.heroImage || project.image})`,
-           }}>
+      {/* ==================================================
+          HERO
+      ================================================== */}
+
+      <section
+        className="project-detail-hero"
+        style={{
+          backgroundImage: `url(${getImageUrl(
+            project.heroImage ||
+            project.image
+          )})`,
+        }}
+      >
 
         <div className="project-detail-container">
 
@@ -36,7 +247,9 @@ function ProjectDetail() {
                 PROJECT
               </p>
 
-              <h1>{project.title}</h1>
+              <h1>
+                {project.title}
+              </h1>
 
               <p>
                 {project.shortDescription}
@@ -50,7 +263,10 @@ function ProjectDetail() {
 
       </section>
 
-      {/* ================= OVERVIEW ================= */}
+
+      {/* ==================================================
+          OVERVIEW
+      ================================================== */}
 
       <section className="project-detail-section project-detail-overview">
 
@@ -60,7 +276,9 @@ function ProjectDetail() {
             PROJECT OVERVIEW
           </p>
 
-          <h2>About This Project</h2>
+          <h2>
+            About This Project
+          </h2>
 
           <p>
             {project.overview}
@@ -70,7 +288,10 @@ function ProjectDetail() {
 
       </section>
 
-      {/* ================= PROJECT INFO ================= */}
+
+      {/* ==================================================
+          PROJECT INFORMATION
+      ================================================== */}
 
       <section className="project-detail-section project-detail-info">
 
@@ -80,7 +301,9 @@ function ProjectDetail() {
             PROJECT INFORMATION
           </p>
 
-          <h2>Project Details</h2>
+          <h2>
+            Project Details
+          </h2>
 
           <div className="project-info-grid">
 
@@ -120,7 +343,10 @@ function ProjectDetail() {
 
       </section>
 
-      {/* ================= APPROACH ================= */}
+
+      {/* ==================================================
+          CHALLENGE & SOLUTION
+      ================================================== */}
 
       <section className="project-detail-section project-detail-approach">
 
@@ -138,17 +364,25 @@ function ProjectDetail() {
 
             <div className="project-detail-approach-card">
 
-              <h3>The Challenge</h3>
+              <h3>
+                The Challenge
+              </h3>
 
-              <p>{project.challenge}</p>
+              <p>
+                {project.challenge}
+              </p>
 
             </div>
 
             <div className="project-detail-approach-card">
 
-              <h3>Our Solution</h3>
+              <h3>
+                Our Solution
+              </h3>
 
-              <p>{project.solution}</p>
+              <p>
+                {project.solution}
+              </p>
 
             </div>
 
@@ -158,42 +392,61 @@ function ProjectDetail() {
 
       </section>
 
-      {/* ================= PRODUCTS ================= */}
 
-      <section className="project-detail-section project-detail-products">
+      {/* ==================================================
+          PRODUCTS
+      ================================================== */}
 
-        <div className="project-detail-container">
+      {project.products &&
+        project.products.length > 0 && (
 
-          <p className="section-label">
-            PRODUCTS USED
-          </p>
+          <section className="project-detail-section project-detail-products">
 
-          <h2>System Used</h2>
+            <div className="project-detail-container">
 
-          <div className="project-detail-products-grid">
+              <p className="section-label">
+                PRODUCTS USED
+              </p>
 
-            {project.products.map((product, index) => (
+              <h2>
+                System Used
+              </h2>
 
-              <div
-                key={index}
-                className="project-detail-product-card"
-              >
+              <div className="project-detail-products-grid">
 
-                <h3>{product.name}</h3>
+                {project.products.map(
+                  (product, index) => (
 
-                <p>{product.purpose}</p>
+                    <div
+                      key={index}
+                      className="project-detail-product-card"
+                    >
+
+                      <h3>
+                        {product.name}
+                      </h3>
+
+                      <p>
+                        {product.purpose}
+                      </p>
+
+                    </div>
+
+                  )
+                )}
 
               </div>
 
-            ))}
+            </div>
 
-          </div>
+          </section>
 
-        </div>
+        )}
 
-      </section>
 
-      {/* ================= GALLERY ================= */}
+      {/* ==================================================
+          GALLERY
+      ================================================== */}
 
       <section className="project-detail-section project-detail-gallery">
 
@@ -207,166 +460,195 @@ function ProjectDetail() {
             Before & After Installation
           </h2>
 
-          <div className="gallery-group">
 
-            <h3 className="gallery-title">
-              Before Installation
-            </h3>
+          {/* ================= BEFORE ================= */}
 
-            <div className="project-gallery-grid">
+          {project.beforeImages &&
+            project.beforeImages.length > 0 && (
 
-              {project.gallery.slice(0,4).map((image,index)=>(
+              <div className="gallery-group">
 
-                <div
-                  key={index}
-                  className="project-gallery-card"
-                >
+                <h3 className="gallery-title">
+                  Before Installation
+                </h3>
 
-                  {image ? (
+                <div className="project-gallery-grid">
 
-                    <img
-                      src={image}
-                      alt={`Before ${index+1}`}
-                      className="project-gallery-image"
-                      onClick={() => setSelectedImage(image)}
-                    />
+                  {project.beforeImages.map(
+                    (image, index) => (
 
-                  ) : (
+                      <div
+                        key={index}
+                        className="project-gallery-card"
+                      >
 
-                    <div className="project-gallery-placeholder">
-                      BEFORE
-                    </div>
+                        <img
+                          src={getImageUrl(image)}
+                          alt={`Before ${index + 1}`}
+                          className="project-gallery-image"
+                          loading="lazy"
+                          onClick={() =>
+                            setSelectedImage(
+                              getImageUrl(image)
+                            )
+                          }
+                        />
 
+                      </div>
+
+                    )
                   )}
 
                 </div>
 
-              ))}
+              </div>
 
-            </div>
+            )}
 
-          </div>
 
-          <div className="gallery-group">
+          {/* ================= AFTER ================= */}
 
-            <h3 className="gallery-title">
-              After Installation
-            </h3>
+          {project.afterImages &&
+            project.afterImages.length > 0 && (
 
-            <div className="project-gallery-grid">
+              <div className="gallery-group">
 
-              {project.gallery.slice(4,8).map((image,index)=>(
+                <h3 className="gallery-title">
+                  After Installation
+                </h3>
 
-                <div
-                  key={index+4}
-                  className="project-gallery-card"
-                >
+                <div className="project-gallery-grid">
 
-                  {image ? (
+                  {project.afterImages.map(
+                    (image, index) => (
 
-                    <img
-                      src={image}
-                      alt={`After ${index+1}`}
-                      className="project-gallery-image"
-                      onClick={() => setSelectedImage(image)}
-                    />
+                      <div
+                        key={index}
+                        className="project-gallery-card"
+                      >
 
-                  ) : (
+                        <img
+                          src={getImageUrl(image)}
+                          alt={`After ${index + 1}`}
+                          className="project-gallery-image"
+                          loading="lazy"
+                          onClick={() =>
+                            setSelectedImage(
+                              getImageUrl(image)
+                            )
+                          }
+                        />
 
-                    <div className="project-gallery-placeholder">
-                      AFTER
-                    </div>
+                      </div>
 
+                    )
                   )}
 
                 </div>
 
-              ))}
+              </div>
 
-            </div>
-
-          </div>
+            )}
 
         </div>
 
       </section>
 
-      {/* ================= RELATED PROJECTS ================= */}
 
-      <section className="project-detail-section project-detail-related">
+      {/* ==================================================
+          RELATED PROJECTS
+      ================================================== */}
 
-        <div className="project-detail-container">
+      {filteredRelatedProjects.length > 0 && (
 
-          <p className="section-label">
-            RELATED PROJECTS
-          </p>
+        <section className="project-detail-section project-detail-related">
 
-          <h2>
-            More Projects
-          </h2>
+          <div className="project-detail-container">
 
-          <div className="project-detail-related-grid">
+            <p className="section-label">
+              RELATED PROJECTS
+            </p>
 
-            {projectsData
-              .filter(item => item.id !== project.id)
-              .slice(0,3)
-              .map((item)=>(
+            <h2>
+              More Projects
+            </h2>
 
-                <Link
-                  key={item.id}
-                  to={`/projects/${item.slug}`}
-                  className="project-detail-related-card"
-                >
+            <div className="project-detail-related-grid">
 
-                  <div className="project-detail-related-image">
+              {filteredRelatedProjects.map(
+                (item) => (
 
-                    {item.image ? (
+                  <Link
+                    key={item._id}
+                    to={`/projects/${item.slug}`}
+                    className="project-detail-related-card"
+                  >
 
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                      />
+                    <div className="project-detail-related-image">
 
-                    ) : (
+                      {item.heroImage ? (
 
-                      <div className="project-detail-related-placeholder"></div>
+                        <img
+                          src={getImageUrl(
+                            item.heroImage
+                          )}
+                          alt={item.title}
+                          loading="lazy"
+                        />
 
-                    )}
+                      ) : (
 
-                  </div>
+                        <div className="project-detail-related-placeholder">
+                        </div>
 
-                  <div className="project-detail-related-content">
+                      )}
 
-                    <p>{item.category}</p>
+                    </div>
 
-                    <h3>{item.title}</h3>
+                    <div className="project-detail-related-content">
 
-                    <span>{item.location}</span>
+                      <p>
+                        {item.category}
+                      </p>
 
-                  </div>
+                      <h3>
+                        {item.title}
+                      </h3>
 
-                </Link>
+                      <span>
+                        {item.location}
+                      </span>
 
-              ))}
+                    </div>
+
+                  </Link>
+
+                )
+              )}
+
+            </div>
+
+            <div className="project-detail-related-button-wrapper">
+
+              <Link
+                to="/projects"
+                className="project-detail-button"
+              >
+                View All Projects
+              </Link>
+
+            </div>
 
           </div>
 
-          <div className="project-detail-related-button-wrapper">
+        </section>
 
-            <Link
-              to="/projects"
-              className="project-detail-button"
-            >
-              View All Projects
-            </Link>
+      )}
 
-          </div>
 
-        </div>
-
-      </section>
-
-      {/* ================= CTA ================= */}
+      {/* ==================================================
+          CTA
+      ================================================== */}
 
       <section className="project-detail-section project-detail-cta">
 
@@ -381,7 +663,9 @@ function ProjectDetail() {
           </h2>
 
           <p>
-            Tell us about your project and our specialists will recommend the right flooring system for your space.
+            Tell us about your project and our specialists
+            will recommend the right flooring system for
+            your space.
           </p>
 
           <Link
@@ -395,23 +679,32 @@ function ProjectDetail() {
 
       </section>
 
-      {/* ================= LIGHTBOX ================= */}
+
+      {/* ==================================================
+          LIGHTBOX
+      ================================================== */}
 
       {selectedImage && (
 
         <div
           className="project-lightbox"
-          onClick={() => setSelectedImage(null)}
+          onClick={() =>
+            setSelectedImage(null)
+          }
         >
 
           <div
             className="project-lightbox-content"
-            onClick={(e)=>e.stopPropagation()}
+            onClick={(e) =>
+              e.stopPropagation()
+            }
           >
 
             <button
               className="project-lightbox-close"
-              onClick={() => setSelectedImage(null)}
+              onClick={() =>
+                setSelectedImage(null)
+              }
             >
               &times;
             </button>
@@ -429,7 +722,10 @@ function ProjectDetail() {
       )}
 
     </div>
+
   );
+
 }
+
 
 export default ProjectDetail;

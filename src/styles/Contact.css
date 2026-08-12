@@ -306,6 +306,14 @@
     background:#a97442;
 }
 
+.contact-submit-btn:disabled{
+
+    opacity:.65;
+
+    cursor:not-allowed;
+
+}
+
 
 /*==============================
 CONTACT MAP

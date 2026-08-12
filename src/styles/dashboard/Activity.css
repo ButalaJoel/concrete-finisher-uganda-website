@@ -1,0 +1,290 @@
+/* ==========================================================
+   FILE: Activity.css
+
+   PROJECT:
+   Concrete Finisher Uganda Website
+
+   PURPOSE:
+   Styles Recent Dashboard Activity.
+
+   AUTHOR:
+   Joel Butala
+========================================================== */
+
+
+/* ==========================================================
+   ACTIVITY CONTAINER
+========================================================== */
+
+.recent-activity {
+
+    background: #ffffff;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 18px;
+
+    padding: 20px 24px;
+
+    min-height: 110px;
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.045);
+
+}
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.activity-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+
+}
+
+
+.activity-header h2 {
+
+    margin: 0;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    color: #171717;
+
+}
+
+
+/* ==========================================================
+   EMPTY / LOADING MESSAGE
+========================================================== */
+
+.recent-activity .activity-message {
+
+    margin: 0;
+
+    padding: 8px 0;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    color: #6f6f6f;
+
+}
+
+
+/* ==========================================================
+   ACTIVITY LIST
+========================================================== */
+
+.activity-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    width: 100%;
+
+}
+
+
+/* ==========================================================
+   ACTIVITY ITEM
+========================================================== */
+
+.activity-item {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 14px;
+
+    width: 100%;
+
+    padding: 14px 0;
+
+    border-bottom: 1px solid #eeeeee;
+
+}
+
+
+.activity-item:last-child {
+
+    border-bottom: none;
+
+    padding-bottom: 4px;
+
+}
+
+
+/* ==========================================================
+   ACTIVITY DOT
+========================================================== */
+
+.activity-dot {
+
+    width: 9px;
+
+    height: 9px;
+
+    margin-top: 6px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #B56A2D;
+
+}
+
+
+/* ==========================================================
+   ACTIVITY CONTENT
+========================================================== */
+
+.activity-content {
+
+    flex: 1;
+
+    min-width: 0;
+
+}
+
+
+/* ==========================================================
+   ACTIVITY TITLE
+========================================================== */
+
+.recent-activity .activity-title {
+
+    margin: 0 0 5px 0;
+
+    font-size: 14px;
+
+    line-height: 1.4;
+
+    color: #444444;
+
+}
+
+
+.recent-activity .activity-title strong {
+
+    font-weight: 700;
+
+    color: #171717;
+
+}
+
+
+/* ==========================================================
+   ACTIVITY META
+========================================================== */
+
+.activity-meta {
+
+    display: flex;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    font-size: 12px;
+
+    color: #8a8a8a;
+
+}
+
+
+.activity-separator {
+
+    color: #B56A2D;
+
+}
+
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (max-width: 900px) {
+
+    .recent-activity {
+
+        padding: 20px 22px;
+
+        border-radius: 18px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 600px) {
+
+    .recent-activity {
+
+        padding: 18px;
+
+        min-height: auto;
+
+        border-radius: 18px;
+
+    }
+
+
+    .activity-header {
+
+        margin-bottom: 8px;
+
+    }
+
+
+    .activity-header h2 {
+
+        font-size: 19px;
+
+    }
+
+
+    .activity-item {
+
+        gap: 11px;
+
+        padding: 13px 0;
+
+    }
+
+
+    .recent-activity .activity-title {
+
+        font-size: 13px;
+
+    }
+
+
+    .activity-meta {
+
+        gap: 5px;
+
+        font-size: 11px;
+
+    }
+
+}

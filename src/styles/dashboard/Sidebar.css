@@ -5,7 +5,7 @@
    Concrete Finisher Uganda Website
 
    PURPOSE:
-   Sidebar Navigation Styling
+   Responsive Dashboard Sidebar Navigation
 
    AUTHOR:
    Joel Butala
@@ -21,11 +21,9 @@
     position:fixed;
 
     top:0;
-
     left:0;
 
     width:280px;
-
     height:100vh;
 
     background:#2E1B12;
@@ -33,16 +31,17 @@
     color:#FFFFFF;
 
     display:flex;
-
     flex-direction:column;
-
-    justify-content:space-between;
 
     padding:32px 24px;
 
     box-shadow:8px 0 30px rgba(0,0,0,.12);
 
     z-index:1000;
+
+    transition:
+        width .3s ease,
+        transform .3s ease;
 
 }
 
@@ -53,22 +52,34 @@
 
 .sidebar-logo{
 
-    margin-bottom:50px;
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    margin-bottom:45px;
 
 }
 
 
-.sidebar-logo h2{
+.sidebar-logo img{
 
-    font-size:2rem;
+    width:180px;
 
-    font-weight:700;
+    max-width:100%;
 
-    line-height:1.2;
+    height:auto;
 
-    color:#FFFFFF;
+    object-fit:contain;
 
-    letter-spacing:-.5px;
+    transition:.3s;
+
+}
+
+
+.sidebar-logo img:hover{
+
+    transform:scale(1.03);
 
 }
 
@@ -81,6 +92,8 @@
 
     flex:1;
 
+    width:100%;
+
 }
 
 
@@ -88,10 +101,29 @@
 
     list-style:none;
 
+    margin:0;
+
+    padding:0;
+
 }
 
 
 .sidebar li{
+
+    width:100%;
+
+    margin-bottom:12px;
+
+}
+
+
+/* ==========================================================
+   NAVIGATION LINKS
+
+   NavLink renders as an <a> element.
+========================================================== */
+
+.sidebar li a{
 
     display:flex;
 
@@ -99,15 +131,11 @@
 
     gap:15px;
 
+    width:100%;
+
     padding:16px 18px;
 
     border-radius:16px;
-
-    margin-bottom:12px;
-
-    cursor:pointer;
-
-    transition:all .30s ease;
 
     color:#E6E6E6;
 
@@ -115,14 +143,20 @@
 
     font-weight:500;
 
+    text-decoration:none;
+
+    cursor:pointer;
+
+    transition:all .30s ease;
+
 }
 
 
 /* ==========================================================
-   ICONS
+   NAVIGATION ICONS
 ========================================================== */
 
-.sidebar li svg{
+.sidebar li a svg{
 
     width:20px;
 
@@ -134,10 +168,10 @@
 
 
 /* ==========================================================
-   HOVER
+   NAVIGATION HOVER
 ========================================================== */
 
-.sidebar li:hover{
+.sidebar li a:hover{
 
     background:#493025;
 
@@ -149,10 +183,10 @@
 
 
 /* ==========================================================
-   ACTIVE ITEM
+   ACTIVE NAVIGATION ITEM
 ========================================================== */
 
-.sidebar li.active{
+.sidebar li a.active{
 
     background:#B87333;
 
@@ -164,12 +198,32 @@
 
 
 /* ==========================================================
+   MOBILE ACCOUNT ACTIONS
+
+   Notifications and profile are hidden on desktop
+   and tablet.
+
+   They become visible inside the mobile drawer.
+========================================================== */
+
+.sidebar-mobile-actions{
+
+    display:none;
+
+}
+
+
+/* ==========================================================
    FOOTER
 ========================================================== */
 
 .sidebar-footer{
 
-    margin-top:30px;
+    margin-top:auto;
+
+    padding-top:30px;
+
+    width:100%;
 
 }
 
@@ -221,36 +275,578 @@
 
 }
 
-/* =========================================
-   LOGO
-========================================= */
 
-.sidebar-logo{
+/* ==========================================================
+   MOBILE CLOSE BUTTON
 
-    display:flex;
+   Hidden by default.
+========================================================== */
 
-    justify-content:center;
+.sidebar-close{
 
-    align-items:center;
-
-    margin-bottom:45px;
+    display:none;
 
 }
 
-.sidebar-logo img{
 
-    width:180px;
+/* ==========================================================
+   MOBILE OVERLAY
 
-    height:auto;
+   Hidden by default.
+========================================================== */
 
-    object-fit:contain;
+.sidebar-overlay{
 
-    transition:.3s;
+    display:none;
 
 }
 
-.sidebar-logo img:hover{
 
-    transform:scale(1.03);
+/* ==========================================================
+   TABLET
+   769px - 1024px
+========================================================== */
+
+@media (max-width:1024px) and (min-width:769px){
+
+
+    /* ======================================================
+       TABLET SIDEBAR
+    ====================================================== */
+
+    .sidebar{
+
+        width:90px;
+
+        padding:28px 15px;
+
+        align-items:center;
+
+    }
+
+
+    /* ======================================================
+       TABLET LOGO
+    ====================================================== */
+
+    .sidebar-logo{
+
+        margin-bottom:40px;
+
+    }
+
+
+    .sidebar-logo img{
+
+        width:60px;
+
+    }
+
+
+    /* ======================================================
+       TABLET NAVIGATION
+    ====================================================== */
+
+    .sidebar nav{
+
+        width:100%;
+
+    }
+
+
+    .sidebar li{
+
+        width:100%;
+
+        margin-bottom:12px;
+
+    }
+
+
+    .sidebar li a{
+
+        justify-content:center;
+
+        gap:0;
+
+        width:100%;
+
+        padding:16px;
+
+    }
+
+
+    /*
+       Hide navigation text.
+       Icons remain visible.
+    */
+
+    .sidebar li a span{
+
+        display:none;
+
+    }
+
+
+    .sidebar li a:hover{
+
+        transform:none;
+
+    }
+
+
+    /* ======================================================
+       TABLET FOOTER
+    ====================================================== */
+
+    .sidebar-footer{
+
+        width:100%;
+
+    }
+
+
+    .sidebar-footer button{
+
+        padding:16px;
+
+        font-size:0;
+
+    }
+
+
+    .sidebar-footer button svg{
+
+        margin:0;
+
+    }
+
+}
+
+
+/* ==========================================================
+   MOBILE
+   768px AND BELOW
+
+   Sidebar becomes an off-canvas drawer.
+========================================================== */
+
+@media (max-width:768px){
+
+
+    /* ======================================================
+       MOBILE SIDEBAR
+    ====================================================== */
+
+    .sidebar{
+
+        width:min(82vw, 310px);
+
+        padding:28px 22px;
+
+        transform:translateX(-105%);
+
+        box-shadow:12px 0 40px rgba(0,0,0,.25);
+
+        z-index:2000;
+
+    }
+
+
+    /* ======================================================
+       OPEN SIDEBAR
+    ====================================================== */
+
+    .sidebar.sidebar-open{
+
+        transform:translateX(0);
+
+    }
+
+
+    /* ======================================================
+       MOBILE LOGO
+    ====================================================== */
+
+    .sidebar-logo{
+
+        justify-content:flex-start;
+
+        margin-top:20px;
+
+        margin-bottom:40px;
+
+    }
+
+
+    .sidebar-logo img{
+
+        width:170px;
+
+    }
+
+
+    /* ======================================================
+       MOBILE NAVIGATION
+    ====================================================== */
+
+    .sidebar li{
+
+        width:100%;
+
+        margin-bottom:10px;
+
+    }
+
+
+    .sidebar li a{
+
+        width:100%;
+
+        padding:15px 16px;
+
+        gap:15px;
+
+        border-radius:14px;
+
+        font-size:15px;
+
+    }
+
+
+    .sidebar li a span{
+
+        display:inline;
+
+    }
+
+
+    .sidebar li a:hover{
+
+        transform:none;
+
+    }
+
+
+    /* ======================================================
+       MOBILE ACCOUNT ACTIONS
+    ====================================================== */
+
+    .sidebar-mobile-actions{
+
+        display:flex;
+
+        flex-direction:column;
+
+        gap:8px;
+
+        margin-top:auto;
+
+        padding-top:18px;
+
+        border-top:1px solid rgba(255,255,255,.12);
+
+    }
+
+
+    /* ======================================================
+       MOBILE ACCOUNT BUTTON
+    ====================================================== */
+
+    .sidebar-mobile-action{
+
+        width:100%;
+
+        min-height:48px;
+
+        display:flex;
+
+        align-items:center;
+
+        gap:14px;
+
+        padding:12px 14px;
+
+        border:none;
+
+        border-radius:12px;
+
+        background:transparent;
+
+        color:#E6E6E6;
+
+        text-align:left;
+
+        cursor:pointer;
+
+        transition:.25s;
+
+    }
+
+
+    .sidebar-mobile-action:hover{
+
+        background:#493025;
+
+        color:#FFFFFF;
+
+    }
+
+
+    .sidebar-mobile-action svg{
+
+        width:20px;
+
+        height:20px;
+
+        flex-shrink:0;
+
+    }
+
+
+    /* ======================================================
+       MOBILE USER INFORMATION
+    ====================================================== */
+
+    .sidebar-user-info{
+
+        display:flex;
+
+        flex-direction:column;
+
+        gap:2px;
+
+        flex:1;
+
+    }
+
+
+    .sidebar-user-name{
+
+        display:block;
+
+        font-size:14px;
+
+        font-weight:600;
+
+        color:#FFFFFF;
+
+    }
+
+
+    .sidebar-user-info small{
+
+        display:block;
+
+        font-size:11px;
+
+        color:rgba(255,255,255,.6);
+
+    }
+
+
+    /* ======================================================
+       NOTIFICATION BADGE
+    ====================================================== */
+
+    .sidebar-notification-badge{
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:center;
+
+        margin-left:auto;
+
+        min-width:22px;
+
+        height:22px;
+
+        padding:0 6px;
+
+        border-radius:20px;
+
+        background:#B87333;
+
+        color:#FFFFFF;
+
+        font-size:11px;
+
+        font-weight:700;
+
+    }
+
+
+    /* ======================================================
+       MOBILE LOGOUT
+    ====================================================== */
+
+    .sidebar-footer{
+
+        margin-top:10px;
+
+        padding-top:0;
+
+    }
+
+
+    /* ======================================================
+       MOBILE CLOSE BUTTON
+    ====================================================== */
+
+    .sidebar-close{
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:center;
+
+        position:absolute;
+
+        top:18px;
+
+        right:18px;
+
+        width:40px;
+
+        height:40px;
+
+        padding:0;
+
+        border:none;
+
+        border-radius:10px;
+
+        background:transparent;
+
+        color:#FFFFFF;
+
+        cursor:pointer;
+
+    }
+
+
+    .sidebar-close:hover{
+
+        background:rgba(255,255,255,.08);
+
+    }
+
+
+    /* ======================================================
+       MOBILE OVERLAY
+    ====================================================== */
+
+    .sidebar-overlay{
+
+        display:block;
+
+        position:fixed;
+
+        inset:0;
+
+        background:rgba(0,0,0,.45);
+
+        opacity:0;
+
+        visibility:hidden;
+
+        pointer-events:none;
+
+        transition:
+            opacity .3s ease,
+            visibility .3s ease;
+
+        z-index:1900;
+
+    }
+
+
+    .sidebar-overlay.show{
+
+        opacity:1;
+
+        visibility:visible;
+
+        pointer-events:auto;
+
+    }
+
+}
+
+
+/* ==========================================================
+   SMALL MOBILE
+   480px AND BELOW
+========================================================== */
+
+@media (max-width:480px){
+
+
+    /* ======================================================
+       SMALL MOBILE SIDEBAR
+    ====================================================== */
+
+    .sidebar{
+
+        width:84vw;
+
+        max-width:300px;
+
+        padding:24px 18px;
+
+    }
+
+
+    /* ======================================================
+       SMALL MOBILE LOGO
+    ====================================================== */
+
+    .sidebar-logo img{
+
+        width:155px;
+
+    }
+
+
+    /* ======================================================
+       SMALL MOBILE NAVIGATION
+    ====================================================== */
+
+    .sidebar li a{
+
+        padding:14px 15px;
+
+        border-radius:13px;
+
+    }
+
+
+    /* ======================================================
+       SMALL MOBILE ACCOUNT ACTIONS
+    ====================================================== */
+
+    .sidebar-mobile-action{
+
+        padding:11px 13px;
+
+        border-radius:11px;
+
+    }
+
+
+    /* ======================================================
+       SMALL MOBILE LOGOUT
+    ====================================================== */
+
+    .sidebar-footer button{
+
+        padding:14px;
+
+        border-radius:13px;
+
+    }
 
 }

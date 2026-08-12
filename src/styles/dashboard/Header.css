@@ -1,171 +1,800 @@
-/* =====================================================
+/* ==========================================================
+   FILE: Header.css
+
+   PROJECT:
+   Concrete Finisher Uganda Website
+
+   PURPOSE:
+   Responsive Dashboard Header Styling
+
+   AUTHOR:
+   Joel Butala
+========================================================== */
+
+
+/* ==========================================================
    HEADER
-===================================================== */
+========================================================== */
 
-.dashboard-header{
+.dashboard-header {
 
-    display:flex;
+    display: flex;
 
-    justify-content:space-between;
+    align-items: center;
 
-    align-items:center;
+    justify-content: space-between;
 
-    background:#ffffff;
+    width: 100%;
 
-    padding:28px 35px;
+    padding: 28px 35px;
 
-    border-radius:20px;
+    margin-bottom: 35px;
 
-    margin-bottom:35px;
+    background: #FFFFFF;
 
-    box-shadow:0 15px 35px rgba(0,0,0,.06);
+    border-radius: 20px;
+
+    box-shadow:
+        0 15px 35px
+        rgba(0, 0, 0, .06);
 
 }
 
-/* =====================================================
+
+/* ==========================================================
    LEFT
-===================================================== */
+========================================================== */
 
-.header-left h1{
+.header-left {
 
-    font-size:38px;
+    display: flex;
 
-    font-weight:700;
+    align-items: center;
 
-    color:#1f1f1f;
+    gap: 14px;
 
-    margin-bottom:8px;
-
-}
-
-.header-left p{
-
-    color:#8b8b8b;
-
-    font-size:15px;
+    min-width: 0;
 
 }
 
-/* =====================================================
+
+.header-title {
+
+    min-width: 0;
+
+}
+
+
+.header-left h1 {
+
+    margin: 0 0 8px;
+
+    color: #1F1F1F;
+
+    font-size: 38px;
+
+    font-weight: 700;
+
+    line-height: 1.1;
+
+}
+
+
+.header-left p {
+
+    margin: 0;
+
+    color: #8B8B8B;
+
+    font-size: 15px;
+
+    line-height: 1.4;
+
+}
+
+
+/* ==========================================================
+   MOBILE MENU BUTTON
+========================================================== */
+
+.mobile-menu-btn {
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 42px;
+
+    height: 42px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: #F5EDE6;
+
+    color: #B56A2D;
+
+    cursor: pointer;
+
+    transition:
+        background .25s ease,
+        color .25s ease;
+
+}
+
+
+.mobile-menu-btn:hover {
+
+    background: #B56A2D;
+
+    color: #FFFFFF;
+
+}
+
+
+/* ==========================================================
    RIGHT
-===================================================== */
+========================================================== */
 
-.header-right{
+.header-right {
 
-    display:flex;
+    display: flex;
 
-    align-items:center;
+    align-items: center;
 
-    gap:20px;
+    gap: 20px;
+
+    min-width: 0;
 
 }
 
-/* =====================================================
+
+/* ==========================================================
    SEARCH
-===================================================== */
+========================================================== */
 
-.search-box{
+.search-box {
 
-    display:flex;
+    display: flex;
 
-    align-items:center;
+    align-items: center;
 
-    gap:10px;
+    gap: 10px;
 
-    width:300px;
+    width: 300px;
 
-    background:#f5f5f5;
+    padding: 12px 18px;
 
-    padding:12px 18px;
+    background: #F5F5F5;
 
-    border-radius:14px;
-
-}
-
-.search-box input{
-
-    border:none;
-
-    outline:none;
-
-    background:transparent;
-
-    width:100%;
-
-    font-size:15px;
+    border-radius: 14px;
 
 }
 
-/* =====================================================
-   BUTTON
-===================================================== */
 
-.new-project-btn{
+.search-box svg {
 
-    display:flex;
+    flex-shrink: 0;
 
-    align-items:center;
-
-    gap:8px;
-
-    background:#B56A2D;
-
-    color:white;
-
-    border:none;
-
-    padding:12px 18px;
-
-    border-radius:12px;
-
-    font-size:14px;
-
-    font-weight:600;
-
-    cursor:pointer;
-
-    transition:.3s;
+    color: #5C5C5C;
 
 }
 
-.new-project-btn:hover{
 
-    background:#C67A3A;
+.search-box input {
 
-}
+    width: 100%;
 
-/* =====================================================
-   ICONS
-===================================================== */
+    min-width: 0;
 
-.header-icon{
+    padding: 0;
 
-    cursor:pointer;
+    border: none;
 
-    color:#5c5c5c;
+    outline: none;
 
-    transition:.3s;
+    background: transparent;
 
-}
+    color: #222222;
 
-.header-icon:hover{
+    font-family: inherit;
 
-    color:#B56A2D;
+    font-size: 15px;
 
 }
 
-.header-profile{
 
-    color:#444;
+.search-box input::placeholder {
 
-    cursor:pointer;
-
-    transition:.3s;
+    color: #999999;
 
 }
 
-.header-profile:hover{
 
-    color:#B56A2D;
+/* ==========================================================
+   NEW PROJECT BUTTON
+========================================================== */
+
+.new-project-btn {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    flex-shrink: 0;
+
+    width: auto;
+
+    min-width: 0;
+
+    height: 42px;
+
+    padding: 0 18px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #B56A2D;
+
+    color: #FFFFFF;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background .3s ease,
+        transform .2s ease;
+
+}
+
+
+.new-project-btn:hover {
+
+    background: #C67A3A;
+
+    transform: translateY(-1px);
+
+}
+
+
+/* ==========================================================
+   NOTIFICATION WRAPPER
+========================================================== */
+
+.notification-wrapper {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 38px;
+
+    height: 38px;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+}
+
+
+.notification-wrapper:hover {
+
+    background: #F5EDE6;
+
+}
+
+
+/* ==========================================================
+   NOTIFICATION BADGE
+========================================================== */
+
+.notification-badge {
+
+    position: absolute;
+
+    top: -4px;
+
+    right: -4px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 19px;
+
+    height: 19px;
+
+    padding: 0 5px;
+
+    border: 2px solid #FFFFFF;
+
+    border-radius: 999px;
+
+    background: #B56A2D;
+
+    color: #FFFFFF;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    pointer-events: none;
+
+}
+
+
+/* ==========================================================
+   HEADER ICON
+========================================================== */
+
+.header-icon {
+
+    flex-shrink: 0;
+
+    color: #5C5C5C;
+
+    transition:
+        color .25s ease;
+
+}
+
+
+.notification-wrapper:hover .header-icon {
+
+    color: #B56A2D;
+
+}
+
+
+/* ==========================================================
+   PROFILE BUTTON
+========================================================== */
+
+.profile-button {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 38px;
+
+    height: 38px;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+}
+
+
+.profile-button:hover {
+
+    background: #F5EDE6;
+
+}
+
+
+/* ==========================================================
+   PROFILE ICON
+========================================================== */
+
+.header-profile {
+
+    flex-shrink: 0;
+
+    color: #444444;
+
+    transition:
+        color .25s ease;
+
+}
+
+
+.profile-button:hover .header-profile {
+
+    color: #B56A2D;
+
+}
+
+
+/* ==========================================================
+   TABLET
+   769px - 1024px
+========================================================== */
+
+@media (max-width: 1024px) and (min-width: 769px) {
+
+    .dashboard-header {
+
+        padding: 24px;
+
+        margin-bottom: 24px;
+
+        border-radius: 18px;
+
+    }
+
+
+    .header-left h1 {
+
+        font-size: 30px;
+
+    }
+
+
+    .header-right {
+
+        gap: 14px;
+
+    }
+
+
+    .search-box {
+
+        width: 220px;
+
+        padding: 11px 14px;
+
+    }
+
+
+    .new-project-btn {
+
+        padding: 0 14px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   MOBILE
+   768px AND BELOW
+========================================================== */
+
+@media (max-width: 768px) {
+
+    .dashboard-header {
+
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 1fr)
+            auto
+            auto;
+
+        grid-template-rows:
+            auto
+            auto;
+
+        align-items: center;
+
+        column-gap: 10px;
+
+        row-gap: 14px;
+
+        width: 100%;
+
+        padding: 18px;
+
+        margin-bottom: 28px;
+
+        border-radius: 18px;
+
+    }
+
+
+    /* =========================================
+       LEFT
+    ========================================= */
+
+    .header-left {
+
+        grid-column: 1;
+
+        grid-row: 1;
+
+        gap: 12px;
+
+        min-width: 0;
+
+    }
+
+
+    .mobile-menu-btn {
+
+        display: flex;
+
+    }
+
+
+    .header-title {
+
+        min-width: 0;
+
+    }
+
+
+    .header-left h1 {
+
+        margin-bottom: 4px;
+
+        font-size: 25px;
+
+        line-height: 1.1;
+
+    }
+
+
+    .header-left p {
+
+        overflow: hidden;
+
+        font-size: 13px;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+
+    }
+
+
+    /* =========================================
+       RIGHT SIDE CONTENT
+    ========================================= */
+
+    .header-right {
+
+        display: contents;
+
+    }
+
+
+    /* =========================================
+       SEARCH
+    ========================================= */
+
+    .search-box {
+
+        grid-column: 1 / -1;
+
+        grid-row: 2;
+
+        width: 100%;
+
+        padding: 11px 14px;
+
+        border-radius: 12px;
+
+    }
+
+
+    .search-box input {
+
+        font-size: 14px;
+
+    }
+
+
+    /* =========================================
+       NEW PROJECT
+    ========================================= */
+
+    .new-project-btn {
+
+        grid-column: 2;
+
+        grid-row: 1;
+
+        align-self: center;
+
+        width: 42px;
+
+        height: 42px;
+
+        padding: 0;
+
+        border-radius: 11px;
+
+    }
+
+
+    .new-project-btn span {
+
+        display: none;
+
+    }
+
+
+    /* =========================================
+       NOTIFICATIONS
+    ========================================= */
+
+    .notification-wrapper {
+
+        grid-column: 3;
+
+        grid-row: 1;
+
+        align-self: center;
+
+        width: 38px;
+
+        height: 38px;
+
+    }
+
+
+    .notification-badge {
+
+        top: -5px;
+
+        right: -5px;
+
+        min-width: 18px;
+
+        height: 18px;
+
+        font-size: 9px;
+
+    }
+
+
+    /* =========================================
+       PROFILE
+    ========================================= */
+
+    .profile-button {
+
+        display: none;
+
+    }
+
+}
+
+
+/* ==========================================================
+   SMALL MOBILE
+   480px AND BELOW
+========================================================== */
+
+@media (max-width: 480px) {
+
+    .dashboard-header {
+
+        padding: 15px;
+
+        margin-bottom: 24px;
+
+        column-gap: 8px;
+
+        row-gap: 12px;
+
+        border-radius: 16px;
+
+    }
+
+
+    .header-left {
+
+        gap: 10px;
+
+    }
+
+
+    .mobile-menu-btn {
+
+        width: 40px;
+
+        height: 40px;
+
+    }
+
+
+    .header-left h1 {
+
+        font-size: 22px;
+
+    }
+
+
+    .header-left p {
+
+        font-size: 12px;
+
+    }
+
+
+    .new-project-btn {
+
+        width: 40px;
+
+        height: 40px;
+
+    }
+
+
+    .notification-wrapper {
+
+        width: 36px;
+
+        height: 36px;
+
+    }
+
+
+    .notification-badge {
+
+        top: -5px;
+
+        right: -5px;
+
+        min-width: 17px;
+
+        height: 17px;
+
+        padding: 0 4px;
+
+        font-size: 9px;
+
+    }
+
+
+    .search-box {
+
+        padding: 10px 13px;
+
+    }
+
+
+    .search-box input {
+
+        font-size: 13px;
+
+    }
 
 }

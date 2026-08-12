@@ -1,0 +1,620 @@
+/* ==========================================================
+   FILE: Quotations.css
+
+   PROJECT:
+   Concrete Finisher Uganda Website
+
+   PURPOSE:
+   Styles the quotation management page inside the
+   admin dashboard.
+
+   RESPONSIVE BEHAVIOUR:
+   • Desktop: Two quotation cards per row
+   • Mobile: One quotation card per row
+
+   AUTHOR:
+   Joel Butala
+========================================================== */
+
+
+/* ==========================================================
+   PAGE
+========================================================== */
+
+.quotations-page {
+
+    width: 100%;
+
+}
+
+
+/* ==========================================================
+   PAGE HEADER
+========================================================== */
+
+.quotations-page-header {
+
+    margin-bottom: 24px;
+
+}
+
+
+.quotations-page-header h1 {
+
+    margin: 0 0 6px;
+
+    font-size: 32px;
+
+    color: #171717;
+
+}
+
+
+.quotations-page-header p {
+
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 14px;
+
+}
+
+
+/* ==========================================================
+   QUOTATION GRID
+
+   Desktop displays two cards per row.
+========================================================== */
+
+.quotations-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+
+}
+
+
+/* ==========================================================
+   QUOTATION CARD
+========================================================== */
+
+.quotation-card {
+
+    background: #ffffff;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 16px;
+
+    padding: 22px;
+
+    min-width: 0;
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.045);
+
+}
+
+
+/* ==========================================================
+   CARD HEADER
+========================================================== */
+
+.quotation-card-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 16px;
+
+    padding-bottom: 18px;
+
+    border-bottom: 1px solid #eeeeee;
+
+}
+
+
+.quotation-card-header h2 {
+
+    margin: 0 0 4px;
+
+    font-size: 18px;
+
+    color: #171717;
+
+}
+
+
+.quotation-card-header p {
+
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 13px;
+
+}
+
+
+/* ==========================================================
+   STATUS SELECT
+========================================================== */
+
+.quotation-status-select {
+
+    border: none;
+
+    outline: none;
+
+    border-radius: 20px;
+
+    padding: 7px 10px;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+}
+
+
+/* ==========================================================
+   STATUS TYPES
+========================================================== */
+
+.quotation-status-select.status-new {
+
+    background: #F8EFE7;
+
+    color: #B56A2D;
+
+}
+
+
+.quotation-status-select.status-contacted {
+
+    background: #EEF4FF;
+
+    color: #3F65A5;
+
+}
+
+
+.quotation-status-select.status-follow-up {
+
+    background: #FFF4D9;
+
+    color: #8A6500;
+
+}
+
+
+.quotation-status-select.status-approved {
+
+    background: #E9F7EE;
+
+    color: #2D7A46;
+
+}
+
+
+.quotation-status-select.status-rejected {
+
+    background: #FCEAEA;
+
+    color: #A53A3A;
+
+}
+
+
+/* ==========================================================
+   PROJECT DETAILS
+
+   Each quotation contains four primary project fields.
+========================================================== */
+
+.quotation-details-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+
+    padding: 20px 0;
+
+}
+
+
+.quotation-detail {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    min-width: 0;
+
+}
+
+
+.quotation-detail span {
+
+    color: #888888;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+
+}
+
+
+.quotation-detail strong {
+
+    color: #222222;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+/* ==========================================================
+   CONTACT INFORMATION
+========================================================== */
+
+.quotation-contact {
+
+    padding: 16px 0;
+
+    border-top: 1px solid #eeeeee;
+
+    border-bottom: 1px solid #eeeeee;
+
+}
+
+
+.quotation-contact p {
+
+    margin: 5px 0;
+
+    color: #555555;
+
+    font-size: 13px;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+.quotation-contact strong {
+
+    color: #222222;
+
+}
+
+
+/* ==========================================================
+   PROJECT DESCRIPTION
+========================================================== */
+
+.quotation-description {
+
+    padding-top: 18px;
+
+}
+
+
+.quotation-description span {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #888888;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+
+}
+
+
+.quotation-description p {
+
+    margin: 0;
+
+    color: #555555;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+/* ==========================================================
+   EMPTY STATE
+========================================================== */
+
+.quotations-empty {
+
+    background: #ffffff;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 16px;
+
+    padding: 30px;
+
+}
+
+
+.quotations-empty p {
+
+    margin: 0;
+
+    color: #777777;
+
+}
+
+
+
+/* ==========================================================
+   TABLET
+
+   Keep two quotation cards per row.
+   ========================================================== */
+
+@media (max-width: 900px) {
+
+    .quotations-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 16px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 600px) {
+
+    .quotations-page-header h1 {
+
+        font-size: 28px;
+
+    }
+
+
+    .quotation-card {
+
+        padding: 18px;
+
+        border-radius: 14px;
+
+    }
+
+
+    .quotation-card-header {
+
+        gap: 12px;
+
+    }
+
+
+    .quotation-card-header h2 {
+
+        font-size: 17px;
+
+    }
+
+
+    .quotation-details-grid {
+
+        gap: 16px 12px;
+
+    }
+
+
+    .quotation-status-select {
+
+        max-width: 110px;
+
+    }
+
+}
+
+/* ==========================================================
+   PAGINATION
+   ========================================================== */
+
+.quotations-pagination {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    width: 100%;
+
+    margin-top: 28px;
+
+    padding-bottom: 10px;
+
+}
+
+
+/* ==========================================================
+   PAGE NUMBER GROUP
+   ========================================================== */
+
+.pagination-pages {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+}
+
+
+/* ==========================================================
+   PAGINATION BUTTONS
+   ========================================================== */
+
+.pagination-button,
+.pagination-number {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 42px;
+
+    height: 42px;
+
+    padding: 0 12px;
+
+    background: #ffffff;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 8px;
+
+    color: #222222;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .2s ease;
+
+}
+
+
+/* ==========================================================
+   HOVER
+   ========================================================== */
+
+.pagination-button:hover:not(:disabled),
+.pagination-number:hover:not(.active) {
+
+    border-color: #B56A2D;
+
+    color: #B56A2D;
+
+    transform: translateY(-1px);
+
+}
+
+
+/* ==========================================================
+   ACTIVE PAGE
+   ========================================================== */
+
+.pagination-number.active {
+
+    background: #B56A2D;
+
+    border-color: #B56A2D;
+
+    color: #ffffff;
+
+}
+
+
+/* ==========================================================
+   DISABLED
+   ========================================================== */
+
+.pagination-button:disabled {
+
+    background: #f5f5f5;
+
+    border-color: #e5e5e5;
+
+    color: #aaaaaa;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+}
+
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media (max-width: 600px) {
+
+    .quotations-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 16px;
+
+    }
+
+
+    .quotations-pagination {
+
+        margin-top: 24px;
+
+        gap: 6px;
+
+    }
+
+
+    .pagination-button,
+    .pagination-number {
+
+        min-width: 38px;
+
+        height: 38px;
+
+        padding: 0 9px;
+
+        font-size: 12px;
+
+    }
+
+}

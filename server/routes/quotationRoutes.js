@@ -30,6 +30,7 @@ import express from "express";
 import {
   createQuotation,
   getQuotations,
+  updateQuotationStatus,
 } from "../controllers/quotationController.js";
 
 const router = express.Router();
@@ -49,6 +50,18 @@ router.post("/", createQuotation);
 // ======================================================
 
 router.get("/", getQuotations);
+
+// ======================================================
+// UPDATE QUOTATION STATUS
+//
+// Route:
+// PATCH /api/quotations/:id
+//
+// Example:
+// PATCH /api/quotations/6a6894b3fe0592445d6f013f
+// ======================================================
+
+router.patch("/:id", updateQuotationStatus);
 
 
 

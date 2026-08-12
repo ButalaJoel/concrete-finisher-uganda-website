@@ -5,7 +5,15 @@
    Concrete Finisher Uganda Website
 
    PURPOSE:
-   Dashboard Layout Styling
+   Main Admin Dashboard Layout
+
+   RESPONSIBILITIES:
+   • Position dashboard beside fixed sidebar
+   • Control dashboard page spacing
+   • Control DashboardHome layout
+   • Prevent sidebar/content overlap
+   • Responsive tablet layout
+   • Responsive mobile layout
 
    AUTHOR:
    Joel Butala
@@ -13,102 +21,208 @@
 
 
 /* ==========================================================
-   DASHBOARD WRAPPER
+   DASHBOARD ROOT
 ========================================================== */
 
-.dashboard{
+.dashboard {
 
-    display:flex;
+    width: 100%;
 
-    min-height:100vh;
+    min-height: 100vh;
 
-    background:#F5F5F5;
+    background: #F7F7F7;
 
 }
 
 
 /* ==========================================================
-   MAIN CONTENT AREA
+   MAIN DASHBOARD CONTENT
+
+   Desktop sidebar width = 280px.
+
+   Because Sidebar.css uses:
+
+   position: fixed;
+   width: 280px;
+
+   the sidebar does NOT occupy normal document space.
+
+   Therefore dashboard-content must manually leave
+   280px of space on the left.
 ========================================================== */
 
-.dashboard-content{
+.dashboard-content {
 
-    flex:1;
+    width: calc(100% - 280px);
 
-    margin-left:280px;
+    min-height: 100vh;
 
-    padding:35px;
+    margin-left: 280px;
 
-    display:flex;
+    padding: 36px 38px;
 
-    flex-direction:column;
+    box-sizing: border-box;
 
-    gap:30px;
-
-    overflow-x:hidden;
+    overflow-x: hidden;
 
 }
 
 
 /* ==========================================================
    DASHBOARD HOME
+
+   Contains:
+
+   • Header is outside this element
+   • Statistics
+   • Recent Quotations
+   • Recent Activity
 ========================================================== */
 
-.dashboard-home{
+.dashboard-home {
 
-    display:flex;
+    display: flex;
 
-    flex-direction:column;
+    flex-direction: column;
 
-    gap:30px;
+    gap: 30px;
 
-    width:100%;
+    width: 100%;
+
+    min-width: 0;
 
 }
 
 
 /* ==========================================================
-   COMMON SECTION
+   SHARED DASHBOARD SECTION
+
+   Used by sections such as:
+
+   Recent Quotations
+   Recent Activity
 ========================================================== */
 
-.dashboard-section{
+.dashboard-section {
 
-    background:#FFFFFF;
+    width: 100%;
 
-    border-radius:22px;
+    min-width: 0;
 
-    padding:28px;
-
-    box-shadow:0 10px 30px rgba(0,0,0,.05);
-
-    border:1px solid #ECECEC;
+    box-sizing: border-box;
 
 }
 
 
 /* ==========================================================
-   SECTION HEADINGS
+   TABLET
+   769px - 1024px
+
+   Sidebar.css changes the sidebar from:
+
+   280px → 90px
+
+   Dashboard content therefore follows it.
 ========================================================== */
 
-.dashboard-section h2{
+@media (max-width: 1024px) and (min-width: 769px) {
 
-    font-size:22px;
+    .dashboard-content {
 
-    color:#1F1F1F;
+        width: calc(100% - 90px);
 
-    margin-bottom:10px;
+        margin-left: 90px;
 
-    font-weight:700;
+        padding: 28px 26px;
+
+    }
+
+
+    .dashboard-home {
+
+        gap: 24px;
+
+    }
 
 }
 
 
-.dashboard-section p{
+/* ==========================================================
+   MOBILE
+   768px AND BELOW
 
-    color:#666;
+   Sidebar becomes an off-canvas drawer.
 
-    line-height:1.6;
+   Therefore it no longer needs permanent space
+   beside the dashboard.
 
-    font-size:15px;
+   Dashboard returns to full width.
+========================================================== */
+
+@media (max-width: 768px) {
+
+    .dashboard {
+
+        min-height: 100vh;
+
+        width: 100%;
+
+    }
+
+
+    .dashboard-content {
+
+        width: 100%;
+
+        min-height: 100vh;
+
+        margin-left: 0;
+
+        padding: 20px;
+
+        overflow-x: hidden;
+
+    }
+
+
+    .dashboard-home {
+
+        width: 100%;
+
+        gap: 24px;
+
+    }
+
+
+    .dashboard-section {
+
+        width: 100%;
+
+        min-width: 0;
+
+    }
+
+}
+
+
+/* ==========================================================
+   SMALL MOBILE
+   480px AND BELOW
+========================================================== */
+
+@media (max-width: 480px) {
+
+    .dashboard-content {
+
+        padding: 16px;
+
+    }
+
+
+    .dashboard-home {
+
+        gap: 20px;
+
+    }
 
 }

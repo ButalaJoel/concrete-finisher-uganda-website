@@ -1,0 +1,2150 @@
+/* ==========================================================
+   FILE: DashboardProjects.css
+
+   PROJECT:
+   Concrete Finisher Uganda Website
+
+   PURPOSE:
+   Project Management Dashboard
+
+   RESPONSIBILITIES:
+   • Project creation
+   • Project editing
+   • Project deletion
+   • Project status
+   • Project value
+   • Image uploads
+   • Image previews
+   • Existing projects
+   • Pagination
+   • Responsive layout
+========================================================== */
+
+
+/* ==========================================================
+   GLOBAL BOX SIZING
+========================================================== */
+
+.dashboard-projects-page,
+.dashboard-projects-page *,
+.dashboard-projects-page *::before,
+.dashboard-projects-page *::after {
+
+    box-sizing: border-box;
+
+}
+
+
+/* ==========================================================
+   PAGE
+========================================================== */
+
+.dashboard-projects-page {
+
+    width: 100%;
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 24px 0 70px;
+
+}
+
+
+/* ==========================================================
+   PAGE HEADER
+========================================================== */
+
+.dashboard-projects-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 30px;
+
+}
+
+
+.dashboard-projects-header h1 {
+
+    margin: 0 0 7px;
+
+    color: #171717;
+
+    font-size: 34px;
+
+    line-height: 1.15;
+
+    font-weight: 700;
+
+}
+
+
+.dashboard-projects-header p {
+
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+}
+
+
+/* ==========================================================
+   CANCEL EDIT
+========================================================== */
+
+.cancel-edit-btn {
+
+    flex-shrink: 0;
+
+    padding: 10px 16px;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #555555;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease;
+
+}
+
+
+.cancel-edit-btn:hover {
+
+    border-color: #B56A2D;
+
+    background: #fdf7f2;
+
+    color: #B56A2D;
+
+}
+
+
+/* ==========================================================
+   FORM
+========================================================== */
+
+.dashboard-projects-page form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    width: 100%;
+
+}
+
+
+/* ==========================================================
+   FORM HEADINGS
+========================================================== */
+
+.dashboard-projects-page form h2 {
+
+    margin: 30px 0 16px;
+
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid #eeeeee;
+
+    color: #222222;
+
+    font-size: 19px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+}
+
+
+.dashboard-projects-page form h2:first-of-type {
+
+    margin-top: 0;
+
+}
+
+
+/* ==========================================================
+   TEXT INPUTS
+========================================================== */
+
+.dashboard-projects-page form > input[type="text"] {
+
+    width: 100%;
+
+    height: 46px;
+
+    margin-bottom: 12px;
+
+    padding: 0 15px;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #222222;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+
+}
+
+
+.dashboard-projects-page form > input[type="text"]:focus {
+
+    border-color: #B56A2D;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(181, 106, 45, .10);
+
+}
+
+
+/* ==========================================================
+   PLACEHOLDERS
+========================================================== */
+
+.dashboard-projects-page input::placeholder,
+.dashboard-projects-page textarea::placeholder {
+
+    color: #999999;
+
+    opacity: 1;
+
+}
+
+
+/* ==========================================================
+   TEXTAREAS
+========================================================== */
+
+.dashboard-projects-page form > textarea {
+
+    width: 100%;
+
+    min-height: 120px;
+
+    margin-bottom: 12px;
+
+    padding: 14px 15px;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    resize: vertical;
+
+    background: #ffffff;
+
+    color: #222222;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+
+}
+
+
+.dashboard-projects-page form > textarea:focus {
+
+    border-color: #B56A2D;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(181, 106, 45, .10);
+
+}
+
+
+/* ==========================================================
+   PROJECT MANAGEMENT
+========================================================== */
+
+.project-financial-section {
+
+    width: 100%;
+
+    margin: 10px 0 30px;
+
+}
+
+
+.project-management-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+
+}
+
+
+.project-field {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+
+.project-field label {
+
+    color: #222222;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+
+/* ==========================================================
+   SELECT
+========================================================== */
+
+.project-field select {
+
+    width: 100%;
+
+    height: 46px;
+
+    padding: 0 14px;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #222222;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+}
+
+
+.project-field select:focus {
+
+    border-color: #B56A2D;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(181, 106, 45, .10);
+
+}
+
+
+/* ==========================================================
+   CURRENCY
+========================================================== */
+
+.currency-input {
+
+    display: flex;
+
+    align-items: center;
+
+    width: 100%;
+
+    height: 46px;
+
+    overflow: hidden;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+}
+
+
+.currency-input:focus-within {
+
+    border-color: #B56A2D;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(181, 106, 45, .10);
+
+}
+
+
+.currency-input span {
+
+    display: flex;
+
+    align-items: center;
+
+    height: 100%;
+
+    padding: 0 13px;
+
+    border-right: 1px solid #eadfd5;
+
+    background: #f8f1eb;
+
+    color: #a85f24;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+}
+
+
+.currency-input input {
+
+    width: 100%;
+
+    height: 100%;
+
+    flex: 1;
+
+    padding: 0 14px;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: #222222;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+}
+
+
+.field-help {
+
+    color: #888888;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+}
+
+
+/* ==========================================================
+   IMAGE SECTIONS
+========================================================== */
+
+.project-image-section {
+
+    width: 100%;
+
+    margin-top: 30px;
+
+}
+
+
+.project-image-section h2 {
+
+    margin: 28px 0 16px;
+
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid #eeeeee;
+
+    color: #222222;
+
+    font-size: 19px;
+
+}
+
+
+/* ==========================================================
+   IMAGE UPLOAD BOX
+========================================================== */
+
+.image-upload-box {
+
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    min-height: 130px;
+
+    padding: 24px;
+
+    border: 2px dashed #d8d8d8;
+
+    border-radius: 14px;
+
+    background: #fafafa;
+
+    cursor: pointer;
+
+    transition:
+        border-color .25s ease,
+        background .25s ease;
+
+}
+
+
+.image-upload-box:hover {
+
+    border-color: #B56A2D;
+
+    background: #FCF7F2;
+
+}
+
+
+.image-upload-box input {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    opacity: 0;
+
+    cursor: pointer;
+
+}
+
+
+.upload-title {
+
+    margin-bottom: 6px;
+
+    color: #222222;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+}
+
+
+.upload-subtitle {
+
+    color: #888888;
+
+    font-size: 13px;
+
+}
+
+
+/* ==========================================================
+   HERO IMAGE PREVIEW
+========================================================== */
+
+.hero-image-preview {
+
+    width: 100%;
+
+    margin-top: 16px;
+
+    overflow: hidden;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 8px 24px
+        rgba(0, 0, 0, .045);
+
+}
+
+
+.hero-image-preview img {
+
+    display: block;
+
+    width: 100%;
+
+    height: 300px;
+
+    object-fit: cover;
+
+}
+
+
+.image-preview-info {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 12px 16px;
+
+}
+
+
+.image-preview-info span {
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    color: #555555;
+
+    font-size: 13px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+/* ==========================================================
+   MULTIPLE IMAGE PREVIEWS
+========================================================== */
+
+.image-preview-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 14px;
+
+    width: 100%;
+
+    margin-top: 16px;
+
+}
+
+
+.image-preview-card {
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 6px 18px
+        rgba(0, 0, 0, .04);
+
+}
+
+
+.image-preview-card img {
+
+    display: block;
+
+    width: 100%;
+
+    height: 150px;
+
+    object-fit: cover;
+
+}
+
+
+.image-preview-footer {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    padding: 10px;
+
+}
+
+
+.image-preview-footer span {
+
+    overflow: hidden;
+
+    color: #555555;
+
+    font-size: 11px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+/* ==========================================================
+   REMOVE IMAGE
+========================================================== */
+
+.remove-image-btn {
+
+    width: fit-content;
+
+    padding: 5px 9px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #FCEAEA;
+
+    color: #A53A3A;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.remove-image-btn:hover {
+
+    background: #A53A3A;
+
+    color: #ffffff;
+
+}
+
+
+/* ==========================================================
+   SUCCESS / ERROR
+========================================================== */
+
+.project-success-message,
+.project-error-message {
+
+    margin: 10px 0 20px;
+
+    padding: 12px 14px;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+
+.project-success-message {
+
+    border: 1px solid #cce8d4;
+
+    background: #e9f7ee;
+
+    color: #2d7a46;
+
+}
+
+
+.project-error-message {
+
+    border: 1px solid #f0cccc;
+
+    background: #fceaea;
+
+    color: #a53a3a;
+
+}
+
+
+/* ==========================================================
+   SUBMIT
+========================================================== */
+
+.dashboard-projects-page form > button[type="submit"] {
+
+    align-self: flex-start;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 160px;
+
+    margin-top: 12px;
+
+    padding: 13px 22px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #B56A2D;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease;
+
+}
+
+
+.dashboard-projects-page form > button[type="submit"]:hover {
+
+    background: #C67A3A;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(181, 106, 45, .25);
+
+}
+
+
+.dashboard-projects-page form > button[type="submit"]:disabled {
+
+    opacity: .65;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+
+}
+
+
+/* ==========================================================
+   EXISTING PROJECTS
+========================================================== */
+
+.existing-projects-section {
+
+    width: 100%;
+
+    margin-top: 60px;
+
+    padding-top: 35px;
+
+    border-top: 1px solid #e8e8e8;
+
+}
+
+
+.existing-projects-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+
+}
+
+
+.existing-projects-header h2 {
+
+    margin: 0 0 5px;
+
+    color: #222222;
+
+    font-size: 22px;
+
+    line-height: 1.3;
+
+}
+
+
+.existing-projects-header p {
+
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 13px;
+
+}
+
+
+/* ==========================================================
+   PROJECT GRID
+========================================================== */
+
+.dashboard-project-list {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+
+    width: 100%;
+
+}
+
+
+/* ==========================================================
+   PROJECT CARD
+========================================================== */
+
+.dashboard-project-card {
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    border: 1px solid #e8e8e8;
+
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 5px 18px
+        rgba(0, 0, 0, .05);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+
+}
+
+
+.dashboard-project-card:hover {
+
+    border-color: #dddddd;
+
+    box-shadow:
+        0 12px 28px
+        rgba(0, 0, 0, .09);
+
+    transform: translateY(-3px);
+
+}
+
+
+/* ==========================================================
+   CARD IMAGE
+========================================================== */
+
+.dashboard-project-card-image {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 210px;
+
+    overflow: hidden;
+
+    background: #f2f2f2;
+
+}
+
+
+.dashboard-project-card-image img {
+
+    display: block;
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: transform .35s ease;
+
+}
+
+
+.dashboard-project-card:hover
+.dashboard-project-card-image img {
+
+    transform: scale(1.03);
+
+}
+
+
+.project-no-image {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    height: 100%;
+
+    background: #f5f5f5;
+
+    color: #999999;
+
+    font-size: 13px;
+
+}
+
+
+/* ==========================================================
+   CARD CONTENT
+========================================================== */
+
+.dashboard-project-card-content {
+
+    display: flex;
+
+    flex: 1;
+
+    flex-direction: column;
+
+    padding: 17px;
+
+}
+
+
+/* ==========================================================
+   CARD HEADER
+========================================================== */
+
+.dashboard-project-card-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 16px;
+
+}
+
+
+.dashboard-project-card-header > div {
+
+    min-width: 0;
+
+}
+
+
+.dashboard-project-card-header h3 {
+
+    margin: 0 0 5px;
+
+    color: #181818;
+
+    font-size: 16px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+}
+
+
+.dashboard-project-card-header p {
+
+    margin: 0;
+
+    overflow: hidden;
+
+    color: #777777;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+/* ==========================================================
+   STATUS BADGE
+========================================================== */
+
+.project-status-badge {
+
+    display: inline-flex;
+
+    flex-shrink: 0;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+}
+
+
+.status-pending {
+
+    background: #fff4df;
+
+    color: #a96b13;
+
+}
+
+
+.status-active {
+
+    background: #e8f3ff;
+
+    color: #276aa8;
+
+}
+
+
+.status-completed {
+
+    background: #e8f7ed;
+
+    color: #287544;
+
+}
+
+
+/* ==========================================================
+   CARD DETAILS
+========================================================== */
+
+.dashboard-project-card-details {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    margin-bottom: 18px;
+
+}
+
+
+.dashboard-project-card-details > div {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding-bottom: 9px;
+
+    border-bottom: 1px solid #f0f0f0;
+
+}
+
+
+.dashboard-project-card-details span {
+
+    flex-shrink: 0;
+
+    color: #888888;
+
+    font-size: 11px;
+
+}
+
+
+.dashboard-project-card-details strong {
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    color: #333333;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    text-align: right;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+/* ==========================================================
+   ACTIONS
+========================================================== */
+
+.dashboard-project-actions {
+
+    display: flex;
+
+    gap: 9px;
+
+    margin-top: auto;
+
+}
+
+
+.edit-project-btn,
+.delete-project-btn {
+
+    flex: 1;
+
+    padding: 9px 12px;
+
+    border-radius: 8px;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        color .2s ease,
+        border-color .2s ease;
+
+}
+
+
+.edit-project-btn {
+
+    border: 1px solid #B56A2D;
+
+    background: #ffffff;
+
+    color: #B56A2D;
+
+}
+
+
+.edit-project-btn:hover {
+
+    background: #B56A2D;
+
+    color: #ffffff;
+
+}
+
+
+.delete-project-btn {
+
+    border: 1px solid #e1c2c2;
+
+    background: #fff7f7;
+
+    color: #A53A3A;
+
+}
+
+
+.delete-project-btn:hover {
+
+    border-color: #A53A3A;
+
+    background: #A53A3A;
+
+    color: #ffffff;
+
+}
+
+
+.edit-project-btn:disabled,
+.delete-project-btn:disabled {
+
+    opacity: .55;
+
+    cursor: not-allowed;
+
+}
+
+
+/* ==========================================================
+   LOADING
+========================================================== */
+
+.projects-loading-state {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 160px;
+
+    padding: 25px;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 14px;
+
+    background: #ffffff;
+
+}
+
+
+.projects-loading-state p {
+
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 14px;
+
+}
+
+
+/* ==========================================================
+   ERROR STATE
+========================================================== */
+
+.projects-error-state {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 18px;
+
+    border: 1px solid #f0cccc;
+
+    border-radius: 12px;
+
+    background: #fff5f5;
+
+}
+
+
+.projects-error-state p {
+
+    margin: 0;
+
+    color: #a53a3a;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+
+.projects-error-state button {
+
+    flex-shrink: 0;
+
+    padding: 8px 14px;
+
+    border: 1px solid #A53A3A;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #A53A3A;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.projects-error-state button:hover {
+
+    background: #A53A3A;
+
+    color: #ffffff;
+
+}
+
+
+/* ==========================================================
+   EMPTY STATE
+========================================================== */
+
+.projects-empty-state {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 150px;
+
+    padding: 25px;
+
+    border: 1px dashed #dddddd;
+
+    border-radius: 14px;
+
+    background: #fafafa;
+
+}
+
+
+.projects-empty-state p {
+
+    margin: 0;
+
+    color: #888888;
+
+    font-size: 13px;
+
+}
+
+
+/* ==========================================================
+   PAGINATION
+========================================================== */
+
+.projects-pagination {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    width: 100%;
+
+    margin-top: 28px;
+
+    padding-top: 22px;
+
+    padding-bottom: 10px;
+
+    border-top: 1px solid #eeeeee;
+
+}
+
+
+/* ==========================================================
+   PAGE NUMBER GROUP
+========================================================== */
+
+.pagination-pages {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+}
+
+
+/* ==========================================================
+   PREVIOUS / NEXT BUTTONS
+========================================================== */
+
+.pagination-btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 42px;
+
+    height: 42px;
+
+    padding: 0 12px;
+
+    background: #ffffff;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 8px;
+
+    color: #222222;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .2s ease;
+
+}
+
+
+/* ==========================================================
+   PAGE NUMBERS
+========================================================== */
+
+.pagination-number {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 42px;
+
+    height: 42px;
+
+    padding: 0 12px;
+
+    background: #ffffff;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 8px;
+
+    color: #222222;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .2s ease;
+
+}
+
+
+/* ==========================================================
+   PREVIOUS / NEXT HOVER
+========================================================== */
+
+.pagination-btn:hover:not(:disabled) {
+
+    border-color: #B56A2D;
+
+    color: #B56A2D;
+
+    transform: translateY(-1px);
+
+}
+
+
+/* ==========================================================
+   PAGE NUMBER HOVER
+========================================================== */
+
+.pagination-number:hover:not(.active) {
+
+    border-color: #B56A2D;
+
+    color: #B56A2D;
+
+    transform: translateY(-1px);
+
+}
+
+
+/* ==========================================================
+   ACTIVE PAGE
+========================================================== */
+
+.pagination-number.active {
+
+    background: #B56A2D;
+
+    border-color: #B56A2D;
+
+    color: #ffffff;
+
+}
+
+
+/* ==========================================================
+   DISABLED BUTTON
+========================================================== */
+
+.pagination-btn:disabled {
+
+    background: #f5f5f5;
+
+    border-color: #e5e5e5;
+
+    color: #aaaaaa;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+}
+
+
+/* ==========================================================
+   DISABLED PAGE NUMBER
+========================================================== */
+
+.pagination-number:disabled {
+
+    cursor: not-allowed;
+
+}
+
+
+/* ==========================================================
+   MOBILE PAGINATION
+========================================================== */
+
+@media (max-width: 600px) {
+
+    .projects-pagination {
+
+        margin-top: 24px;
+
+        padding-top: 18px;
+
+        gap: 6px;
+
+    }
+
+
+    .pagination-pages {
+
+        gap: 5px;
+
+    }
+
+
+    .pagination-btn,
+    .pagination-number {
+
+        min-width: 38px;
+
+        height: 38px;
+
+        padding: 0 9px;
+
+        font-size: 12px;
+
+    }
+
+}
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (max-width: 1100px) {
+
+    .dashboard-projects-page {
+
+        padding-right: 24px;
+
+        padding-left: 24px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   TWO COLUMN TABLET
+========================================================== */
+
+@media (max-width: 1000px) {
+
+    .dashboard-project-list {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+    }
+
+}
+
+
+/* ==========================================================
+   SMALL TABLET
+========================================================== */
+
+@media (max-width: 900px) {
+
+    .dashboard-projects-page {
+
+        max-width: 100%;
+
+        padding-top: 28px;
+
+    }
+
+
+    .dashboard-projects-header h1 {
+
+        font-size: 30px;
+
+    }
+
+
+    .image-preview-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+    }
+
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 700px) {
+
+    .dashboard-projects-page {
+
+        width: 100%;
+
+        padding: 28px 16px 60px;
+
+    }
+
+
+    .dashboard-projects-header {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 14px;
+
+        margin-bottom: 28px;
+
+    }
+
+
+    .dashboard-projects-header h1 {
+
+        font-size: 27px;
+
+        line-height: 1.2;
+
+    }
+
+
+    .dashboard-projects-header p {
+
+        font-size: 13px;
+
+    }
+
+
+    .cancel-edit-btn {
+
+        align-self: flex-start;
+
+    }
+
+
+    .project-management-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .dashboard-project-list {
+
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+
+    }
+
+
+    .dashboard-project-card-image {
+
+        height: 220px;
+
+    }
+
+
+    .dashboard-project-card-content {
+
+        padding: 16px;
+
+    }
+
+
+    .dashboard-project-card-header {
+
+        gap: 10px;
+
+    }
+
+
+    .dashboard-project-card-header h3 {
+
+        font-size: 16px;
+
+    }
+
+
+    .dashboard-project-actions {
+
+        gap: 10px;
+
+    }
+
+
+    .projects-error-state {
+
+        align-items: stretch;
+
+        flex-direction: column;
+
+    }
+
+
+    .projects-error-state button {
+
+        align-self: flex-start;
+
+    }
+
+
+    .projects-pagination {
+
+        gap: 12px;
+
+        margin-top: 26px;
+
+        padding-top: 20px;
+
+    }
+
+
+    .pagination-btn {
+
+        min-width: 95px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   SMALL MOBILE
+========================================================== */
+
+@media (max-width: 480px) {
+
+    .dashboard-projects-page {
+
+        padding: 32px 14px 50px;
+
+    }
+
+
+    .dashboard-projects-header {
+
+        margin-bottom: 30px;
+
+    }
+
+
+    .dashboard-projects-header h1 {
+
+        font-size: 25px;
+
+    }
+
+
+    .dashboard-projects-header p {
+
+        font-size: 12px;
+
+    }
+
+
+    .dashboard-projects-page form h2,
+    .project-image-section h2 {
+
+        margin-top: 26px;
+
+        font-size: 17px;
+
+    }
+
+
+    .dashboard-projects-page form > input[type="text"] {
+
+        height: 45px;
+
+        font-size: 13px;
+
+    }
+
+
+    .dashboard-projects-page form > textarea {
+
+        min-height: 110px;
+
+        font-size: 13px;
+
+    }
+
+
+    .dashboard-project-card-image {
+
+        height: 205px;
+
+    }
+
+
+    .dashboard-project-card-header {
+
+        align-items: flex-start;
+
+    }
+
+
+    .dashboard-project-card-header h3 {
+
+        font-size: 15px;
+
+    }
+
+
+    .dashboard-project-card-header p {
+
+        font-size: 11px;
+
+    }
+
+
+    .dashboard-project-card-details {
+
+        gap: 9px;
+
+    }
+
+
+    .dashboard-project-card-details > div {
+
+        gap: 10px;
+
+    }
+
+
+    .dashboard-project-card-details strong {
+
+        max-width: 65%;
+
+        font-size: 11px;
+
+    }
+
+
+    .dashboard-project-actions {
+
+        flex-direction: column;
+
+    }
+
+
+    .edit-project-btn,
+    .delete-project-btn {
+
+        width: 100%;
+
+        min-height: 40px;
+
+    }
+
+
+    .image-preview-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+
+    }
+
+
+    .image-preview-card img {
+
+        height: 120px;
+
+    }
+
+
+    .hero-image-preview img {
+
+        height: 220px;
+
+    }
+
+
+    .image-preview-info {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .projects-pagination {
+
+        gap: 8px;
+
+        margin-top: 24px;
+
+        padding-top: 18px;
+
+    }
+
+
+    .pagination-btn {
+
+        min-width: 88px;
+
+        height: 40px;
+
+        padding: 0 8px;
+
+        font-size: 11px;
+
+    }
+
+
+    .pagination-info {
+
+        font-size: 11px;
+
+    }
+
+}

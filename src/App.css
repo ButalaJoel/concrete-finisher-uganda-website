@@ -2394,3 +2394,93 @@ FAQ*/
     cursor:pointer;
 
 }
+
+/* ==========================================================
+   PROJECT PAGINATION
+   ========================================================== */
+
+.projects-pagination {
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 40px auto 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+}
+
+.projects-pagination button {
+    min-width: 42px;
+    height: 42px;
+
+    padding: 0 14px;
+
+    border: 1px solid #d8d8d8;
+    border-radius: 6px;
+
+    background: #ffffff;
+    color: #222222;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+
+/* Hover */
+
+.projects-pagination button:hover:not(:disabled) {
+    background: #c18a52;
+    border-color: #c18a52;
+    color: #ffffff;
+}
+
+
+/* Active page */
+
+.projects-pagination button.active {
+    background: #c18a52;
+    border-color: #c18a52;
+    color: #ffffff;
+}
+
+
+/* Disabled Previous / Next */
+
+.projects-pagination button:disabled {
+    background: #f2f2f2;
+    border-color: #dddddd;
+    color: #aaaaaa;
+
+    cursor: not-allowed;
+}
+
+
+/* ==========================================================
+   MOBILE PAGINATION
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    .projects-pagination {
+        margin-top: 30px;
+        gap: 5px;
+    }
+
+    .projects-pagination button {
+        min-width: 36px;
+        height: 36px;
+
+        padding: 0 9px;
+
+        font-size: 12px;
+    }
+
+}

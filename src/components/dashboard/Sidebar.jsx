@@ -10,14 +10,21 @@
 // RESPONSIBILITIES:
 // • Dashboard Menu
 // • Logo
+// • Responsive Mobile Navigation
+// • Close Mobile Sidebar
 // • Future Navigation
 //
 // AUTHOR:
 // Joel Butala
 // ======================================================
+
+
+import { NavLink } from "react-router-dom";
+
 import logo from "../../assets/logo.png";
 
 import "../../styles/dashboard/Sidebar.css";
+
 
 import {
 
@@ -26,98 +33,223 @@ import {
     FolderKanban,
     BarChart3,
     Settings,
-    LogOut
+    LogOut,
+    Bell,
+    UserCircle,
+    X
 
 } from "lucide-react";
 
 
-
+// ======================================================
+// DASHBOARD MENU ITEMS
+// ======================================================
 
 const menuItems = [
 
     {
         title: "Dashboard",
-        icon: LayoutDashboard
+        icon: LayoutDashboard,
+        path: "/dashboard"
     },
 
     {
         title: "Quotations",
-        icon: FileText
+        icon: FileText,
+        path: "/dashboard/quotations"
     },
 
     {
         title: "Projects",
-        icon: FolderKanban
+        icon: FolderKanban,
+        path: "/dashboard/projects"
     },
 
     {
         title: "Reports",
-        icon: BarChart3
+        icon: BarChart3,
+        path: "/dashboard/reports"
     },
 
     {
         title: "Settings",
-        icon: Settings
+        icon: Settings,
+        path: "/dashboard/settings"
     }
 
 ];
 
-function Sidebar() {
+
+// ======================================================
+// SIDEBAR COMPONENT
+// ======================================================
+
+function Sidebar({
+    isOpen,
+    closeSidebar,
+    newQuotationCount
+}) {
 
     return (
 
-        <aside className="sidebar">
+        <>
 
-            <div className="sidebar-logo">
+            {/* =========================================
+                MOBILE OVERLAY
+            ========================================= */}
 
-    <img
-        src={logo}
-        alt="Concrete Finisher Uganda"
-    />
+            <div
+                className={`sidebar-overlay ${isOpen ? "show" : ""}`}
+                onClick={closeSidebar}
+            ></div>
 
-</div>
-            <nav>
 
-                <ul>
+            {/* =========================================
+                SIDEBAR
+            ========================================= */}
 
-                    {menuItems.map((item) => {
+            <aside
+                className={`sidebar ${isOpen ? "sidebar-open" : ""}`}
+            >
 
-                        const Icon = item.icon;
 
-                        return (
+                {/* =====================================
+                    MOBILE CLOSE BUTTON
+                ===================================== */}
 
-                            <li
-                            key={item.title}
-                            className={item.title === "Dashboard" ? "active" : ""}
-                            >
+                <button
+                    className="sidebar-close"
+                    onClick={closeSidebar}
+                    aria-label="Close dashboard menu"
+                >
 
-                                <Icon size={20} />
-
-                                <span>{item.title}</span>
-
-                            </li>
-
-                        );
-
-                    })}
-
-                </ul>
-
-            </nav>
-
-            <div className="sidebar-footer">
-
-                <button>
-
-                    <LogOut size={20} />
-
-                    Logout
+                    <X size={24} />
 
                 </button>
 
-            </div>
 
-        </aside>
+                {/* =====================================
+                    LOGO
+                ===================================== */}
+
+                <div className="sidebar-logo">
+
+                    <img
+                        src={logo}
+                        alt="Concrete Finisher Uganda"
+                    />
+
+                </div>
+
+
+                {/* =====================================
+                    NAVIGATION
+                ===================================== */}
+
+                <nav>
+
+                    <ul>
+
+                        {menuItems.map((item) => {
+
+                            const Icon = item.icon;
+
+                            return (
+
+                                <li key={item.title}>
+
+               <NavLink
+                    to={item.path}
+
+                    end={item.path === "/dashboard"}
+
+                    className={({ isActive }) =>
+                    isActive ? "active" : ""
+                 }
+
+                onClick={closeSidebar}
+               >
+
+                <Icon size={20} />
+
+                <span>
+                {item.title}
+                </span>
+
+                </NavLink>
+
+                </li>
+
+                            );
+
+                        })}
+
+                    </ul>
+
+                </nav>
+
+
+                {/* =====================================
+                MOBILE ACCOUNT ACTIONS
+                ===================================== */}
+
+            <div className="sidebar-mobile-actions">
+
+            <button className="sidebar-mobile-action">
+
+            <Bell size={20} />
+
+            <span>Notifications</span>
+
+           {newQuotationCount > 0 && (
+
+    <span className="sidebar-notification-badge">
+        {newQuotationCount}
+    </span>
+
+)}
+            </button>
+
+
+           <button className="sidebar-mobile-action">
+
+           <UserCircle size={22} />
+
+          <div className="sidebar-user-info">
+
+            <span className="sidebar-user-name">
+                Erisha
+            </span>
+
+            <small>
+                Administrator
+            </small>
+
+           </div>
+
+           </button>
+
+           </div>
+
+
+          {/* =====================================
+          FOOTER
+          ===================================== */}
+
+        <div className="sidebar-footer">
+
+        <button>
+
+        <LogOut size={20} />
+
+        Logout
+
+    </button>
+
+    </div>
+            </aside>
+
+        </>
 
     );
 

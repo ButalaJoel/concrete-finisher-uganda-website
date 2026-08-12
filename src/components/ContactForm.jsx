@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 function ContactForm() {
+
+
   const [formData, setFormData] = useState({
   fullName: "",
   company: "",
@@ -13,6 +15,8 @@ function ContactForm() {
   preferredStartDate: "",
   projectDescription: "",
 });
+
+ const [isSubmitting, setIsSubmitting] = useState(false);
 
 console.table(formData);
 
@@ -27,37 +31,186 @@ const handleChange = (event) => {
   };
   
 
-  const handleSubmit = async (event) => {
+  // ======================================================
+// HANDLE FORM SUBMISSION
+//
+// Sends quotation form data to the backend API.
+//
+// RESPONSIBILITIES:
+// • Prevent normal browser form refresh
+// • Prevent duplicate submissions
+// • Send quotation data to Express API
+// • Check whether request succeeded
+// • Convert server response to JavaScript
+// • Handle submission errors
+// • Reset submission state
+// ======================================================
+
+const handleSubmit = async (event) => {
+
+
+  // ==================================================
+  // PREVENT DEFAULT FORM BEHAVIOUR
+  //
+  // Normally submitting an HTML form refreshes
+  // the browser page.
+  //
+  // preventDefault() stops that behaviour so React
+  // can handle the submission instead.
+  // ==================================================
 
   event.preventDefault();
 
+
+  // ==================================================
+  // PREVENT DUPLICATE SUBMISSION
+  //
+  // If a quotation is already being submitted,
+  // stop the function immediately.
+  //
+  // This prevents another POST request from being
+  // sent when the user clicks the button again.
+  // ==================================================
+
+  if (isSubmitting) {
+
+    return;
+
+  }
+
+
+  // ==================================================
+  // START SUBMISSION
+  //
+  // Tell React that the form is currently submitting.
+  //
+  // The submit button will use this state to become
+  // disabled until the request finishes.
+  // ==================================================
+
+  setIsSubmitting(true);
+
+
   try {
 
-  const response = await fetch(
-    "http://localhost:5000/api/quotations",
-    {
-      method: "POST",
 
-      headers: {
-        "Content-Type": "application/json",
-      },
+    // ==================================================
+    // SEND QUOTATION TO BACKEND
+    //
+    // POST sends the formData object to our Express API.
+    //
+    // VITE_API_URL comes from our .env file.
+    // ==================================================
 
-      body: JSON.stringify(formData),
+    const response = await fetch(
+
+      `${import.meta.env.VITE_API_URL}/api/quotations`,
+
+      {
+
+        method: "POST",
+
+        headers: {
+
+          "Content-Type": "application/json",
+
+        },
+
+        body: JSON.stringify(formData),
+
+      }
+
+    );
+
+
+    // ==================================================
+    // CHECK SERVER RESPONSE
+    //
+    // response.ok tells us whether the HTTP request
+    // completed successfully.
+    //
+    // For example:
+    //
+    // 201 = quotation successfully created
+    // 400 = bad request
+    // 500 = server error
+    //
+    // If response.ok is false, throw an error and
+    // move execution into the catch block.
+    // ==================================================
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Failed to submit quotation."
+      );
+
     }
-  );
 
-  const data = await response.json();
 
-  console.log(data);
+    // ==================================================
+    // CONVERT RESPONSE FROM JSON
+    //
+    // The backend sends JSON.
+    //
+    // response.json() converts that JSON response
+    // into a JavaScript object that React can use.
+    //
+    // We only do this AFTER checking response.ok.
+    // ==================================================
 
-} catch (error) {
+    const data = await response.json();
 
-  console.error(error);
 
-}
+    // ==================================================
+    // SUCCESS
+    //
+    // For now we log the server response so we can
+    // confirm that the quotation was created.
+    // ==================================================
+
+    console.log(
+      "Quotation submitted successfully:",
+      data
+    );
+
+
+  } catch (error) {
+
+
+    // ==================================================
+    // HANDLE SUBMISSION ERROR
+    //
+    // This runs if:
+    // • The server cannot be reached
+    // • The POST request fails
+    // • response.ok is false
+    // ==================================================
+
+    console.error(
+      "Quotation submission error:",
+      error
+    );
+
+
+  } finally {
+
+
+    // ==================================================
+    // FINISH SUBMISSION
+    //
+    // finally runs whether the request succeeds
+    // OR fails.
+    //
+    // Setting isSubmitting back to false enables
+    // the submit button again.
+    // ==================================================
+
+    setIsSubmitting(false);
+
+  }
 
 };
-
 
   return (
     <section className="contact-form-section">
@@ -240,12 +393,15 @@ const handleChange = (event) => {
         </div>
 
         <button
-          type="submit"
-          className="contact-submit-btn"
-        >
-          REQUEST FREE QUOTATION
-        </button>
-
+  type="submit"
+  className="contact-submit-btn"
+  disabled={isSubmitting}
+>
+  {isSubmitting
+    ? "SUBMITTING..."
+    : "REQUEST FREE QUOTATION"
+  }
+</button>
       </form>
 
     </section>
