@@ -31,6 +31,10 @@ import {
     useState
 } from "react";
 
+import {
+    useSearchParams
+} from "react-router-dom";
+
 
 // ======================================================
 // API BASE URL
@@ -87,6 +91,22 @@ const emptyForm = {
 
 function DashboardProjects() {
 
+    // ==================================================
+    // SEARCH RESULT NAVIGATION
+    //
+    // Reads the project slug from the URL.
+    //
+    // Example:
+    //
+    // /dashboard/projects?project=office-epoxy-floor
+    // ==================================================
+
+    const [searchParams, setSearchParams] =
+        useSearchParams();
+
+
+    const searchedProjectSlug =
+        searchParams.get("project");
 
     // ==================================================
     // FORM STATE
@@ -376,16 +396,304 @@ function DashboardProjects() {
     };
 
 
-    // ==================================================
-    // LOAD PROJECTS WHEN PAGE OPENS
+        // ==================================================
+    // LOAD PROJECTS OR OPEN SEARCHED PROJECT
+    //
+    // Normal dashboard visit:
+    //
+    // Load page 1.
+    //
+    // Search navigation:
+    //
+    // Open the exact project from the URL.
     // ==================================================
 
     useEffect(() => {
 
+        if (searchedProjectSlug) {
+
+            openSearchedProject(
+                searchedProjectSlug
+            );
+
+            return;
+
+        }
+
+
         fetchProjects(1);
+
 
     }, []);
 
+    // ==================================================
+    // OPEN SEARCHED PROJECT
+    //
+    // When a project slug exists in the URL,
+    // fetch that exact project directly from the API.
+    //
+    // This works even if the project normally belongs
+    // to another pagination page.
+    // ==================================================
+
+    const openSearchedProject = async (
+        projectSlug
+    ) => {
+
+        try {
+
+            setProjectsLoading(true);
+
+            setProjectsError("");
+
+
+            // ==========================================
+            // FETCH EXACT PROJECT USING ITS SLUG
+            // ==========================================
+
+            const response =
+                await fetch(
+
+                    `${API_URL}/${encodeURIComponent(
+                        projectSlug
+                    )}`
+
+                );
+
+
+            const result =
+                await response.json();
+
+
+            // ==========================================
+            // HANDLE API ERROR
+            // ==========================================
+
+            if (!response.ok) {
+
+                throw new Error(
+
+                    result.message ||
+                    "Unable to open searched project."
+
+                );
+
+            }
+
+
+            const project =
+                result.data;
+
+
+            // ==========================================
+            // PROJECT NOT FOUND SAFETY CHECK
+            // ==========================================
+
+            if (!project) {
+
+                throw new Error(
+                    "Project not found."
+                );
+
+            }
+
+
+            // ==========================================
+            // OPEN EXISTING EDIT MODE
+            //
+            // The searched project is placed into the
+            // same edit workflow already used when the
+            // administrator clicks Edit.
+            // ==========================================
+
+            setEditingProject(
+                project
+            );
+
+
+            // ==========================================
+            // POPULATE FORM WITH PROJECT DATA
+            // ==========================================
+
+            setFormData({
+
+                title:
+                    project.title || "",
+
+                slug:
+                    project.slug || "",
+
+                category:
+                    project.category || "",
+
+                service:
+                    project.service || "",
+
+                client:
+                    project.client || "",
+
+                location:
+                    project.location || "",
+
+                industry:
+                    project.industry || "",
+
+                surfaceArea:
+                    project.surfaceArea || "",
+
+                completionTime:
+                    project.completionTime || "",
+
+                system:
+                    project.system || "",
+
+                status:
+                    project.status || "Pending",
+
+                projectValue:
+                    project.projectValue || "",
+
+                shortDescription:
+                    project.shortDescription || "",
+
+                overview:
+                    project.overview || "",
+
+                challenge:
+                    project.challenge || "",
+
+                solution:
+                    project.solution || "",
+
+            });
+
+
+            // ==========================================
+            // SHOW EXISTING IMAGES
+            //
+            // These are previews only. We are not
+            // re-uploading the existing images.
+            // ==========================================
+
+            setHeroPreview(
+
+                getImageUrl(
+                    project.heroImage
+                )
+
+            );
+
+
+            setBeforePreviews(
+
+                (project.beforeImages || []).map(
+                    (image) => ({
+
+                        existing: true,
+
+                        url:
+                            getImageUrl(image),
+
+                    })
+                )
+
+            );
+
+
+            setAfterPreviews(
+
+                (project.afterImages || []).map(
+                    (image) => ({
+
+                        existing: true,
+
+                        url:
+                            getImageUrl(image),
+
+                    })
+                )
+
+            );
+
+
+            // ==========================================
+            // CLEAR NEW FILE STATE
+            //
+            // We only want existing image previews here.
+            // ==========================================
+
+            setHeroImage(null);
+
+            setBeforeImages([]);
+
+            setAfterImages([]);
+
+
+            // ==========================================
+            // SCROLL TO PROJECT FORM
+            //
+            // Wait briefly for React to render edit mode,
+            // then move the administrator to the form.
+            // ==========================================
+
+            setTimeout(() => {
+
+                const formElement =
+                    document.querySelector(
+                        ".dashboard-project-form"
+                    );
+
+
+                if (formElement) {
+
+                    formElement.scrollIntoView({
+
+                        behavior: "smooth",
+
+                        block: "start",
+
+                    });
+
+                }
+
+            }, 100);
+
+
+            // ==========================================
+            // REMOVE SEARCH PARAMETER
+            //
+            // This prevents the project from reopening
+            // again if the page state updates.
+            // ==========================================
+
+            setSearchParams({});
+
+
+        } catch (error) {
+
+            console.error(
+
+                "Open searched project error:",
+
+                error
+
+            );
+
+
+            setProjectsError(
+
+                error.message ||
+                "Unable to open searched project."
+
+            );
+
+        } finally {
+
+            setProjectsLoading(false);
+
+        }
+
+    };
 
     // ==================================================
     // HANDLE TEXT INPUTS

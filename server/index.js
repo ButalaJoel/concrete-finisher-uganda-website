@@ -11,25 +11,58 @@
 // • Connect to MongoDB
 // • Configure middleware
 // • Register API routes
-// • Serve uploaded project images
+// • Serve uploaded project and profile images
 // • Start Express server
 //
 // AUTHOR:
 // Joel Butala
 // ======================================================
 
+
+// ======================================================
+// IMPORTS
+// ======================================================
+
+
+
 import path from "path";
-import { fileURLToPath } from "url";
+
+import {
+    fileURLToPath
+} from "url";
 
 import express from "express";
+
 import cors from "cors";
 
+
+// ======================================================
+// DATABASE
+// ======================================================
+import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 
+
+// ======================================================
+// ROUTES
+// ======================================================
+
 import quotationRoutes from "./routes/quotationRoutes.js";
+
 import projectRoutes from "./routes/projectRoutes.js";
 
+import reportRoutes from "./routes/reportRoutes.js";
 
+import adminRoutes from "./routes/adminRoutes.js";
+
+import companyRoutes from "./routes/companyRoutes.js";
+
+import systemPreferenceRoutes from "./routes/systemPreferenceRoutes.js";
+
+import authRoutes from "./routes/authRoutes.js";
+
+
+dotenv.config();
 // ======================================================
 // CONNECT TO DATABASE
 // ======================================================
@@ -48,32 +81,51 @@ const app = express();
 // FILE PATH SETUP
 //
 // Needed because this project uses ES modules.
+//
 // These variables allow Express to locate the
 // server/uploads folder correctly.
 // ======================================================
 
-const __filename = fileURLToPath(import.meta.url);
+const __filename =
+    fileURLToPath(
+        import.meta.url
+    );
 
-const __dirname = path.dirname(__filename);
+const __dirname =
+    path.dirname(
+        __filename
+    );
 
 
 // ======================================================
 // SERVE UPLOADED FILES
 //
-// Browser URL:
+// Browser URLs:
 //
 // /uploads/projects/image.jpg
 //
-// Physical location:
+// /uploads/profiles/profile-image.jpg
+//
+// Physical locations:
 //
 // server/uploads/projects/image.jpg
+//
+// server/uploads/profiles/profile-image.jpg
 // ======================================================
 
 app.use(
+
     "/uploads",
+
     express.static(
-        path.join(__dirname, "uploads")
+
+        path.join(
+            __dirname,
+            "uploads"
+        )
+
     )
+
 );
 
 
@@ -81,9 +133,13 @@ app.use(
 // MIDDLEWARE
 // ======================================================
 
-app.use(cors());
+app.use(
+    cors()
+);
 
-app.use(express.json());
+app.use(
+    express.json()
+);
 
 
 // ======================================================
@@ -91,55 +147,174 @@ app.use(express.json());
 // ======================================================
 
 
-// ------------------------------------------
+// ======================================================
 // QUOTATION ROUTES
 //
 // Base URL:
+//
 // /api/quotations
-// ------------------------------------------
+// ======================================================
 
 app.use(
+
     "/api/quotations",
+
     quotationRoutes
+
 );
 
 
-// ------------------------------------------
+// ======================================================
 // PROJECT ROUTES
 //
 // Base URL:
+//
 // /api/projects
-// ------------------------------------------
+// ======================================================
 
 app.use(
+
     "/api/projects",
+
     projectRoutes
+
 );
+
+
+// ======================================================
+// REPORT ROUTES
+//
+// Base URL:
+//
+// /api/reports
+// ======================================================
+
+app.use(
+
+    "/api/reports",
+
+    reportRoutes
+
+);
+
+
+// ======================================================
+// ADMINISTRATOR ROUTES
+//
+// Base URL:
+//
+// /api/admin
+//
+// Available routes:
+//
+// GET /api/admin/profile
+//
+// PUT /api/admin/profile
+// ======================================================
+
+app.use(
+
+    "/api/admin",
+
+    adminRoutes
+
+);
+
+
+// ======================================================
+// COMPANY ROUTES
+//
+// Base URL:
+//
+// /api/company
+//
+// Available routes:
+//
+// GET /api/company/profile
+//
+// PUT /api/company/profile
+// ======================================================
+
+app.use(
+    "/api/company",
+    companyRoutes
+);
+
+// ======================================================
+// SYSTEM PREFERENCE ROUTES
+//
+// Base URL:
+//
+// /api/preferences
+//
+// Available routes:
+//
+// GET /api/preferences
+// PUT /api/preferences
+// ======================================================
+
+app.use(
+    "/api/preferences",
+    systemPreferenceRoutes
+);
+
+// ======================================================
+// AUTHENTICATION ROUTES
+//
+// Base URL:
+//
+// /api/auth
+//
+// Available routes:
+//
+// POST /api/auth/login
+// PUT /api/auth/change-password
+// ======================================================
+
+app.use(
+    "/api/auth",
+    authRoutes
+);
+
+
 
 
 // ======================================================
 // ROOT ROUTE
 // ======================================================
 
-app.get("/", (req, res) => {
+app.get(
 
-    res.send(
-        "Concrete Finisher Backend is running."
-    );
+    "/",
 
-});
+    (req, res) => {
+
+        res.send(
+            "Concrete Finisher Backend is running."
+        );
+
+    }
+
+);
 
 
 // ======================================================
 // START SERVER
 // ======================================================
 
-const PORT = 5000;
+const PORT =
+    process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+app.listen(
 
-    console.log(
-        `Server running on port ${PORT}`
-    );
+    PORT,
 
-});
+    () => {
+
+        console.log(
+            `Server running on port ${PORT}`
+        );
+
+    }
+
+);

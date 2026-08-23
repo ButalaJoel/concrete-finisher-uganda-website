@@ -10,7 +10,7 @@ function CompanyStats() {
       </div>
 
       <div className="stat-card">
-        <h2>5+</h2>
+        <h2>8+</h2>
         <p>Years Experience</p>
       </div>
 

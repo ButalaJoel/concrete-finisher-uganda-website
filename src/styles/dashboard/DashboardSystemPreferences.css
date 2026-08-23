@@ -1,0 +1,924 @@
+/* ======================================================
+   FILE: DashboardSystemPreferences.css
+
+   PROJECT:
+   Concrete Finisher Uganda Website
+
+   PURPOSE:
+   Styling for the System Preferences dashboard page.
+
+   RESPONSIVE:
+   • Desktop
+   • Tablet
+   • Mobile
+====================================================== */
+
+
+/* ======================================================
+   PAGE
+====================================================== */
+
+.system-preferences-page {
+
+    width: 100%;
+
+    padding:
+
+        32px
+        38px
+        50px;
+
+}
+
+
+/* ======================================================
+   PAGE HEADER
+====================================================== */
+
+.system-preferences-header {
+
+    margin-bottom:
+
+        28px;
+
+}
+
+
+.preferences-back-button {
+
+    display:
+
+        inline-flex;
+
+    align-items:
+
+        center;
+
+    gap:
+
+        8px;
+
+    padding:
+
+        10px
+        16px;
+
+    margin-bottom:
+
+        20px;
+
+    border:
+
+        1px solid
+        #d8cfc4;
+
+    border-radius:
+
+        10px;
+
+    background:
+
+        #ffffff;
+
+    color:
+
+        #9a6228;
+
+    font-size:
+
+        14px;
+
+    font-weight:
+
+        600;
+
+    cursor:
+
+        pointer;
+
+    transition:
+
+        0.2s ease;
+
+}
+
+
+.preferences-back-button:hover {
+
+    background:
+
+        #f7f2ec;
+
+    border-color:
+
+        #b8732d;
+
+}
+
+
+.system-preferences-title h1 {
+
+    margin:
+
+        0;
+
+    color:
+
+        #1f2d3d;
+
+    font-size:
+
+        32px;
+
+    font-weight:
+
+        700;
+
+    line-height:
+
+        1.2;
+
+}
+
+
+.system-preferences-title p {
+
+    margin:
+
+        6px
+        0
+        0;
+
+    color:
+
+        #65707c;
+
+    font-size:
+
+        15px;
+
+}
+
+
+/* ======================================================
+   MAIN CARD
+====================================================== */
+
+.system-preferences-card {
+
+    width:
+
+        100%;
+
+    max-width:
+
+        900px;
+
+    padding:
+
+        28px;
+
+    background:
+
+        #ffffff;
+
+    border:
+
+        1px solid
+        #ded6cc;
+
+    border-radius:
+
+        18px;
+
+    box-shadow:
+
+        0
+        8px
+        25px
+        rgba(0, 0, 0, 0.04);
+
+}
+
+
+/* ======================================================
+   PREFERENCES SECTION
+====================================================== */
+
+.preferences-section {
+
+    width:
+
+        100%;
+
+}
+
+
+/* ======================================================
+   SECTION HEADER
+====================================================== */
+
+.preferences-section-header {
+
+    display:
+
+        flex;
+
+    align-items:
+
+        center;
+
+    gap:
+
+        18px;
+
+    margin-bottom:
+
+        26px;
+
+}
+
+
+.preferences-section-icon {
+
+    width:
+
+        58px;
+
+    height:
+
+        58px;
+
+    display:
+
+        flex;
+
+    align-items:
+
+        center;
+
+    justify-content:
+
+        center;
+
+    flex-shrink:
+
+        0;
+
+    border-radius:
+
+        16px;
+
+    background:
+
+        #f4f0eb;
+
+    color:
+
+        #a96828;
+
+}
+
+
+.preferences-section-header h2 {
+
+    margin:
+
+        0;
+
+    color:
+
+        #2d3b4c;
+
+    font-size:
+
+        21px;
+
+    font-weight:
+
+        700;
+
+}
+
+
+.preferences-section-header p {
+
+    margin:
+
+        5px
+        0
+        0;
+
+    color:
+
+        #65707c;
+
+    font-size:
+
+        14px;
+
+    line-height:
+
+        1.5;
+
+}
+
+
+/* ======================================================
+   FORM GRID
+====================================================== */
+
+.preferences-form-grid {
+
+    display:
+
+        grid;
+
+    grid-template-columns:
+
+        repeat(2, minmax(0, 1fr));
+
+    gap:
+
+        22px
+        18px;
+
+}
+
+
+/* ======================================================
+   FORM GROUP
+====================================================== */
+
+.preferences-form-group {
+
+    display:
+
+        flex;
+
+    flex-direction:
+
+        column;
+
+    gap:
+
+        8px;
+
+}
+
+
+.preferences-form-group label {
+
+    color:
+
+        #344252;
+
+    font-size:
+
+        14px;
+
+    font-weight:
+
+        600;
+
+}
+
+
+/* ======================================================
+   INPUTS AND SELECTS
+====================================================== */
+
+.preferences-form-group input,
+
+.preferences-form-group select {
+
+    width:
+
+        100%;
+
+    height:
+
+        46px;
+
+    padding:
+
+        0
+        14px;
+
+    border:
+
+        1px solid
+        #d6d0c8;
+
+    border-radius:
+
+        11px;
+
+    outline:
+
+        none;
+
+    background:
+
+        #ffffff;
+
+    color:
+
+        #344252;
+
+    font-family:
+
+        inherit;
+
+    font-size:
+
+        14px;
+
+    transition:
+
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.preferences-form-group input::placeholder {
+
+    color:
+
+        #9aa3ad;
+
+}
+
+
+.preferences-form-group input:focus,
+
+.preferences-form-group select:focus {
+
+    border-color:
+
+        #b8732d;
+
+    box-shadow:
+
+        0
+        0
+        0
+        3px
+        rgba(184, 115, 45, 0.10);
+
+}
+
+
+/* ======================================================
+   DIVIDER
+====================================================== */
+
+.system-preferences-divider {
+
+    width:
+
+        100%;
+
+    height:
+
+        1px;
+
+    margin:
+
+        30px
+        0;
+
+    background:
+
+        #e4ddd5;
+
+}
+
+
+/* ======================================================
+   FORM ACTIONS
+====================================================== */
+
+.system-preferences-actions {
+
+    display:
+
+        flex;
+
+    justify-content:
+
+        flex-end;
+
+    align-items:
+
+        center;
+
+    gap:
+
+        12px;
+
+    margin-top:
+
+        30px;
+
+}
+
+
+/* ======================================================
+   CANCEL BUTTON
+====================================================== */
+
+.cancel-preferences-button {
+
+    min-width:
+
+        110px;
+
+    height:
+
+        44px;
+
+    padding:
+
+        0
+        18px;
+
+    border:
+
+        1px solid
+        #d6d0c8;
+
+    border-radius:
+
+        10px;
+
+    background:
+
+        #ffffff;
+
+    color:
+
+        #52606d;
+
+    font-size:
+
+        14px;
+
+    font-weight:
+
+        600;
+
+    cursor:
+
+        pointer;
+
+    transition:
+
+        0.2s ease;
+
+}
+
+
+.cancel-preferences-button:hover {
+
+    background:
+
+        #f7f7f7;
+
+    border-color:
+
+        #b7b0a8;
+
+}
+
+
+/* ======================================================
+   SAVE BUTTON
+====================================================== */
+
+.save-preferences-button {
+
+    min-width:
+
+        155px;
+
+    height:
+
+        44px;
+
+    padding:
+
+        0
+        20px;
+
+    border:
+
+        none;
+
+    border-radius:
+
+        10px;
+
+    background:
+
+        #b8732d;
+
+    color:
+
+        #ffffff;
+
+    font-size:
+
+        14px;
+
+    font-weight:
+
+        600;
+
+    cursor:
+
+        pointer;
+
+    transition:
+
+        0.2s ease;
+
+}
+
+
+.save-preferences-button:hover {
+
+    background:
+
+        #9f6225;
+
+    transform:
+
+        translateY(-1px);
+
+}
+
+
+.save-preferences-button:active {
+
+    transform:
+
+        translateY(0);
+
+}
+
+
+/* ======================================================
+   TABLET
+====================================================== */
+
+@media
+(max-width: 1024px) {
+
+    .system-preferences-page {
+
+        padding:
+
+            28px
+            28px
+            45px;
+
+    }
+
+
+    .system-preferences-card {
+
+        max-width:
+
+            100%;
+
+    }
+
+}
+
+
+/* ======================================================
+   SMALL TABLET
+====================================================== */
+
+@media
+(max-width: 768px) {
+
+    .system-preferences-page {
+
+        padding:
+
+            24px;
+
+    }
+
+
+    .system-preferences-title h1 {
+
+        font-size:
+
+            28px;
+
+    }
+
+
+    .system-preferences-card {
+
+        padding:
+
+            24px;
+
+        border-radius:
+
+            16px;
+
+    }
+
+
+    .preferences-form-grid {
+
+        grid-template-columns:
+
+            1fr;
+
+        gap:
+
+            20px;
+
+    }
+
+}
+
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
+@media
+(max-width: 480px) {
+
+    .system-preferences-page {
+
+        padding:
+
+            18px
+            14px
+            35px;
+
+    }
+
+
+    .preferences-back-button {
+
+        width:
+
+            100%;
+
+        justify-content:
+
+            center;
+
+        margin-bottom:
+
+            18px;
+
+    }
+
+
+    .system-preferences-title h1 {
+
+        font-size:
+
+            25px;
+
+    }
+
+
+    .system-preferences-title p {
+
+        font-size:
+
+            14px;
+
+        line-height:
+
+            1.5;
+
+    }
+
+
+    .system-preferences-card {
+
+        padding:
+
+            18px;
+
+        border-radius:
+
+            14px;
+
+    }
+
+
+    .preferences-section-header {
+
+        align-items:
+
+            flex-start;
+
+        gap:
+
+            13px;
+
+        margin-bottom:
+
+            22px;
+
+    }
+
+
+    .preferences-section-icon {
+
+        width:
+
+            48px;
+
+        height:
+
+            48px;
+
+        border-radius:
+
+            13px;
+
+    }
+
+
+    .preferences-section-header h2 {
+
+        font-size:
+
+            18px;
+
+    }
+
+
+    .preferences-section-header p {
+
+        font-size:
+
+            13px;
+
+    }
+
+
+    .preferences-form-group input,
+
+    .preferences-form-group select {
+
+        height:
+
+            44px;
+
+    }
+
+
+    .system-preferences-divider {
+
+        margin:
+
+            25px
+            0;
+
+    }
+
+
+    .system-preferences-actions {
+
+        flex-direction:
+
+            column-reverse;
+
+        align-items:
+
+            stretch;
+
+        margin-top:
+
+            25px;
+
+    }
+
+
+    .cancel-preferences-button,
+
+    .save-preferences-button {
+
+        width:
+
+            100%;
+
+    }
+
+}

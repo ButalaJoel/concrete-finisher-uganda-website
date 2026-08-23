@@ -10,6 +10,7 @@ import waterproofingImg from "../assets/services/waterproofing.jpg";
 import grindingImg from "../assets/services/grinding.jpg";
 
 import { ArrowRight } from "lucide-react";
+import "../styles/ServicesSection.css";
 
 
 function ServicesSection() {

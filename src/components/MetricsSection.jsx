@@ -7,6 +7,8 @@ import {
   Wrench
 } from "lucide-react";
 
+import "../styles/MetricsSection.css";
+
 function MetricsSection() {
   return (
     <>
@@ -25,7 +27,7 @@ function MetricsSection() {
     <UserRound size={42} strokeWidth={1.7} />
 
     <div>
-      <h3>5+</h3>
+      <h3>8+</h3>
       <p>Years Experience</p>
     </div>
   </div>

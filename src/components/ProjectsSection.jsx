@@ -66,7 +66,7 @@ function ProjectsSection() {
 >
       <img src={drivewayImg} alt="" />
       <div className="project-overlay">
-        <h4>RESIDENTIAL DRIVEWAY</h4>
+        <h4>DECORATIVE INTERIOR</h4>
         <p>CONCRETE STAMPING</p>
       </div>
    </Link>

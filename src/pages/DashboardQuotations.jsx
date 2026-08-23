@@ -12,6 +12,8 @@
 // • Display shared quotation data
 // • Update quotation status
 // • Paginate quotation cards
+// • Open searched quotation directly
+// • Automatically switch to the correct page
 //
 // DATA SOURCE:
 // DashboardLayout → Outlet Context
@@ -20,21 +22,39 @@
 // Joel Butala
 // ======================================================
 
-import { useEffect, useState } from "react";
 
-import { useOutletContext } from "react-router-dom";
+// ======================================================
+// IMPORTS
+// ======================================================
+
+import {
+    useEffect,
+    useState
+} from "react";
+
+
+import {
+    useLocation,
+    useOutletContext
+} from "react-router-dom";
+
 
 import "../styles/dashboard/Quotations.css";
 
 
+// ======================================================
+// DASHBOARD QUOTATIONS COMPONENT
+// ======================================================
+
 function DashboardQuotations() {
+
 
     // ==================================================
     // SHARED QUOTATION DATA
     //
     // DashboardLayout already fetches quotations.
-    // We consume that data here instead of making
-    // another GET request.
+    // We use that shared data instead of making another
+    // GET request.
     // ==================================================
 
     const {
@@ -49,10 +69,70 @@ function DashboardQuotations() {
 
 
     // ==================================================
+    // CURRENT URL LOCATION
+    //
+    // Allows us to read:
+    //
+    // ?quotation=QUOTATION_ID
+    //
+    // from the URL.
+    // ==================================================
+
+    const location =
+        useLocation();
+
+
+    // ==================================================
+    // GET SEARCHED QUOTATION ID
+    //
+    // Example URL:
+    //
+    // /dashboard/quotations?quotation=123456
+    //
+    // URLSearchParams reads "quotation" and gives us
+    // the quotation ID.
+    // ==================================================
+
+    const searchParams =
+        new URLSearchParams(
+            location.search
+        );
+
+
+    const searchedQuotationId =
+        searchParams.get(
+            "quotation"
+        );
+
+
+    // ==================================================
+    // HIGHLIGHTED QUOTATION
+    //
+    // Stores the quotation currently opened from
+    // the global dashboard search.
+    // ==================================================
+
+    const [
+
+        highlightedQuotationId,
+
+        setHighlightedQuotationId
+
+    ] = useState(null);
+
+
+    // ==================================================
     // PAGINATION
     // ==================================================
 
-    const [currentPage, setCurrentPage] = useState(1);
+    const [
+
+        currentPage,
+
+        setCurrentPage
+
+    ] = useState(1);
+
 
     const quotationsPerPage = 2;
 
@@ -61,9 +141,160 @@ function DashboardQuotations() {
     // CALCULATE TOTAL PAGES
     // ==================================================
 
-    const totalPages = Math.ceil(
-        quotations.length / quotationsPerPage
-    );
+    const totalPages =
+        Math.ceil(
+
+            quotations.length /
+            quotationsPerPage
+
+        );
+
+
+    // ==================================================
+    // OPEN SEARCHED QUOTATION
+    //
+    // When a quotation is selected from Header search:
+    //
+    // 1. Read its ID from the URL
+    // 2. Find it in the complete quotations array
+    // 3. Find its position/index
+    // 4. Calculate its pagination page
+    // 5. Automatically switch to that page
+    // 6. Highlight the quotation
+    // ==================================================
+
+    useEffect(() => {
+
+
+        // If no quotation was selected from search,
+        // there is nothing to open.
+
+        if (
+
+            !searchedQuotationId ||
+
+            quotations.length === 0
+
+        ) {
+
+            return;
+
+        }
+
+
+        // ==============================================
+        // FIND QUOTATION POSITION
+        //
+        // findIndex searches the complete quotations
+        // array, not only the currently displayed page.
+        // ==============================================
+
+        const quotationIndex =
+            quotations.findIndex(
+
+                (quotation) =>
+
+                    quotation._id ===
+                    searchedQuotationId
+
+            );
+
+
+        // ==============================================
+        // QUOTATION NOT FOUND
+        // ==============================================
+
+        if (
+            quotationIndex === -1
+        ) {
+
+            return;
+
+        }
+
+
+        // ==============================================
+        // CALCULATE CORRECT PAGE
+        //
+        // With 2 quotations per page:
+        //
+        // Index 0 → Page 1
+        // Index 1 → Page 1
+        // Index 2 → Page 2
+        // Index 3 → Page 2
+        // Index 4 → Page 3
+        // ==============================================
+
+        const quotationPage =
+
+            Math.floor(
+
+                quotationIndex /
+                quotationsPerPage
+
+            ) + 1;
+
+
+        // ==============================================
+        // SWITCH TO CORRECT PAGE
+        // ==============================================
+
+        setCurrentPage(
+            quotationPage
+        );
+
+
+        // ==============================================
+        // HIGHLIGHT SEARCHED QUOTATION
+        // ==============================================
+
+        setHighlightedQuotationId(
+            searchedQuotationId
+        );
+
+
+        // ==============================================
+        // REMOVE HIGHLIGHT AFTER 3 SECONDS
+        // ==============================================
+
+        const timer =
+            setTimeout(
+
+                () => {
+
+                    setHighlightedQuotationId(
+                        null
+                    );
+
+                },
+
+                3000
+
+            );
+
+
+        // ==============================================
+        // CLEANUP
+        //
+        // Clears the timer if the component unmounts
+        // or the searched quotation changes.
+        // ==============================================
+
+        return () => {
+
+            clearTimeout(
+                timer
+            );
+
+        };
+
+
+    }, [
+
+        searchedQuotationId,
+        quotations
+
+    ]);
 
 
     // ==================================================
@@ -71,75 +302,112 @@ function DashboardQuotations() {
     // ==================================================
 
     const startIndex =
-        (currentPage - 1) * quotationsPerPage;
+
+        (currentPage - 1) *
+        quotationsPerPage;
+
 
     const endIndex =
-        startIndex + quotationsPerPage;
+
+        startIndex +
+        quotationsPerPage;
+
 
     const currentQuotations =
-        quotations.slice(startIndex, endIndex);
+
+        quotations.slice(
+
+            startIndex,
+            endIndex
+
+        );
 
 
     // ==================================================
     // KEEP PAGE VALID
     //
-    // If a quotation is removed or the total number
-    // of quotations changes, prevent the user from
-    // staying on a page that no longer exists.
+    // Prevents staying on a page that no longer exists.
     // ==================================================
 
     useEffect(() => {
 
         if (
+
             totalPages > 0 &&
+
             currentPage > totalPages
+
         ) {
 
-            setCurrentPage(totalPages);
+            setCurrentPage(
+                totalPages
+            );
 
         }
 
-    }, [currentPage, totalPages]);
+    }, [
+
+        currentPage,
+        totalPages
+
+    ]);
 
 
     // ==================================================
     // UPDATE QUOTATION STATUS
     //
-    // Sends PATCH request to the backend.
+    // Sends PATCH request to backend.
     // ==================================================
 
     const updateQuotationStatus = async (
+
         quotationId,
         newStatus
+
     ) => {
 
         try {
 
-            const response = await fetch(
 
-                `${import.meta.env.VITE_API_URL}/api/quotations/${quotationId}`,
+            const response =
+                await fetch(
 
-                {
+                    `${import.meta.env.VITE_API_URL}/api/quotations/${quotationId}`,
 
-                    method: "PATCH",
+                    {
 
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                        method: "PATCH",
 
-                    body: JSON.stringify({
-                        status: newStatus,
-                    }),
+                        headers: {
 
-                }
+                            "Content-Type":
+                                "application/json",
 
-            );
+                        },
 
+                        body:
+                            JSON.stringify({
+
+                                status:
+                                    newStatus,
+
+                            }),
+
+                    }
+
+                );
+
+
+            // ==========================================
+            // CHECK RESPONSE
+            // ==========================================
 
             if (!response.ok) {
 
                 throw new Error(
+
                     "Failed to update quotation status."
+
                 );
 
             }
@@ -151,19 +419,26 @@ function DashboardQuotations() {
 
             // ==========================================
             // UPDATE SHARED QUOTATION STATE
+            //
+            // Only replace the quotation whose status
+            // changed. All others remain unchanged.
             // ==========================================
 
             setQuotations(
+
                 (currentQuotations) =>
 
                     currentQuotations.map(
+
                         (quotation) =>
 
-                            quotation._id === quotationId
+                            quotation._id ===
+                            quotationId
 
                                 ? result.data
 
                                 : quotation
+
                     )
 
             );
@@ -171,10 +446,16 @@ function DashboardQuotations() {
 
         } catch (error) {
 
-            console.error(error);
+
+            console.error(
+                error
+            );
+
 
             setError(
+
                 "Unable to update quotation status."
+
             );
 
         }
@@ -289,24 +570,40 @@ function DashboardQuotations() {
 
             {/* =========================================
                 QUOTATION GRID
-
-                Desktop: 2 cards
-                Tablet: 2 cards
-                Mobile: 1 card
             ========================================= */}
 
             {quotations.length > 0 && (
 
                 <>
 
+
                     <div className="quotations-grid">
 
                         {currentQuotations.map(
+
                             (quotation) => (
 
                                 <article
-                                    className="quotation-card"
-                                    key={quotation._id}
+
+                                    key={
+                                        quotation._id
+                                    }
+
+                                    className={
+
+                                        `quotation-card ${
+
+                                            highlightedQuotationId ===
+                                            quotation._id
+
+                                                ? "quotation-card-highlighted"
+
+                                                : ""
+
+                                        }`
+
+                                    }
+
                                 >
 
 
@@ -323,8 +620,13 @@ function DashboardQuotations() {
                                             </h2>
 
                                             <p>
-                                                {quotation.company ||
-                                                    "Individual Client"}
+
+                                                {
+                                                    quotation.company ||
+
+                                                    "Individual Client"
+                                                }
+
                                             </p>
 
                                         </div>
@@ -337,12 +639,14 @@ function DashboardQuotations() {
                                         <select
 
                                             className={
+
                                                 `quotation-status-select status-${quotation.status
                                                     .toLowerCase()
                                                     .replaceAll(
                                                         " ",
                                                         "-"
                                                     )}`
+
                                             }
 
                                             value={
@@ -354,8 +658,11 @@ function DashboardQuotations() {
                                             ) => {
 
                                                 updateQuotationStatus(
+
                                                     quotation._id,
+
                                                     event.target.value
+
                                                 );
 
                                             }}
@@ -393,6 +700,7 @@ function DashboardQuotations() {
 
                                     <div className="quotation-details-grid">
 
+
                                         <div className="quotation-detail">
 
                                             <span>
@@ -400,9 +708,11 @@ function DashboardQuotations() {
                                             </span>
 
                                             <strong>
+
                                                 {
                                                     quotation.serviceRequired
                                                 }
+
                                             </strong>
 
                                         </div>
@@ -415,9 +725,11 @@ function DashboardQuotations() {
                                             </span>
 
                                             <strong>
+
                                                 {
                                                     quotation.propertyType
                                                 }
+
                                             </strong>
 
                                         </div>
@@ -430,9 +742,11 @@ function DashboardQuotations() {
                                             </span>
 
                                             <strong>
+
                                                 {
                                                     quotation.projectLocation
                                                 }
+
                                             </strong>
 
                                         </div>
@@ -445,14 +759,20 @@ function DashboardQuotations() {
                                             </span>
 
                                             <strong>
+
                                                 {
                                                     quotation.estimatedArea
+
                                                         ? `${quotation.estimatedArea} m²`
+
                                                         : "Not provided"
+
                                                 }
+
                                             </strong>
 
                                         </div>
+
 
                                     </div>
 
@@ -484,6 +804,7 @@ function DashboardQuotations() {
 
                                             {
                                                 quotation.email ||
+
                                                 "Not provided"
                                             }
 
@@ -503,9 +824,11 @@ function DashboardQuotations() {
                                         </span>
 
                                         <p>
+
                                             {
                                                 quotation.projectDescription
                                             }
+
                                         </p>
 
                                     </div>
@@ -514,6 +837,7 @@ function DashboardQuotations() {
                                 </article>
 
                             )
+
                         )}
 
                     </div>
@@ -541,10 +865,14 @@ function DashboardQuotations() {
                                 }
 
                                 onClick={() =>
+
                                     setCurrentPage(
+
                                         (page) =>
                                             page - 1
+
                                     )
+
                                 }
 
                             >
@@ -559,13 +887,20 @@ function DashboardQuotations() {
                             <div className="pagination-pages">
 
                                 {Array.from(
+
                                     {
-                                        length: totalPages
+
+                                        length:
+                                            totalPages
+
                                     },
+
                                     (_, index) => {
+
 
                                         const pageNumber =
                                             index + 1;
+
 
                                         return (
 
@@ -573,32 +908,45 @@ function DashboardQuotations() {
 
                                                 type="button"
 
-                                                key={pageNumber}
+                                                key={
+                                                    pageNumber
+                                                }
 
                                                 className={
+
                                                     `pagination-number ${
+
                                                         currentPage ===
                                                         pageNumber
+
                                                             ? "active"
+
                                                             : ""
+
                                                     }`
+
                                                 }
 
                                                 onClick={() =>
+
                                                     setCurrentPage(
                                                         pageNumber
                                                     )
+
                                                 }
 
                                             >
 
-                                                {pageNumber}
+                                                {
+                                                    pageNumber
+                                                }
 
                                             </button>
 
                                         );
 
                                     }
+
                                 )}
 
                             </div>
@@ -613,15 +961,21 @@ function DashboardQuotations() {
                                 className="pagination-button pagination-next"
 
                                 disabled={
+
                                     currentPage ===
                                     totalPages
+
                                 }
 
                                 onClick={() =>
+
                                     setCurrentPage(
+
                                         (page) =>
                                             page + 1
+
                                     )
+
                                 }
 
                             >
@@ -635,9 +989,11 @@ function DashboardQuotations() {
 
                     )}
 
+
                 </>
 
             )}
+
 
         </section>
 

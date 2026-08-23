@@ -1,0 +1,700 @@
+/* ======================================================
+   DASHBOARD REPORTS
+====================================================== */
+
+.dashboard-reports {
+    width: 100%;
+    padding: 32px;
+}
+
+
+/* ======================================================
+   REPORTS HEADER
+====================================================== */
+
+.reports-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    margin-bottom: 32px;
+}
+
+
+.reports-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 6px;
+}
+
+
+.reports-heading svg {
+    color: #b8732f;
+}
+
+
+.reports-heading h1 {
+    margin: 0;
+
+    font-size: 30px;
+    font-weight: 700;
+
+    color: #1f2937;
+}
+
+
+.reports-header p {
+    margin: 0;
+
+    font-size: 15px;
+
+    color: #6b7280;
+}
+
+
+/* ======================================================
+   REFRESH BUTTON
+====================================================== */
+
+.reports-refresh-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 11px 18px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #b8732f;
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.reports-refresh-btn:hover {
+    background: #9f6227;
+
+    transform: translateY(-1px);
+}
+
+
+.reports-refresh-btn:active {
+    transform: translateY(0);
+}
+
+
+/* ======================================================
+   REPORT SECTIONS
+====================================================== */
+
+.reports-section {
+    margin-bottom: 32px;
+}
+
+
+.reports-section-heading {
+    margin-bottom: 16px;
+}
+
+
+.reports-section-heading h2 {
+    margin: 0 0 5px;
+
+    font-size: 21px;
+    font-weight: 700;
+
+    color: #1f2937;
+}
+
+
+.reports-section-heading p {
+    margin: 0;
+
+    font-size: 14px;
+
+    color: #6b7280;
+}
+
+
+/* ======================================================
+   PROJECT / QUOTATION STATS GRID
+====================================================== */
+
+.reports-stats-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+/* ======================================================
+   STAT CARD
+====================================================== */
+
+.report-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    min-width: 0;
+
+    padding: 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e8e2dc;
+    border-radius: 14px;
+
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+
+.report-stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 48px;
+    height: 48px;
+
+    border-radius: 12px;
+
+    background: #f7f1eb;
+
+    color: #b8732f;
+}
+
+
+.report-stat-card > div:last-child {
+    min-width: 0;
+}
+
+
+.report-stat-card span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    color: #6b7280;
+}
+
+
+.report-stat-card strong {
+    display: block;
+
+    font-size: 21px;
+    font-weight: 700;
+
+    color: #1f2937;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ======================================================
+   PROJECT STATUS GRID
+====================================================== */
+
+.status-breakdown-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+/* ======================================================
+   STATUS REPORT CARD
+====================================================== */
+
+.status-report-card {
+    padding: 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e8e2dc;
+    border-radius: 14px;
+
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+
+.status-report-top {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-bottom: 18px;
+
+    color: #b8732f;
+}
+
+
+.status-report-top span {
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #4b5563;
+}
+
+
+.status-report-card strong {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 28px;
+    font-weight: 700;
+
+    color: #1f2937;
+}
+
+
+.status-report-card p {
+    margin: 0;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #6b7280;
+}
+
+
+/* ======================================================
+   TABLE CARD
+====================================================== */
+
+.reports-table-card {
+    width: 100%;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #e8e2dc;
+    border-radius: 14px;
+
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+
+/* ======================================================
+   TABLE WRAPPER
+
+   Allows horizontal scrolling on small screens instead
+   of crushing the columns together.
+====================================================== */
+
+.reports-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+
+/* ======================================================
+   REPORTS TABLE
+====================================================== */
+
+.reports-table {
+    width: 100%;
+
+    min-width: 700px;
+
+    border-collapse: collapse;
+}
+
+
+.reports-table th,
+.reports-table td {
+    padding: 16px 20px;
+
+    text-align: left;
+
+    border-bottom: 1px solid #eee8e3;
+}
+
+
+.reports-table th {
+    background: #faf8f6;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    color: #4b5563;
+
+    white-space: nowrap;
+}
+
+
+.reports-table td {
+    font-size: 14px;
+
+    color: #374151;
+}
+
+
+.reports-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+.reports-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+
+.reports-table tbody tr:hover {
+    background: #fcfaf8;
+}
+
+
+/* ======================================================
+   EMPTY TABLE STATE
+====================================================== */
+
+.reports-empty-cell {
+    padding: 30px !important;
+
+    text-align: center !important;
+
+    color: #9ca3af !important;
+}
+
+
+/* ======================================================
+   PROJECT VALUE HIGHLIGHTS
+====================================================== */
+
+.project-highlights-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+.project-highlight-card {
+    padding: 22px;
+
+    background: #ffffff;
+
+    border: 1px solid #e8e2dc;
+    border-radius: 14px;
+
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+
+.project-highlight-card > span {
+    display: block;
+
+    margin-bottom: 12px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #b8732f;
+}
+
+
+.project-highlight-card h3 {
+    margin: 0 0 5px;
+
+    font-size: 19px;
+    font-weight: 700;
+
+    color: #1f2937;
+}
+
+
+.project-highlight-card p {
+    margin: 0 0 18px;
+
+    font-size: 14px;
+
+    color: #6b7280;
+}
+
+
+.project-highlight-card strong {
+    display: block;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    color: #1f2937;
+}
+
+
+/* ======================================================
+   LOADING STATE
+====================================================== */
+
+.reports-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 300px;
+
+    padding: 30px;
+
+    background: #ffffff;
+
+    border: 1px solid #e8e2dc;
+    border-radius: 14px;
+
+    color: #6b7280;
+
+    font-size: 15px;
+    font-weight: 500;
+}
+
+
+/* ======================================================
+   ERROR STATE
+====================================================== */
+
+.reports-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 300px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border: 1px solid #f0d8d8;
+    border-radius: 14px;
+}
+
+
+.reports-error p {
+    margin: 0 0 18px;
+
+    font-size: 15px;
+
+    color: #b42318;
+}
+
+
+.reports-error button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 10px 18px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #b8732f;
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.reports-error button:hover {
+    background: #9f6227;
+
+    transform: translateY(-1px);
+}
+
+
+/* ======================================================
+   TABLET
+====================================================== */
+
+@media (max-width: 1100px) {
+
+    .reports-stats-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .status-breakdown-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+}
+
+
+/* ======================================================
+   SMALL TABLET
+====================================================== */
+
+@media (max-width: 800px) {
+
+    .dashboard-reports {
+        padding: 24px;
+    }
+
+
+    .reports-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+
+    .reports-refresh-btn {
+        width: auto;
+    }
+
+
+    .status-breakdown-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .project-highlights-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+}
+
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
+@media (max-width: 600px) {
+
+    .dashboard-reports {
+        padding: 18px;
+    }
+
+
+    .reports-header {
+        margin-bottom: 26px;
+    }
+
+
+    .reports-heading {
+        align-items: flex-start;
+    }
+
+
+    .reports-heading h1 {
+        font-size: 25px;
+        line-height: 1.2;
+    }
+
+
+    .reports-header p {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+
+    .reports-refresh-btn {
+        width: 100%;
+    }
+
+
+    .reports-section {
+        margin-bottom: 26px;
+    }
+
+
+    .reports-section-heading h2 {
+        font-size: 19px;
+    }
+
+
+    .reports-stats-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .report-stat-card {
+        padding: 17px;
+    }
+
+
+    .report-stat-card strong {
+        font-size: 19px;
+    }
+
+
+    .status-report-card {
+        padding: 18px;
+    }
+
+
+    .project-highlight-card {
+        padding: 19px;
+    }
+
+
+    .project-highlight-card h3 {
+        font-size: 17px;
+    }
+
+
+    .project-highlight-card strong {
+        font-size: 19px;
+    }
+
+
+    .reports-table th,
+    .reports-table td {
+        padding: 14px 16px;
+    }
+
+
+    .reports-table {
+        min-width: 650px;
+    }
+
+}

@@ -15,6 +15,7 @@
 // • Get paginated projects
 // • Filter projects by category
 // • Get project statistics
+// • Search projects
 // • Get single project by slug
 //
 // AUTHOR:
@@ -944,6 +945,7 @@ export const getProjectStats = async (req, res) => {
 // SUPPORTS:
 // • Pagination
 // • Category filtering
+// • Project search
 //
 // ======================================================
 
@@ -993,23 +995,126 @@ export const getProjects = async (req, res) => {
 
 
         // ==================================================
-        // CATEGORY FILTER
-        // ==================================================
+// CATEGORY FILTER
+// ==================================================
 
-        const category =
-            req.query.category;
+const category =
+    req.query.category;
 
 
-        const filter =
-            category &&
-            category !== "All Projects"
+// ==================================================
+// SEARCH QUERY
+//
+// Example:
+//
+// /api/projects?search=kampala
+//
+// The frontend sends the text entered by the
+// administrator through the "search" query parameter.
+// ==================================================
 
-                ? {
-                    category,
-                }
+const search =
+    req.query.search?.trim();
 
-                : {};
 
+// ==================================================
+// BUILD DATABASE FILTER
+//
+// We start with an empty filter object.
+//
+// Then we add category filtering and/or search
+// conditions depending on what the administrator
+// requested.
+// ==================================================
+
+const filter = {};
+
+
+// ==================================================
+// APPLY CATEGORY FILTER
+// ==================================================
+
+if (
+    category &&
+    category !== "All Projects"
+) {
+
+    filter.category =
+        category;
+
+}
+
+
+// ==================================================
+// APPLY PROJECT SEARCH
+//
+// $or means:
+// Return a project if ANY of these fields match.
+//
+// $regex allows partial text searching.
+//
+// $options: "i" makes the search case-insensitive.
+//
+// Example:
+//
+// Searching "epoxy" will match:
+//
+// "Epoxy Flooring"
+//
+// "Industrial Epoxy Project"
+//
+// "EPOXY Flooring"
+// ==================================================
+
+if (search) {
+
+    filter.$or = [
+
+        {
+            title: {
+                $regex: search,
+                $options: "i",
+            },
+        },
+
+        {
+            client: {
+                $regex: search,
+                $options: "i",
+            },
+        },
+
+        {
+            location: {
+                $regex: search,
+                $options: "i",
+            },
+        },
+
+        {
+            category: {
+                $regex: search,
+                $options: "i",
+            },
+        },
+
+        {
+            service: {
+                $regex: search,
+                $options: "i",
+            },
+        },
+
+        {
+            status: {
+                $regex: search,
+                $options: "i",
+            },
+        },
+
+    ];
+
+}
 
         // ==================================================
         // COUNT TOTAL PROJECTS

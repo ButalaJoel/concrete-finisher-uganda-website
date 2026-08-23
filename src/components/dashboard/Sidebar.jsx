@@ -12,14 +12,22 @@
 // • Logo
 // • Responsive Mobile Navigation
 // • Close Mobile Sidebar
-// • Future Navigation
+// • Display Logged-In Administrator
+// • Administrator Logout
 //
 // AUTHOR:
 // Joel Butala
 // ======================================================
 
 
-import { NavLink } from "react-router-dom";
+// ======================================================
+// IMPORTS
+// ======================================================
+
+import {
+    NavLink,
+    useNavigate
+} from "react-router-dom";
 
 import logo from "../../assets/logo.png";
 
@@ -85,10 +93,160 @@ const menuItems = [
 // ======================================================
 
 function Sidebar({
+
     isOpen,
     closeSidebar,
     newQuotationCount
+
 }) {
+
+
+    // ==================================================
+    // NAVIGATION
+    // ==================================================
+
+    const navigate = useNavigate();
+
+
+    // ==================================================
+    // LOGGED-IN ADMINISTRATOR
+    //
+    // Login.jsx stores administrator information in:
+    //
+    // • localStorage
+    // • sessionStorage
+    //
+    // We check both because:
+    //
+    // Remember Me checked:
+    // → localStorage
+    //
+    // Remember Me unchecked:
+    // → sessionStorage
+    // ==================================================
+
+    const storedAdmin =
+
+        localStorage.getItem("cf_admin") ||
+
+        sessionStorage.getItem("cf_admin");
+
+
+    // ==================================================
+    // PARSE ADMINISTRATOR DATA
+    //
+    // Storage can only store strings.
+    //
+    // JSON.parse converts the stored administrator
+    // string back into a JavaScript object.
+    // ==================================================
+
+    let admin = null;
+
+
+    try {
+
+        if (storedAdmin) {
+
+            admin =
+                JSON.parse(storedAdmin);
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Unable to read administrator data:",
+            error
+        );
+
+    }
+
+
+    // ==================================================
+    // ADMINISTRATOR DISPLAY VALUES
+    //
+    // Fallback values prevent the Sidebar from crashing
+    // if administrator data is temporarily unavailable.
+    // ==================================================
+
+    const adminName =
+        admin?.fullName ||
+        "Administrator";
+
+        const profilePhotoUrl =
+    admin?.profilePhoto
+        ? `${import.meta.env.VITE_API_URL}${admin.profilePhoto}`
+        : null;
+
+
+    // ==================================================
+    // LOGOUT
+    //
+    // Remove authentication data from both storage types.
+    //
+    // This is necessary because Login.jsx stores data in:
+    //
+    // • localStorage when Remember Me is checked
+    // • sessionStorage when Remember Me is not checked
+    // ==================================================
+
+    const handleLogout = () => {
+
+
+        // ==============================================
+        // REMOVE LOCAL STORAGE AUTHENTICATION
+        // ==============================================
+
+        localStorage.removeItem(
+            "cf_auth_token"
+        );
+
+        localStorage.removeItem(
+            "cf_admin"
+        );
+
+
+        // ==============================================
+        // REMOVE SESSION STORAGE AUTHENTICATION
+        // ==============================================
+
+        sessionStorage.removeItem(
+            "cf_auth_token"
+        );
+
+        sessionStorage.removeItem(
+            "cf_admin"
+        );
+
+
+        // ==============================================
+        // CLOSE MOBILE SIDEBAR
+        // ==============================================
+
+        closeSidebar();
+
+
+        // ==============================================
+        // REDIRECT TO LOGIN
+        //
+        // replace: true prevents the browser Back button
+        // from returning to the dashboard.
+        // ==============================================
+
+        navigate(
+
+            "/login",
+
+            {
+                replace: true
+            }
+
+        );
+
+
+    };
+
 
     return (
 
@@ -99,7 +257,11 @@ function Sidebar({
             ========================================= */}
 
             <div
-                className={`sidebar-overlay ${isOpen ? "show" : ""}`}
+                className={`sidebar-overlay ${
+                    isOpen
+                        ? "show"
+                        : ""
+                }`}
                 onClick={closeSidebar}
             ></div>
 
@@ -109,7 +271,11 @@ function Sidebar({
             ========================================= */}
 
             <aside
-                className={`sidebar ${isOpen ? "sidebar-open" : ""}`}
+                className={`sidebar ${
+                    isOpen
+                        ? "sidebar-open"
+                        : ""
+                }`}
             >
 
 
@@ -152,33 +318,56 @@ function Sidebar({
 
                         {menuItems.map((item) => {
 
-                            const Icon = item.icon;
+                            const Icon =
+                                item.icon;
+
 
                             return (
 
-                                <li key={item.title}>
+                                <li
+                                    key={item.title}
+                                >
 
-               <NavLink
-                    to={item.path}
+                                    <NavLink
 
-                    end={item.path === "/dashboard"}
+                                        to={item.path}
 
-                    className={({ isActive }) =>
-                    isActive ? "active" : ""
-                 }
+                                        end={
+                                            item.path ===
+                                            "/dashboard"
+                                        }
 
-                onClick={closeSidebar}
-               >
+                                        className={(
+                                            {
+                                                isActive
+                                            }
+                                        ) =>
 
-                <Icon size={20} />
+                                            isActive
+                                                ? "active"
+                                                : ""
 
-                <span>
-                {item.title}
-                </span>
+                                        }
 
-                </NavLink>
+                                        onClick={
+                                            closeSidebar
+                                        }
 
-                </li>
+                                    >
+
+                                        <Icon
+                                            size={20}
+                                        />
+
+                                        <span>
+
+                                            {item.title}
+
+                                        </span>
+
+                                    </NavLink>
+
+                                </li>
 
                             );
 
@@ -190,63 +379,124 @@ function Sidebar({
 
 
                 {/* =====================================
-                MOBILE ACCOUNT ACTIONS
+                    MOBILE ACCOUNT ACTIONS
                 ===================================== */}
 
-            <div className="sidebar-mobile-actions">
-
-            <button className="sidebar-mobile-action">
-
-            <Bell size={20} />
-
-            <span>Notifications</span>
-
-           {newQuotationCount > 0 && (
-
-    <span className="sidebar-notification-badge">
-        {newQuotationCount}
-    </span>
-
-)}
-            </button>
+                <div className="sidebar-mobile-actions">
 
 
-           <button className="sidebar-mobile-action">
+                    {/* =================================
+                        NOTIFICATIONS
+                    ================================= */}
 
-           <UserCircle size={22} />
+                    <button
+                        className="sidebar-mobile-action"
+                        type="button"
+                    >
 
-          <div className="sidebar-user-info">
+                        <Bell size={20} />
 
-            <span className="sidebar-user-name">
-                Erisha
-            </span>
+                        <span>
 
-            <small>
-                Administrator
-            </small>
+                            Notifications
 
-           </div>
-
-           </button>
-
-           </div>
+                        </span>
 
 
-          {/* =====================================
-          FOOTER
-          ===================================== */}
+                        {newQuotationCount > 0 && (
 
-        <div className="sidebar-footer">
+                            <span
+                                className="
+                                    sidebar-notification-badge
+                                "
+                            >
 
-        <button>
+                                {newQuotationCount}
 
-        <LogOut size={20} />
+                            </span>
 
-        Logout
+                        )}
 
-    </button>
+                    </button>
+
+
+                  <button
+    className="sidebar-mobile-action"
+    type="button"
+>
+
+
+    {/* =================================
+        ADMINISTRATOR PROFILE PHOTO
+    ================================= */}
+
+    {profilePhotoUrl ? (
+
+        <img
+            src={profilePhotoUrl}
+            alt={adminName}
+            className="sidebar-profile-image"
+        />
+
+    ) : (
+
+        <UserCircle size={22} />
+
+    )}
+
+
+    <div className="sidebar-user-info">
+
+
+        {/* DYNAMIC ADMIN NAME */}
+
+        <span className="sidebar-user-name">
+
+            {adminName}
+
+        </span>
+
+
+        {/* ADMIN ROLE */}
+
+        <small>
+
+            Administrator
+
+        </small>
+
 
     </div>
+
+
+</button>
+
+
+                </div>
+
+
+                {/* =====================================
+                    FOOTER
+                ===================================== */}
+
+                <div
+                    className="sidebar-footer"
+                >
+
+                    <button
+                        type="button"
+                        onClick={handleLogout}
+                    >
+
+                        <LogOut size={20} />
+
+                        Logout
+
+                    </button>
+
+                </div>
+
+
             </aside>
 
         </>
@@ -254,5 +504,10 @@ function Sidebar({
     );
 
 }
+
+
+// ======================================================
+// EXPORT
+// ======================================================
 
 export default Sidebar;

@@ -18,6 +18,8 @@
 
 .dashboard-header {
 
+    position: relative;
+
     display: flex;
 
     align-items: center;
@@ -38,6 +40,8 @@
         0 15px 35px
         rgba(0, 0, 0, .06);
 
+    overflow: visible;
+
 }
 
 
@@ -54,6 +58,8 @@
     gap: 14px;
 
     min-width: 0;
+
+    flex-shrink: 0;
 
 }
 
@@ -149,18 +155,26 @@
 
     align-items: center;
 
+    justify-content: flex-end;
+
     gap: 20px;
 
     min-width: 0;
+
+    flex: 1;
+
+    margin-left: 30px;
 
 }
 
 
 /* ==========================================================
-   SEARCH
+   SEARCH BOX
 ========================================================== */
 
 .search-box {
+
+    position: relative;
 
     display: flex;
 
@@ -168,7 +182,13 @@
 
     gap: 10px;
 
+    flex: 0 1 300px;
+
     width: 300px;
+
+    max-width: 300px;
+
+    min-width: 180px;
 
     padding: 12px 18px;
 
@@ -219,6 +239,238 @@
 
 
 /* ==========================================================
+   GLOBAL SEARCH RESULTS
+
+   IMPORTANT:
+
+   The results are absolutely positioned.
+
+   This means they FLOAT below the search box and do NOT
+   push the dashboard content downward.
+
+   max-height + overflow-y means if there are 100 results,
+   only this box scrolls.
+========================================================== */
+
+.search-results {
+
+    position: absolute;
+
+    top: calc(100% + 10px);
+
+    left: 0;
+
+    z-index: 2000;
+
+    width: 100%;
+
+    max-height: 280px;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+
+    padding: 8px;
+
+    background: #FFFFFF;
+
+    border: 1px solid #E8E1DB;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 18px 40px
+        rgba(0, 0, 0, 0.12);
+
+}
+
+
+/* ==========================================================
+   SEARCH SCROLLBAR
+========================================================== */
+
+.search-results::-webkit-scrollbar {
+
+    width: 6px;
+
+}
+
+
+.search-results::-webkit-scrollbar-track {
+
+    background: transparent;
+
+}
+
+
+.search-results::-webkit-scrollbar-thumb {
+
+    background: #D6B28F;
+
+    border-radius: 20px;
+
+}
+
+
+.search-results::-webkit-scrollbar-thumb:hover {
+
+    background: #B56A2D;
+
+}
+
+
+/* ==========================================================
+   SEARCH RESULT SECTION
+========================================================== */
+
+.search-result-section {
+
+    padding: 4px;
+
+}
+
+
+.search-result-heading {
+
+    margin: 6px 8px 6px;
+
+    color: #9A6A43;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+
+    text-transform: uppercase;
+
+}
+
+
+/* ==========================================================
+   SEARCH RESULT ITEM
+
+   Compact Google-style result.
+
+   Each result only displays a title and one small detail line.
+========================================================== */
+
+.search-result-item {
+
+    display: block;
+
+    width: 100%;
+
+    padding: 9px 10px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    text-align: left;
+
+    font-family: inherit;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease;
+
+}
+
+
+.search-result-item:hover {
+
+    background: #F8F2ED;
+
+}
+
+
+/* ==========================================================
+   RESULT TITLE
+========================================================== */
+
+.search-result-title {
+
+    display: block;
+
+    margin-bottom: 2px;
+
+    overflow: hidden;
+
+    color: #2A2A2A;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    line-height: 1.3;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+/* ==========================================================
+   RESULT DETAILS
+========================================================== */
+
+.search-result-details {
+
+    display: block;
+
+    overflow: hidden;
+
+    color: #777777;
+
+    font-size: 11px;
+
+    line-height: 1.3;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+/* ==========================================================
+   RESULT DIVIDER
+========================================================== */
+
+.search-result-divider {
+
+    height: 1px;
+
+    margin: 4px 8px;
+
+    background: #EFE8E3;
+
+}
+
+
+/* ==========================================================
+   NO RESULTS
+========================================================== */
+
+.search-no-results {
+
+    padding: 16px 12px;
+
+    color: #888888;
+
+    font-size: 13px;
+
+    text-align: center;
+
+}
+
+
+/* ==========================================================
    NEW PROJECT BUTTON
 ========================================================== */
 
@@ -233,10 +485,6 @@
     gap: 8px;
 
     flex-shrink: 0;
-
-    width: auto;
-
-    min-width: 0;
 
     height: 42px;
 
@@ -367,8 +615,7 @@
 
     color: #5C5C5C;
 
-    transition:
-        color .25s ease;
+    transition: color .25s ease;
 
 }
 
@@ -428,8 +675,7 @@
 
     color: #444444;
 
-    transition:
-        color .25s ease;
+    transition: color .25s ease;
 
 }
 
@@ -437,6 +683,25 @@
 .profile-button:hover .header-profile {
 
     color: #B56A2D;
+
+}
+
+
+/* ==========================================================
+   LOGGED-IN ADMINISTRATOR PROFILE PHOTO
+========================================================== */
+
+.header-profile-image {
+
+    width: 34px;
+
+    height: 34px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    display: block;
 
 }
 
@@ -470,12 +735,18 @@
 
         gap: 14px;
 
+        margin-left: 20px;
+
     }
 
 
     .search-box {
 
         width: 220px;
+
+        max-width: 220px;
+
+        min-width: 160px;
 
         padding: 11px 14px;
 
@@ -528,9 +799,7 @@
     }
 
 
-    /* =========================================
-       LEFT
-    ========================================= */
+    /* LEFT */
 
     .header-left {
 
@@ -583,9 +852,7 @@
     }
 
 
-    /* =========================================
-       RIGHT SIDE CONTENT
-    ========================================= */
+    /* RIGHT SIDE */
 
     .header-right {
 
@@ -594,9 +861,7 @@
     }
 
 
-    /* =========================================
-       SEARCH
-    ========================================= */
+    /* SEARCH */
 
     .search-box {
 
@@ -605,6 +870,10 @@
         grid-row: 2;
 
         width: 100%;
+
+        max-width: none;
+
+        min-width: 0;
 
         padding: 11px 14px;
 
@@ -620,9 +889,14 @@
     }
 
 
-    /* =========================================
-       NEW PROJECT
-    ========================================= */
+    .search-results {
+
+        max-height: 260px;
+
+    }
+
+
+    /* NEW PROJECT */
 
     .new-project-btn {
 
@@ -650,9 +924,7 @@
     }
 
 
-    /* =========================================
-       NOTIFICATIONS
-    ========================================= */
+    /* NOTIFICATIONS */
 
     .notification-wrapper {
 
@@ -684,9 +956,7 @@
     }
 
 
-    /* =========================================
-       PROFILE
-    ========================================= */
+    /* PROFILE */
 
     .profile-button {
 
@@ -794,6 +1064,13 @@
     .search-box input {
 
         font-size: 13px;
+
+    }
+
+
+    .search-results {
+
+        max-height: 240px;
 
     }
 

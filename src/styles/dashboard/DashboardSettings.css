@@ -1,0 +1,282 @@
+/* ==========================================
+   DASHBOARD SETTINGS
+========================================== */
+
+.dashboard-settings {
+    width: 100%;
+    padding: 32px;
+}
+
+
+/* ==========================================
+   PAGE HEADER
+========================================== */
+
+.settings-page-header {
+    margin-bottom: 32px;
+}
+
+.settings-page-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f4eee7;
+    color: #b8732e;
+
+    border-radius: 14px;
+    margin-bottom: 14px;
+}
+
+.settings-page-header h1 {
+    margin: 0 0 8px;
+
+    font-size: 32px;
+       font-weight: 700;
+    line-height: 1.2;
+
+    color: #1f2d3d;
+}
+
+.settings-page-header p {
+    margin: 0;
+
+    font-size: 15px;
+    line-height: 1.6;
+
+    color: #667085;
+}
+
+
+/* ==========================================
+   SETTINGS GRID
+========================================== */
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+
+/* ==========================================
+   SETTINGS CARD
+========================================== */
+
+.settings-card {
+    background: #ffffff;
+
+    border: 1px solid #e5e0da;
+    border-radius: 16px;
+
+    padding: 24px;
+
+    box-shadow: 0 4px 16px rgba(31, 45, 61, 0.05);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.settings-card:hover {
+    transform: translateY(-3px);
+
+    border-color: #d6a36b;
+
+    box-shadow: 0 10px 24px rgba(31, 45, 61, 0.1);
+}
+
+
+/* ==========================================
+   CARD ICON
+========================================== */
+
+.settings-card-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f4eee7;
+    color: #b8732e;
+
+    border-radius: 14px;
+
+    margin-bottom: 20px;
+}
+
+.settings-card-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+
+/* ==========================================
+   CARD CONTENT
+========================================== */
+
+.settings-card h2 {
+    margin: 0 0 8px;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    color: #1f2d3d;
+}
+
+.settings-card p {
+    margin: 0 0 22px;
+
+    font-size: 14px;
+    line-height: 1.6;
+
+    color: #667085;
+}
+
+
+/* ==========================================
+   SETTINGS BUTTON
+========================================== */
+
+.settings-card-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 20px;
+    min-height: 44px;
+
+    background: #f4eee7;
+    color: #a86527;
+
+    border: 1px solid transparent;
+    border-radius: 9px;
+
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+
+    cursor: pointer;
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.settings-card-button:hover {
+    background: #b8732e;
+    color: #ffffff;
+
+    transform: translateY(-1px);
+}
+
+.settings-card-button:active {
+    transform: translateY(0);
+}
+
+
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width: 1024px) {
+
+    .dashboard-settings {
+        padding: 28px 24px;
+    }
+
+    .settings-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    .settings-card {
+        padding: 22px;
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 768px) {
+
+    .dashboard-settings {
+        padding: 24px 18px;
+    }
+
+    .settings-page-header {
+        margin-bottom: 24px;
+    }
+
+    .settings-page-header h1 {
+        font-size: 28px;
+    }
+
+    /* One card per row on phones */
+    .settings-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .settings-card {
+        width: 100%;
+        padding: 20px;
+        border-radius: 14px;
+    }
+
+    /* Hover movement is unnecessary on touch devices */
+    .settings-card:hover {
+        transform: none;
+    }
+
+}
+
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width: 480px) {
+
+    .dashboard-settings {
+        padding: 20px 14px;
+    }
+
+    .settings-page-header h1 {
+        font-size: 26px;
+    }
+
+    .settings-page-header p {
+        font-size: 14px;
+    }
+
+    .settings-card {
+        padding: 18px;
+    }
+
+    .settings-card h2 {
+        font-size: 18px;
+    }
+
+    .settings-card p {
+        margin-bottom: 18px;
+    }
+
+    .settings-card-button {
+        width: 100%;
+        min-height: 46px;
+        padding: 12px 18px;
+    }
+}

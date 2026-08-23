@@ -56,23 +56,165 @@ export const createQuotation = async (req, res) => {
 // GET /api/quotations
 // ======================================================
 
+// ======================================================
+// GET ALL QUOTATIONS
+//
+// Retrieves quotations from MongoDB.
+//
+// Supports:
+// • General search
+//
+// Searchable fields:
+// • Full name
+// • Company
+// • Service required
+// • Project location
+// • Property type
+//
+// Route:
+// GET /api/quotations
+//
+// Examples:
+// GET /api/quotations?search=epoxy
+// GET /api/quotations?search=kampala
+// GET /api/quotations?search=UBL
+// ======================================================
+
 export const getQuotations = async (req, res) => {
 
   try {
 
-    const quotations = await Quotation.find();
+    // ==================================================
+    // GET SEARCH QUERY
+    //
+    // Reads the optional search value from the URL.
+    //
+    // Example:
+    // /api/quotations?search=epoxy
+    // ==================================================
+
+    const search =
+      req.query.search?.trim();
+
+
+    // ==================================================
+    // CREATE SEARCH FILTER
+    //
+    // If no search value exists, the filter remains empty.
+    //
+    // An empty filter {} means:
+    // Return all quotations.
+    // ==================================================
+
+    const filter =
+      search
+        ? {
+
+            $or: [
+
+              {
+                fullName: {
+                  $regex: search,
+                  $options: "i",
+                },
+              },
+
+              {
+                company: {
+                  $regex: search,
+                  $options: "i",
+                },
+              },
+
+              {
+                serviceRequired: {
+                  $regex: search,
+                  $options: "i",
+                },
+              },
+
+              {
+  projectDescription: {
+    $regex: search,
+    $options: "i",
+  },
+},
+
+              {
+                projectLocation: {
+                  $regex: search,
+                  $options: "i",
+                },
+              },
+
+              {
+                propertyType: {
+                  $regex: search,
+                  $options: "i",
+                },
+              },
+
+            ],
+
+          }
+
+        : {};
+
+
+    // ==================================================
+    // GET QUOTATIONS
+    //
+    // If a search exists:
+    // Return matching quotations.
+    //
+    // If no search exists:
+    // Return all quotations.
+    // ==================================================
+
+    const quotations =
+      await Quotation.find(filter)
+        .sort({
+          createdAt: -1,
+        });
+
+
+    // ==================================================
+    // SUCCESS RESPONSE
+    // ==================================================
 
     res.status(200).json({
+
       success: true,
-      message: "Quotations retrieved successfully.",
-      data: quotations,
+
+      message:
+        "Quotations retrieved successfully.",
+
+      data:
+        quotations,
+
     });
+
 
   } catch (error) {
 
+
+    // ==================================================
+    // SERVER ERROR
+    // ==================================================
+
+    console.error(
+      "Get quotations error:",
+      error
+    );
+
+
     res.status(500).json({
+
       success: false,
-      message: error.message,
+
+      message:
+        "Unable to retrieve quotations.",
+
     });
 
   }

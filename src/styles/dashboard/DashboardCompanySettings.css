@@ -1,0 +1,747 @@
+/* ======================================================
+   FILE: DashboardCompanySettings.css
+
+   PROJECT:
+   Concrete Finisher Uganda Website
+
+   PURPOSE:
+   Styling for the Company Profile Settings page.
+====================================================== */
+
+
+/* ======================================================
+   PAGE
+====================================================== */
+
+.company-settings-page {
+
+    width: 100%;
+
+    padding:
+
+        32px 40px
+
+        50px;
+
+}
+
+
+/* ======================================================
+   PAGE HEADER
+====================================================== */
+
+.company-settings-header {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 18px;
+
+    margin-bottom: 22px;
+
+}
+
+
+/* ======================================================
+   BACK BUTTON
+====================================================== */
+
+.settings-back-button {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding:
+
+        10px 16px;
+
+    border:
+
+        1px solid #d9d0c6;
+
+    border-radius:
+
+        10px;
+
+    background:
+
+        #ffffff;
+
+    color:
+
+        #9a611f;
+
+    font-size:
+
+        14px;
+
+    font-weight:
+
+        600;
+
+    cursor:
+
+        pointer;
+
+    transition:
+
+        0.2s ease;
+
+}
+
+
+.settings-back-button:hover {
+
+    background:
+
+        #f6eee6;
+
+}
+
+
+/* ======================================================
+   PAGE TITLE
+====================================================== */
+
+.company-settings-title h1 {
+
+    margin:
+
+        0;
+
+    font-size:
+
+        32px;
+
+    font-weight:
+
+        700;
+
+    color:
+
+        #1f2937;
+
+}
+
+
+.company-settings-title p {
+
+    margin:
+
+        6px 0 0;
+
+    font-size:
+
+        15px;
+
+    color:
+
+        #667085;
+
+}
+
+
+/* ======================================================
+   MAIN CARD
+====================================================== */
+
+.company-settings-card {
+
+    width: 100%;
+
+    max-width:
+
+        900px;
+
+    padding:
+
+        28px;
+
+    background:
+
+        #ffffff;
+
+    border:
+
+        1px solid #e4ddd5;
+
+    border-radius:
+
+        18px;
+
+    box-shadow:
+
+        0 10px 30px
+
+        rgba(0, 0, 0, 0.04);
+
+}
+
+
+/* ======================================================
+   COMPANY LOGO SECTION
+====================================================== */
+
+.company-logo-section {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+}
+
+
+/* ======================================================
+   LOGO PREVIEW
+====================================================== */
+
+.company-logo-preview {
+
+    width:
+
+        88px;
+
+    height:
+
+        88px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius:
+
+        50%;
+
+    background:
+
+        #f3efe9;
+
+    color:
+
+        #a56725;
+
+}
+
+
+/* ======================================================
+   LOGO CONTENT
+====================================================== */
+
+.company-logo-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+}
+
+
+.company-logo-content h2 {
+
+    margin:
+
+        0;
+
+    font-size:
+
+        21px;
+
+    font-weight:
+
+        700;
+
+    color:
+
+        #27364a;
+
+}
+
+
+.company-logo-content p {
+
+    margin:
+
+        6px 0 14px;
+
+    font-size:
+
+        14px;
+
+    color:
+
+        #667085;
+
+}
+
+
+/* ======================================================
+   CHANGE LOGO BUTTON
+====================================================== */
+
+.change-logo-button {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding:
+
+        11px 16px;
+
+    border:
+
+        1px solid #ded4c9;
+
+    border-radius:
+
+        9px;
+
+    background:
+
+        #ffffff;
+
+    color:
+
+        #9a611f;
+
+    font-size:
+
+        14px;
+
+    font-weight:
+
+        600;
+
+    cursor:
+
+        pointer;
+
+    transition:
+
+        0.2s ease;
+
+}
+
+
+.change-logo-button:hover {
+
+    background:
+
+        #f6eee6;
+
+}
+
+
+/* ======================================================
+   DIVIDER
+====================================================== */
+
+.company-settings-divider {
+
+    width: 100%;
+
+    height:
+
+        1px;
+
+    margin:
+
+        24px 0;
+
+    background:
+
+        #e8e1d9;
+
+}
+
+
+/* ======================================================
+   FORM GRID
+====================================================== */
+
+.company-form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+
+        repeat(2, 1fr);
+
+    gap:
+
+        20px;
+
+}
+
+
+/* ======================================================
+   FORM GROUP
+====================================================== */
+
+.company-form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+
+.company-form-group label {
+
+    font-size:
+
+        14px;
+
+    font-weight:
+
+        600;
+
+    color:
+
+        #344054;
+
+}
+
+
+/* ======================================================
+   INPUTS
+====================================================== */
+
+.company-form-group input,
+
+.company-form-group textarea {
+
+    width: 100%;
+
+    box-sizing:
+
+        border-box;
+
+    padding:
+
+        13px 15px;
+
+    border:
+
+        1px solid #d9d2ca;
+
+    border-radius:
+
+        10px;
+
+    background:
+
+        #ffffff;
+
+    color:
+
+        #27364a;
+
+    font-family:
+
+        inherit;
+
+    font-size:
+
+        14px;
+
+    outline:
+
+        none;
+
+    transition:
+
+        0.2s ease;
+
+}
+
+
+.company-form-group input:focus,
+
+.company-form-group textarea:focus {
+
+    border-color:
+
+        #b8732f;
+
+    box-shadow:
+
+        0 0 0 3px
+
+        rgba(184, 115, 47, 0.12);
+
+}
+
+
+.company-form-group input::placeholder,
+
+.company-form-group textarea::placeholder {
+
+    color:
+
+        #98a2b3;
+
+}
+
+
+.company-form-group textarea {
+
+    resize:
+
+        vertical;
+
+    min-height:
+
+        120px;
+
+}
+
+
+/* ======================================================
+   DESCRIPTION
+====================================================== */
+
+.company-description-group {
+
+    margin-top:
+
+        20px;
+
+}
+
+
+/* ======================================================
+   FORM ACTIONS
+====================================================== */
+
+.company-form-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-top:
+
+        24px;
+
+    padding-top:
+
+        22px;
+
+    border-top:
+
+        1px solid #e8e1d9;
+
+}
+
+
+/* ======================================================
+   CANCEL BUTTON
+====================================================== */
+
+.cancel-company-button {
+
+    padding:
+
+        12px 22px;
+
+    border:
+
+        1px solid #d9d2ca;
+
+    border-radius:
+
+        10px;
+
+    background:
+
+        #ffffff;
+
+    color:
+
+        #475467;
+
+    font-size:
+
+        14px;
+
+    font-weight:
+
+        600;
+
+    cursor:
+
+        pointer;
+
+    transition:
+
+        0.2s ease;
+
+}
+
+
+.cancel-company-button:hover {
+
+    background:
+
+        #f8f6f4;
+
+}
+
+
+/* ======================================================
+   SAVE BUTTON
+====================================================== */
+
+.save-company-button {
+
+    padding:
+
+        12px 22px;
+
+    border:
+
+        none;
+
+    border-radius:
+
+        10px;
+
+    background:
+
+        #b8732f;
+
+    color:
+
+        #ffffff;
+
+    font-size:
+
+        14px;
+
+    font-weight:
+
+        600;
+
+    cursor:
+
+        pointer;
+
+    transition:
+
+        0.2s ease;
+
+}
+
+
+.save-company-button:hover {
+
+    background:
+
+        #965c22;
+
+}
+
+
+/* ======================================================
+   RESPONSIVE DESIGN
+====================================================== */
+
+@media (max-width: 768px) {
+
+
+    .company-settings-page {
+
+        padding:
+
+            24px 20px
+
+            40px;
+
+    }
+
+
+    .company-settings-card {
+
+        padding:
+
+            22px;
+
+    }
+
+
+    .company-form-grid {
+
+        grid-template-columns:
+
+            1fr;
+
+    }
+
+
+}
+
+
+@media (max-width: 480px) {
+
+
+    .company-logo-section {
+
+        flex-direction:
+
+            column;
+
+        align-items:
+
+            flex-start;
+
+    }
+
+
+    .company-form-actions {
+
+        flex-direction:
+
+            column-reverse;
+
+    }
+
+
+    .cancel-company-button,
+
+    .save-company-button {
+
+        width:
+
+            100%;
+
+    }
+
+
+}

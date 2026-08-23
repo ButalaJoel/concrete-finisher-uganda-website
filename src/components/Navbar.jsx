@@ -9,6 +9,8 @@ import {
 
 import { useState, useEffect } from "react";
 
+import "../styles/Navbar.css";
+
 function Navbar() {
 
   // ================= Add the UI state =================

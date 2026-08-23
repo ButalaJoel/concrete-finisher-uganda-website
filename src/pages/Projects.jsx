@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import projectsHeroImage from "../assets/projects/darling-namanve/after-3.jpg";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -247,28 +248,38 @@ function Projects() {
           HERO SECTION
       ================================================== */}
 
-      <section className="projects-page-hero">
+      <section
+  className="projects-page-hero"
+  style={{
+    backgroundImage: `
+      url(${projectsHeroImage})
+    `,
+  }}
+>
 
-        <div className="projects-page-container">
+  <div className="projects-page-hero-overlay">
 
-          <p className="section-label">
-            OUR WORK
-          </p>
+    <div className="projects-page-hero-content">
 
-          <h1>
-            Projects Built to Perform
-          </h1>
+      <p className="section-label">
+        OUR WORK
+      </p>
 
-          <p>
-            Explore flooring, concrete finishing and
-            waterproofing projects completed for
-            residential, commercial and industrial spaces.
-          </p>
+      <h1>
+        Projects Built to Perform
+      </h1>
 
-        </div>
+      <p>
+        Explore flooring, concrete finishing and
+        waterproofing projects completed for
+        residential, commercial and industrial spaces.
+      </p>
 
-      </section>
+    </div>
 
+  </div>
+
+</section>
 
       {/* ==================================================
           INTRO SECTION

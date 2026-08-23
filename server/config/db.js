@@ -1,23 +1,96 @@
+// ======================================================
+// FILE: db.js
+//
+// PROJECT:
+// Concrete Finisher Uganda Website
+//
+// PURPOSE:
+// Connects the backend server to MongoDB.
+//
+// RESPONSIBILITIES:
+// • Read the MongoDB connection string from .env
+// • Connect the Express backend to MongoDB
+// • Handle database connection errors
+//
+// AUTHOR:
+// Joel Butala
+// ======================================================
+
+
+// ======================================================
+// IMPORT MONGOOSE
+// ======================================================
+
 import mongoose from "mongoose";
+
+
+// ======================================================
+// CONNECT TO DATABASE
+// ======================================================
 
 const connectDB = async () => {
 
     try {
 
-        await mongoose.connect("mongodb://localhost:27017/concrete-finisher");
+        // ==================================================
+        // CONNECT TO MONGODB
+        //
+        // The connection string is stored securely inside
+        // the server .env file.
+        // ==================================================
 
-        console.log("✅ Connected to Local MongoDB");
+        await mongoose.connect(
+
+            process.env.MONGO_URI
+
+        );
+
+
+        // ==================================================
+        // SUCCESS MESSAGE
+        // ==================================================
+
+        console.log(
+
+            "✅ Connected to MongoDB"
+
+        );
 
     } catch (error) {
 
-        console.error("❌ Database Connection Failed");
+        // ==================================================
+        // ERROR MESSAGE
+        // ==================================================
 
-        console.error(error);
+        console.error(
+
+            "❌ Database Connection Failed"
+
+        );
+
+        console.error(
+
+            error.message
+
+        );
+
+
+        // ==================================================
+        // STOP SERVER
+        //
+        // The application should not continue running if
+        // the database connection fails.
+        // ==================================================
 
         process.exit(1);
 
     }
 
 };
+
+
+// ======================================================
+// EXPORT DATABASE CONNECTION FUNCTION
+// ======================================================
 
 export default connectDB;
