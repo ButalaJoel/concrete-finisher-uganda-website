@@ -35,6 +35,8 @@ import express from "express";
 
 import cors from "cors";
 
+import dns from "dns";
+
 
 // ======================================================
 // DATABASE
@@ -63,12 +65,17 @@ import authRoutes from "./routes/authRoutes.js";
 
 
 dotenv.config();
+
+dns.setServers([
+    "1.1.1.1",
+    "8.8.8.8"
+]);
+
 // ======================================================
 // CONNECT TO DATABASE
 // ======================================================
 
 connectDB();
-
 
 // ======================================================
 // CREATE EXPRESS APP

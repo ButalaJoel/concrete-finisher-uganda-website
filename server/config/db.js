@@ -51,11 +51,13 @@ const connectDB = async () => {
         // ==================================================
 
         console.log(
+    "✅ Connected to MongoDB"
+);
 
-            "✅ Connected to MongoDB"
-
-        );
-
+console.log(
+    "📦 Database:",
+    mongoose.connection.name
+);
     } catch (error) {
 
         // ==================================================
