@@ -12,12 +12,13 @@
 // ======================================================
 
 
-import {
-    Settings,
-    User,
-    Building2,
-    Globe,
-    ShieldCheck
+import { 
+    Settings, 
+    User, 
+    Building2, 
+    Globe, 
+    ShieldCheck,
+    FileText
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
@@ -161,6 +162,37 @@ function DashboardSettings() {
                     </div>
 
                 </div>
+
+                {/* QUOTATION SETTINGS */}
+
+<div className="settings-card">
+
+    <div className="settings-card-icon">
+        <FileText size={24} />
+    </div>
+
+    <div className="settings-card-content">
+
+        <h2>
+            Quotation Settings
+        </h2>
+
+        <p>
+            Manage payment details, quotation terms and document defaults.
+        </p>
+
+        <button
+            className="settings-action-button"
+            onClick={() =>
+                navigate("/dashboard/settings/quotations")
+            }
+        >
+            Manage Quotations
+        </button>
+
+    </div>
+
+</div>
 
 
                 {/* SECURITY */}

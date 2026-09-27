@@ -144,7 +144,7 @@
    SETTINGS BUTTON
 ========================================== */
 
-.settings-card-button {
+.settings-action-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -171,14 +171,14 @@
         transform 0.2s ease;
 }
 
-.settings-card-button:hover {
+.settings-action-button:hover {
     background: #b8732e;
     color: #ffffff;
 
     transform: translateY(-1px);
 }
 
-.settings-card-button:active {
+.settings-action-button:active {
     transform: translateY(0);
 }
 
@@ -274,9 +274,11 @@
         margin-bottom: 18px;
     }
 
-    .settings-card-button {
+      .settings-action-button {
+
         width: 100%;
         min-height: 46px;
         padding: 12px 18px;
+
     }
 }

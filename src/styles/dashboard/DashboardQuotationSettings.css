@@ -1,0 +1,560 @@
+/* ==========================================
+   QUOTATION SETTINGS
+========================================== */
+
+.quotation-settings-page {
+
+    width: 100%;
+
+    padding: 32px;
+
+}
+
+
+/* ==========================================
+   PAGE HEADER
+========================================== */
+
+.quotation-settings-header {
+
+    margin-bottom: 30px;
+
+}
+
+
+.quotation-settings-back-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 9px 14px;
+
+    margin-bottom: 20px;
+
+    background: #f4eee7;
+
+    color: #a86527;
+
+    border: 1px solid #e5d8ca;
+
+    border-radius: 9px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+
+}
+
+
+.quotation-settings-back-button:hover {
+
+    background: #b8732e;
+
+    color: #ffffff;
+
+    border-color: #b8732e;
+
+}
+
+
+/* ==========================================
+   TITLE
+========================================== */
+
+.quotation-settings-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+}
+
+
+.quotation-settings-title-icon {
+
+    width: 52px;
+
+    height: 52px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background: #f4eee7;
+
+    color: #b8732e;
+
+    border-radius: 14px;
+
+}
+
+
+.quotation-settings-title h1 {
+
+    margin: 0 0 6px;
+
+    font-size: 32px;
+
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    color: #1f2d3d;
+
+}
+
+
+.quotation-settings-title p {
+
+    margin: 0;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    color: #667085;
+
+}
+
+
+/* ==========================================
+   FORM
+========================================== */
+
+.quotation-settings-form {
+
+    width: 100%;
+
+    max-width: 1000px;
+
+}
+
+
+/* ==========================================
+   CARD
+========================================== */
+
+.quotation-settings-card {
+
+    width: 100%;
+
+    margin-bottom: 20px;
+
+    padding: 28px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e0da;
+
+    border-radius: 16px;
+
+    box-shadow: 0 4px 16px rgba(31, 45, 61, 0.05);
+
+}
+
+
+/* ==========================================
+   CARD HEADER
+========================================== */
+
+.quotation-settings-card-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 14px;
+
+    margin-bottom: 24px;
+
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid #eee9e3;
+
+}
+
+
+.quotation-settings-card-icon {
+
+    width: 44px;
+
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background: #f4eee7;
+
+    color: #b8732e;
+
+    border-radius: 12px;
+
+}
+
+
+.quotation-settings-card-header h2 {
+
+    margin: 0 0 5px;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    color: #1f2d3d;
+
+}
+
+
+.quotation-settings-card-header p {
+
+    margin: 0;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    color: #667085;
+
+}
+
+
+/* ==========================================
+   FORM GRID
+========================================== */
+
+.quotation-settings-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+
+}
+
+
+/* ==========================================
+   FORM GROUP
+========================================== */
+
+.quotation-settings-form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+
+.quotation-settings-form-group label {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #344054;
+
+}
+
+
+.quotation-settings-form-group input,
+
+.quotation-settings-form-group textarea {
+
+    width: 100%;
+
+    padding: 0 14px;
+
+    background: #ffffff;
+
+    border: 1px solid #dcd6cf;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    font-size: 14px;
+
+    font-family: inherit;
+
+    color: #1f2d3d;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.quotation-settings-form-group input {
+
+    height: 46px;
+
+}
+
+
+.quotation-settings-form-group textarea {
+
+    min-height: 120px;
+
+    padding-top: 12px;
+
+    padding-bottom: 12px;
+
+    resize: vertical;
+
+    line-height: 1.6;
+
+}
+
+
+.quotation-settings-form-group input::placeholder,
+
+.quotation-settings-form-group textarea::placeholder {
+
+    color: #98a2b3;
+
+}
+
+
+.quotation-settings-form-group input:focus,
+
+.quotation-settings-form-group textarea:focus {
+
+    border-color: #b8732e;
+
+    box-shadow:
+        0 0 0 3px rgba(184, 115, 46, 0.12);
+
+}
+
+
+/* ==========================================
+   ACTIONS
+========================================== */
+
+.quotation-settings-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    padding-top: 4px;
+
+}
+
+
+.quotation-settings-cancel-button,
+
+.quotation-settings-save-button {
+
+    min-height: 44px;
+
+    padding: 0 20px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+
+}
+
+
+/* CANCEL */
+
+.quotation-settings-cancel-button {
+
+    background: #f4eee7;
+
+    color: #344054;
+
+    border: 1px solid #e5d8ca;
+
+}
+
+
+.quotation-settings-cancel-button:hover {
+
+    background: #eee6dd;
+
+}
+
+
+/* SAVE */
+
+.quotation-settings-save-button {
+
+    background: #b8732e;
+
+    color: #ffffff;
+
+    border: 1px solid #b8732e;
+
+}
+
+
+.quotation-settings-save-button:hover {
+
+    background: #a86527;
+
+    border-color: #a86527;
+
+}
+
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width: 1024px) {
+
+    .quotation-settings-page {
+
+        padding: 28px 24px;
+
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 768px) {
+
+    .quotation-settings-page {
+
+        padding: 24px 18px;
+
+    }
+
+
+    .quotation-settings-title h1 {
+
+        font-size: 28px;
+
+    }
+
+
+    .quotation-settings-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+
+    }
+
+
+    .quotation-settings-card {
+
+        padding: 22px;
+
+    }
+
+
+    .quotation-settings-actions {
+
+        flex-direction: column-reverse;
+
+    }
+
+
+    .quotation-settings-cancel-button,
+
+    .quotation-settings-save-button {
+
+        width: 100%;
+
+    }
+
+}
+
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width: 480px) {
+
+    .quotation-settings-page {
+
+        padding: 20px 14px;
+
+    }
+
+
+    .quotation-settings-card {
+
+        padding: 18px;
+
+        border-radius: 14px;
+
+    }
+
+
+    .quotation-settings-title {
+
+        align-items: flex-start;
+
+    }
+
+
+    .quotation-settings-title h1 {
+
+        font-size: 26px;
+
+    }
+
+
+    .quotation-settings-title p {
+
+        font-size: 14px;
+
+    }
+
+
+    .quotation-settings-title-icon {
+
+        width: 46px;
+
+        height: 46px;
+
+    }
+
+}

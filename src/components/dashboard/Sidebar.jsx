@@ -35,9 +35,9 @@ import "../../styles/dashboard/Sidebar.css";
 
 
 import {
-
     LayoutDashboard,
     FileText,
+    FilePlus,
     FolderKanban,
     BarChart3,
     Settings,
@@ -45,9 +45,7 @@ import {
     Bell,
     UserCircle,
     X
-
 } from "lucide-react";
-
 
 // ======================================================
 // DASHBOARD MENU ITEMS
@@ -65,6 +63,12 @@ const menuItems = [
         title: "Quotations",
         icon: FileText,
         path: "/dashboard/quotations"
+    },
+
+    {
+        title: "Create Quotation",
+        icon: FilePlus,
+        path: "/dashboard/quotations/create"
     },
 
     {
@@ -86,7 +90,6 @@ const menuItems = [
     }
 
 ];
-
 
 // ======================================================
 // SIDEBAR COMPONENT
@@ -333,8 +336,8 @@ function Sidebar({
                                         to={item.path}
 
                                         end={
-                                            item.path ===
-                                            "/dashboard"
+        item.path === "/dashboard" ||
+        item.path === "/dashboard/quotations"
                                         }
 
                                         className={(

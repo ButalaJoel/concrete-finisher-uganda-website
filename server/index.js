@@ -51,6 +51,10 @@ import connectDB from "./config/db.js";
 
 import quotationRoutes from "./routes/quotationRoutes.js";
 
+import quotationSettingRoutes from "./routes/quotationSettingRoutes.js";
+
+import officialQuotationRoutes from "./routes/officialQuotationRoutes.js";
+
 import projectRoutes from "./routes/projectRoutes.js";
 
 import reportRoutes from "./routes/reportRoutes.js";
@@ -168,6 +172,20 @@ app.use(
 
     quotationRoutes
 
+);
+
+// ======================================================
+// QUOTATION SETTINGS ROUTES
+// ======================================================
+
+app.use(
+    "/api/quotation-settings",
+    quotationSettingRoutes
+);
+
+app.use(
+    "/api/official-quotations",
+    officialQuotationRoutes
 );
 
 

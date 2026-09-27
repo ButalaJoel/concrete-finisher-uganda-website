@@ -69,6 +69,8 @@ import DashboardProfileSettings from "./pages/DashboardProfileSettings";
 import DashboardCompanySettings from "./pages/DashboardCompanySettings";
 import DashboardSystemPreferences from "./pages/DashboardSystemPreferences";
 import DashboardSecuritySettings from "./pages/DashboardSecuritySettings";
+import DashboardQuotationSettings from "./pages/DashboardQuotationSettings";
+import DashboardCreateQuotation from "./pages/DashboardCreateQuotation";
 
 
 // ======================================================
@@ -189,6 +191,11 @@ function App() {
                         element={<DashboardQuotations />}
                     />
 
+                    <Route
+    path="quotations/create"
+    element={<DashboardCreateQuotation />}
+/>
+
 
                     {/* ===============================
                         PROJECTS
@@ -258,6 +265,11 @@ function App() {
                         path="settings/security"
                         element={<DashboardSecuritySettings />}
                     />
+
+                    <Route 
+    path="settings/quotations"
+    element={<DashboardQuotationSettings />}
+/>
 
 
                 </Route>

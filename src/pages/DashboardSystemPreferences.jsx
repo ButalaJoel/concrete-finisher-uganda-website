@@ -8,39 +8,40 @@
 // Allows the administrator to manage system-wide
 // preferences.
 //
-// VERSION 1:
-// • Currency
-// • Currency display
-// • Timezone
-// • Date format
-// • Quotation number prefix
-// • Default quotation validity
-//
-// BACKEND:
-// API integration will be added after the interface
-// is completed and styled.
-// ======================================================
-
-
-// ======================================================
-// IMPORTS
+// FEATURES:
+// • Load saved preferences
+// • Update preferences
+// • Save preferences to MongoDB
+// • Loading state
+// • Saving state
+// • Error state
+// • Success state
 // ======================================================
 
 import {
-
     ArrowLeft,
     Globe2,
     FileText,
-
 } from "lucide-react";
 
 import {
+    useEffect,
+    useState,
+} from "react";
 
+import {
     useNavigate,
-
 } from "react-router-dom";
 
 import "../styles/dashboard/DashboardSystemPreferences.css";
+
+
+// ======================================================
+// API URL
+// ======================================================
+
+const API_URL =
+    `${import.meta.env.VITE_API_URL}/api/preferences`;
 
 
 // ======================================================
@@ -57,26 +58,380 @@ function DashboardSystemPreferences() {
 
 
     // ==================================================
-    // FORM SUBMISSION
-    //
-    // Temporary frontend behaviour.
-    //
-    // Backend API integration will be added later.
+    // FORM STATE
     // ==================================================
 
-    const handleSubmit = (event) => {
+    const [
+        formData,
+        setFormData
+    ] = useState({
 
-        event.preventDefault();
+        currency: "Ugandan Shilling (UGX)",
 
-        console.log(
-            "System preferences submitted."
-        );
+        currencyDisplay: "UGX",
+
+        timezone: "Africa/Kampala",
+
+        dateFormat: "DD/MM/YYYY",
+
+        quotationPrefix: "CFU-QT",
+
+        defaultValidity: "30",
+
+    });
+
+
+    // ==================================================
+    // PAGE STATES
+    // ==================================================
+
+    const [
+        loading,
+        setLoading
+    ] = useState(true);
+
+
+    const [
+        saving,
+        setSaving
+    ] = useState(false);
+
+
+    const [
+        error,
+        setError
+    ] = useState("");
+
+
+    const [
+        successMessage,
+        setSuccessMessage
+    ] = useState("");
+
+
+    // ==================================================
+    // LOAD SYSTEM PREFERENCES
+    //
+    // GET:
+    //
+    // /api/preferences
+    // ==================================================
+
+    useEffect(() => {
+
+        const loadPreferences = async () => {
+
+            try {
+
+                setLoading(true);
+
+                setError("");
+
+
+                const response =
+                    await fetch(API_URL);
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Unable to load system preferences."
+                    );
+
+                }
+
+
+                const preferences =
+                    await response.json();
+
+
+                // ==========================================
+                // POPULATE FORM
+                // ==========================================
+
+                setFormData({
+
+                    currency:
+                        preferences.currency ||
+                        "Ugandan Shilling (UGX)",
+
+                    currencyDisplay:
+                        preferences.currencyDisplay ||
+                        "UGX",
+
+                    timezone:
+                        preferences.timezone ||
+                        "Africa/Kampala",
+
+                    dateFormat:
+                        preferences.dateFormat ||
+                        "DD/MM/YYYY",
+
+                    quotationPrefix:
+                        preferences.quotationPrefix ||
+                        "CFU-QT",
+
+                    defaultValidity:
+                        String(
+                            preferences.defaultValidity ||
+                            30
+                        ),
+
+                });
+
+            } catch (error) {
+
+                console.error(
+                    "Load system preferences error:",
+                    error
+                );
+
+
+                setError(
+                    "Unable to load system preferences. Please try again."
+                );
+
+            } finally {
+
+                setLoading(false);
+
+            }
+
+        };
+
+
+        loadPreferences();
+
+    }, []);
+
+
+    // ==================================================
+    // HANDLE FORM CHANGES
+    // ==================================================
+
+    const handleChange = (event) => {
+
+        const {
+            name,
+            value
+        } = event.target;
+
+
+        setFormData({
+
+            ...formData,
+
+            [name]:
+                value,
+
+        });
+
+
+        setSuccessMessage("");
 
     };
 
 
     // ==================================================
-    // COMPONENT RETURN
+    // SAVE SYSTEM PREFERENCES
+    //
+    // PUT:
+    //
+    // /api/preferences
+    // ==================================================
+
+    const handleSubmit = async (event) => {
+
+        event.preventDefault();
+
+
+        try {
+
+            setSaving(true);
+
+            setError("");
+
+            setSuccessMessage("");
+
+
+            // ==============================================
+            // PREPARE DATA
+            // ==============================================
+
+            const preferencesData = {
+
+                currency:
+                    formData.currency,
+
+                currencyDisplay:
+                    formData.currencyDisplay,
+
+                timezone:
+                    formData.timezone,
+
+                dateFormat:
+                    formData.dateFormat,
+
+                quotationPrefix:
+                    formData.quotationPrefix.trim(),
+
+                defaultValidity:
+                    Number(
+                        formData.defaultValidity
+                    ),
+
+            };
+
+
+            // ==============================================
+            // SEND REQUEST
+            // ==============================================
+
+            const response =
+                await fetch(
+
+                    API_URL,
+
+                    {
+
+                        method: "PUT",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json",
+
+                        },
+
+                        body:
+                            JSON.stringify(
+                                preferencesData
+                            ),
+
+                    }
+
+                );
+
+
+            const data =
+                await response.json();
+
+
+            // ==============================================
+            // HANDLE API ERROR
+            // ==============================================
+
+            if (!response.ok) {
+
+                throw new Error(
+
+                    data.message ||
+
+                    "Unable to save system preferences."
+
+                );
+
+            }
+
+
+            // ==============================================
+            // UPDATE FORM WITH SAVED DATA
+            // ==============================================
+
+            if (data.preferences) {
+
+                setFormData({
+
+                    currency:
+                        data.preferences.currency ||
+                        "Ugandan Shilling (UGX)",
+
+                    currencyDisplay:
+                        data.preferences.currencyDisplay ||
+                        "UGX",
+
+                    timezone:
+                        data.preferences.timezone ||
+                        "Africa/Kampala",
+
+                    dateFormat:
+                        data.preferences.dateFormat ||
+                        "DD/MM/YYYY",
+
+                    quotationPrefix:
+                        data.preferences.quotationPrefix ||
+                        "CFU-QT",
+
+                    defaultValidity:
+                        String(
+                            data.preferences.defaultValidity ||
+                            30
+                        ),
+
+                });
+
+            }
+
+
+            // ==============================================
+            // SUCCESS
+            // ==============================================
+
+            setSuccessMessage(
+                "System preferences saved successfully."
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Save system preferences error:",
+                error
+            );
+
+
+            setError(
+
+                error.message ||
+
+                "Unable to save system preferences."
+
+            );
+
+        } finally {
+
+            setSaving(false);
+
+        }
+
+    };
+
+
+    // ==================================================
+    // LOADING SCREEN
+    // ==================================================
+
+    if (loading) {
+
+        return (
+
+            <div className="system-preferences-page">
+
+                <div className="system-preferences-loading">
+
+                    Loading system preferences...
+
+                </div>
+
+            </div>
+
+        );
+
+    }
+
+
+    // ==================================================
+    // COMPONENT
     // ==================================================
 
     return (
@@ -90,8 +445,6 @@ function DashboardSystemPreferences() {
 
             <div className="system-preferences-header">
 
-
-                {/* BACK BUTTON */}
 
                 <button
                     type="button"
@@ -110,8 +463,6 @@ function DashboardSystemPreferences() {
                 </button>
 
 
-                {/* PAGE TITLE */}
-
                 <div className="system-preferences-title">
 
                     <h1>
@@ -129,7 +480,41 @@ function DashboardSystemPreferences() {
 
 
             {/* ==========================================
-                SYSTEM PREFERENCES FORM
+                ERROR MESSAGE
+            ========================================== */}
+
+            {error && (
+
+                <div className="system-preferences-error">
+
+                    <p>
+                        {error}
+                    </p>
+
+                </div>
+
+            )}
+
+
+            {/* ==========================================
+                SUCCESS MESSAGE
+            ========================================== */}
+
+            {successMessage && (
+
+                <div className="system-preferences-success">
+
+                    <p>
+                        {successMessage}
+                    </p>
+
+                </div>
+
+            )}
+
+
+            {/* ==========================================
+                FORM
             ========================================== */}
 
             <form
@@ -144,8 +529,6 @@ function DashboardSystemPreferences() {
 
                 <div className="preferences-section">
 
-
-                    {/* SECTION HEADER */}
 
                     <div className="preferences-section-header">
 
@@ -171,8 +554,6 @@ function DashboardSystemPreferences() {
                     </div>
 
 
-                    {/* GENERAL PREFERENCES GRID */}
-
                     <div className="preferences-form-grid">
 
 
@@ -186,18 +567,20 @@ function DashboardSystemPreferences() {
 
                             <select
                                 id="currency"
-                                defaultValue="UGX"
+                                name="currency"
+                                value={formData.currency}
+                                onChange={handleChange}
                             >
 
-                                <option value="UGX">
+                                <option value="Ugandan Shilling (UGX)">
                                     Ugandan Shilling (UGX)
                                 </option>
 
-                                <option value="USD">
+                                <option value="US Dollar (USD)">
                                     US Dollar (USD)
                                 </option>
 
-                                <option value="KES">
+                                <option value="Kenyan Shilling (KES)">
                                     Kenyan Shilling (KES)
                                 </option>
 
@@ -216,7 +599,9 @@ function DashboardSystemPreferences() {
 
                             <select
                                 id="currencyDisplay"
-                                defaultValue="UGX"
+                                name="currencyDisplay"
+                                value={formData.currencyDisplay}
+                                onChange={handleChange}
                             >
 
                                 <option value="UGX">
@@ -242,7 +627,9 @@ function DashboardSystemPreferences() {
 
                             <select
                                 id="timezone"
-                                defaultValue="Africa/Kampala"
+                                name="timezone"
+                                value={formData.timezone}
+                                onChange={handleChange}
                             >
 
                                 <option value="Africa/Kampala">
@@ -264,7 +651,9 @@ function DashboardSystemPreferences() {
 
                             <select
                                 id="dateFormat"
-                                defaultValue="DD/MM/YYYY"
+                                name="dateFormat"
+                                value={formData.dateFormat}
+                                onChange={handleChange}
                             >
 
                                 <option value="DD/MM/YYYY">
@@ -304,8 +693,6 @@ function DashboardSystemPreferences() {
                 <div className="preferences-section">
 
 
-                    {/* SECTION HEADER */}
-
                     <div className="preferences-section-header">
 
                         <div className="preferences-section-icon">
@@ -330,8 +717,6 @@ function DashboardSystemPreferences() {
                     </div>
 
 
-                    {/* QUOTATION SETTINGS GRID */}
-
                     <div className="preferences-form-grid">
 
 
@@ -345,7 +730,10 @@ function DashboardSystemPreferences() {
 
                             <input
                                 id="quotationPrefix"
+                                name="quotationPrefix"
                                 type="text"
+                                value={formData.quotationPrefix}
+                                onChange={handleChange}
                                 placeholder="Example: CFU-QT"
                             />
 
@@ -362,7 +750,9 @@ function DashboardSystemPreferences() {
 
                             <select
                                 id="quotationValidity"
-                                defaultValue="30"
+                                name="defaultValidity"
+                                value={formData.defaultValidity}
+                                onChange={handleChange}
                             >
 
                                 <option value="7">
@@ -403,14 +793,13 @@ function DashboardSystemPreferences() {
                 <div className="system-preferences-actions">
 
 
-                    {/* CANCEL */}
-
                     <button
                         type="button"
                         className="cancel-preferences-button"
                         onClick={() =>
                             navigate("/dashboard/settings")
                         }
+                        disabled={saving}
                     >
 
                         Cancel
@@ -418,14 +807,16 @@ function DashboardSystemPreferences() {
                     </button>
 
 
-                    {/* SAVE */}
-
                     <button
                         type="submit"
                         className="save-preferences-button"
+                        disabled={saving}
                     >
 
-                        Save Preferences
+                        {saving
+                            ? "Saving..."
+                            : "Save Preferences"
+                        }
 
                     </button>
 
