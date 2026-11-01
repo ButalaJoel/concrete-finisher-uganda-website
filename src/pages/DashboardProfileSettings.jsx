@@ -49,6 +49,7 @@ import {
 } from "react-router-dom";
 
 import "../styles/dashboard/DashboardProfileSettings.css";
+import { getAuthHeaders } from "../utils/auth";
 
 
 // ======================================================
@@ -192,8 +193,11 @@ function DashboardProfileSettings() {
 
                     const response =
                         await fetch(
-                            API_URL
-                        );
+                        API_URL,
+                        {
+                            headers: getAuthHeaders(),
+                        }
+                    );
 
 
                     // Convert response to JSON
@@ -219,32 +223,34 @@ function DashboardProfileSettings() {
 
                     // Store profile information
 
+                    const admin = data.admin || data;
+
                     setProfile({
 
                         fullName:
 
-                            data.fullName || "",
+                            admin.fullName || "",
 
 
                         email:
 
-                            data.email || "",
+                            admin.email || "",
 
 
                         phoneNumber:
 
-                            data.phoneNumber || "",
+                            admin.phoneNumber || "",
 
                     });
 
 
                     // Load saved profile photo
 
-                    if (data.profilePhoto) {
+                    if (admin.profilePhoto) {
 
                         setPhotoPreview(
 
-                            `${SERVER_URL}${data.profilePhoto}`
+                            `${SERVER_URL}${admin.profilePhoto}`
 
                         );
 
@@ -464,6 +470,7 @@ function DashboardProfileSettings() {
                         {
 
                             method: "PUT",
+                            headers: getAuthHeaders(),
 
                             body: formData,
 
@@ -495,32 +502,34 @@ function DashboardProfileSettings() {
 
                 // Update form using saved data
 
+                const admin = data.admin || data;
+
                 setProfile({
 
                     fullName:
 
-                        data.fullName || "",
+                        admin.fullName || "",
 
 
                     email:
 
-                        data.email || "",
+                        admin.email || "",
 
 
                     phoneNumber:
 
-                        data.phoneNumber || "",
+                        admin.phoneNumber || "",
 
                 });
 
 
                 // Update saved photo preview
 
-                if (data.profilePhoto) {
+                if (admin.profilePhoto) {
 
                     setPhotoPreview(
 
-                        `${SERVER_URL}${data.profilePhoto}`
+                        `${SERVER_URL}${admin.profilePhoto}`
 
                     );
 

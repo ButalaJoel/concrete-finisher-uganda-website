@@ -1,23 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { AlertCircle, FolderOpen, RefreshCw } from "lucide-react";
 import projectsHeroImage from "../assets/projects/darling-namanve/after-3.jpg";
+import { fetchProjectsPage } from "../utils/projectsApi";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Projects() {
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const category = searchParams.get("category");
-
-
-  // ======================================================
-  // ACTIVE FILTER
-  // ======================================================
-
-  const [activeFilter, setActiveFilter] = useState(
-    category || "All Projects"
-  );
+  const activeFilter = category || "All Projects";
 
 
   // ======================================================
@@ -40,6 +34,7 @@ function Projects() {
 
   const [error, setError] = useState("");
 
+  const [retryCount, setRetryCount] = useState(0);
 
   // ======================================================
   // PAGINATION
@@ -59,21 +54,9 @@ function Projects() {
 
   const projectsPerPage = 3;
 
-
-  // ======================================================
-  // UPDATE FILTER FROM URL
-  // ======================================================
-
-  useEffect(() => {
-
-    setActiveFilter(
-      category || "All Projects"
-    );
-
-    // Reset pagination when category changes
-    setCurrentPage(1);
-
-  }, [category]);
+  const requestKey = `${currentPage}:${activeFilter}:${retryCount}`;
+  const [completedRequestKey, setCompletedRequestKey] = useState("");
+  const isRequestLoading = loading || completedRequestKey !== requestKey;
 
 
   // ======================================================
@@ -82,6 +65,8 @@ function Projects() {
 
   useEffect(() => {
 
+    const controller = new AbortController();
+
     const fetchProjects = async () => {
 
       try {
@@ -89,56 +74,20 @@ function Projects() {
         setLoading(true);
 
         setError("");
+        setProjects([]);
 
 
         // ==================================================
         // BUILD API URL
         // ==================================================
 
-        let url =
-          `${API_URL}/api/projects?page=${currentPage}&limit=${projectsPerPage}`;
-
-
-        // ==================================================
-        // ADD CATEGORY FILTER
-        // ==================================================
-
-        if (
-          activeFilter &&
-          activeFilter !== "All Projects"
-        ) {
-
-          url +=
-            `&category=${encodeURIComponent(
-              activeFilter
-            )}`;
-
-        }
-
-
-        // ==================================================
-        // FETCH PROJECTS
-        // ==================================================
-
-        const response = await fetch(url);
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            "Failed to load projects."
-          );
-
-        }
-
-
-        // ==================================================
-        // CONVERT RESPONSE TO JSON
-        // ==================================================
-
-        const result =
-          await response.json();
-
+        const result = await fetchProjectsPage({
+          apiUrl: API_URL,
+          page: currentPage,
+          limit: projectsPerPage,
+          category: activeFilter,
+          signal: controller.signal,
+        });
 
         // ==================================================
         // STORE PROJECTS
@@ -158,22 +107,28 @@ function Projects() {
         );
 
 
-      } catch (error) {
+      } catch (fetchError) {
+
+        if (controller.signal.aborted) {
+          return;
+        }
 
         console.error(
           "Projects fetch error:",
-          error
+          fetchError
         );
 
 
-        setError(
-          "Unable to load projects. Please try again."
-        );
+        setProjects([]);
+        setError("Unable to load projects. Please try again.");
 
 
       } finally {
 
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+          setCompletedRequestKey(requestKey);
+        }
 
       }
 
@@ -182,7 +137,9 @@ function Projects() {
 
     fetchProjects();
 
-  }, [currentPage, activeFilter]);
+    return () => controller.abort();
+
+  }, [currentPage, activeFilter, retryCount, requestKey]);
 
 
   // ======================================================
@@ -333,11 +290,14 @@ function Projects() {
                   : ""
               }
               onClick={() => {
-
-                setActiveFilter(filter);
-
+                const nextSearchParams = new URLSearchParams(searchParams);
+                if (filter === "All Projects") {
+                  nextSearchParams.delete("category");
+                } else {
+                  nextSearchParams.set("category", filter);
+                }
+                setSearchParams(nextSearchParams);
                 setCurrentPage(1);
-
               }}
             >
               {filter}
@@ -352,12 +312,24 @@ function Projects() {
             LOADING STATE
         ================================================== */}
 
-        {loading && (
-
-          <p>
-            Loading projects...
-          </p>
-
+        {isRequestLoading && (
+          <div
+            className="projects-page-grid projects-skeleton-grid"
+            role="status"
+            aria-label="Loading projects"
+            aria-busy="true"
+          >
+            {Array.from({ length: projectsPerPage }, (_, index) => (
+              <div className="projects-page-card project-skeleton-card" key={index} aria-hidden="true">
+                <div className="projects-page-image project-skeleton-image" />
+                <div className="projects-page-card-content project-skeleton-content">
+                  <span className="project-skeleton-line project-skeleton-service" />
+                  <span className="project-skeleton-line project-skeleton-title" />
+                  <span className="project-skeleton-line project-skeleton-location" />
+                </div>
+              </div>
+            ))}
+          </div>
         )}
 
 
@@ -365,12 +337,16 @@ function Projects() {
             ERROR STATE
         ================================================== */}
 
-        {!loading && error && (
-
-          <p>
-            {error}
-          </p>
-
+        {!isRequestLoading && error && (
+          <div className="projects-state projects-error-state" role="alert">
+            <AlertCircle size={34} aria-hidden="true" />
+            <h2>We couldn&apos;t load our projects.</h2>
+            <p>{error}</p>
+            <button type="button" onClick={() => setRetryCount((count) => count + 1)}>
+              <RefreshCw size={17} aria-hidden="true" />
+              Retry
+            </button>
+          </div>
         )}
 
 
@@ -378,13 +354,27 @@ function Projects() {
             EMPTY STATE
         ================================================== */}
 
-        {!loading &&
+        {!isRequestLoading &&
           !error &&
           projects.length === 0 && (
 
-            <p>
-              No projects found.
-            </p>
+            <div className="projects-state projects-empty-state">
+              <FolderOpen size={38} aria-hidden="true" />
+              <h2>
+                {activeFilter === "All Projects"
+                  ? "Our projects are coming soon."
+                  : "No projects found for this category."}
+              </h2>
+              <p>
+                {activeFilter === "All Projects"
+                  ? "We're updating our portfolio with recent concrete finishing projects. Please check back soon."
+                  : "Try another project category, or explore our services and contact us about your project."}
+              </p>
+              <div className="projects-state-actions">
+                <Link to="/services">Explore Services</Link>
+                <Link to="/contact">Contact Us</Link>
+              </div>
+            </div>
 
           )}
 
@@ -393,7 +383,7 @@ function Projects() {
             PROJECT GRID
         ================================================== */}
 
-        {!loading &&
+        {!isRequestLoading &&
           !error &&
           projects.length > 0 && (
 
@@ -463,7 +453,7 @@ function Projects() {
             PAGINATION
         ================================================== */}
 
-        {!loading &&
+        {!isRequestLoading &&
           !error &&
           totalPages > 1 && (
 

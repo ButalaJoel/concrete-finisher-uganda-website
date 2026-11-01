@@ -32,11 +32,12 @@ import {
     Menu
 } from "lucide-react";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { useNavigate } from "react-router-dom";
 
 import "../../styles/dashboard/Header.css";
+import { getAuthHeaders } from "../../utils/auth";
 
 
 // ======================================================
@@ -84,6 +85,7 @@ function Header({
 
     const [showSearchResults, setShowSearchResults] =
     useState(false);
+    const searchContainerRef = useRef(null);
 
     // ==================================================
     // SEARCH PROJECTS AND QUOTATIONS
@@ -99,20 +101,11 @@ function Header({
             searchTerm.trim();
 
 
-        // If the search box is empty,
-        // clear previous results.
         if (!trimmedSearch) {
-
-            setProjectResults([]);
-
-            setQuotationResults([]);
-
-            setIsSearching(false);
-
             return;
-
         }
 
+        let isCurrent = true;
 
         // Prevent a request for every single keystroke.
         const searchTimer =
@@ -138,7 +131,10 @@ function Header({
                         ),
 
                         fetch(
-                            `${import.meta.env.VITE_API_URL}/api/quotations?search=${encodeURIComponent(trimmedSearch)}`
+                            `${import.meta.env.VITE_API_URL}/api/quotations?search=${encodeURIComponent(trimmedSearch)}`,
+                            {
+                                headers: getAuthHeaders(),
+                            }
                         ),
 
                     ]);
@@ -160,15 +156,15 @@ function Header({
 
 
                     // Save matching projects
-                    setProjectResults(
-                        projectData.data || []
-                    );
+                    if (isCurrent) {
+                        setProjectResults(projectData.data || []);
+                    }
 
 
                     // Save matching quotations
-                    setQuotationResults(
-                        quotationData.data || []
-                    );
+                    if (isCurrent) {
+                        setQuotationResults(quotationData.data || []);
+                    }
 
 
                 } catch (error) {
@@ -182,15 +178,18 @@ function Header({
 
                     // Prevent old results from remaining
                     // on screen after a failed search.
-                    setProjectResults([]);
-
-                    setQuotationResults([]);
+                    if (isCurrent) {
+                        setProjectResults([]);
+                        setQuotationResults([]);
+                    }
 
 
                 } finally {
 
 
-                    setIsSearching(false);
+                    if (isCurrent) {
+                        setIsSearching(false);
+                    }
 
                 }
 
@@ -202,13 +201,39 @@ function Header({
         // If the user types again before 400ms,
         // cancel the previous timer.
         return () => {
-
+            isCurrent = false;
             clearTimeout(searchTimer);
 
         };
 
 
     }, [searchTerm]);
+
+    useEffect(() => {
+        if (!showSearchResults) {
+            return undefined;
+        }
+
+        const handleOutsidePointerDown = (event) => {
+            if (!searchContainerRef.current?.contains(event.target)) {
+                setShowSearchResults(false);
+            }
+        };
+
+        const handleEscape = (event) => {
+            if (event.key === "Escape") {
+                setShowSearchResults(false);
+            }
+        };
+
+        document.addEventListener("pointerdown", handleOutsidePointerDown);
+        document.addEventListener("keydown", handleEscape);
+
+        return () => {
+            document.removeEventListener("pointerdown", handleOutsidePointerDown);
+            document.removeEventListener("keydown", handleEscape);
+        };
+    }, [showSearchResults]);
 
 
     // ==================================================
@@ -284,19 +309,6 @@ function Header({
             ? `${import.meta.env.VITE_API_URL}${admin.profilePhoto}`
 
             : null;
-
-            console.log("Admin data:", admin);
-
-console.log(
-    "VITE API URL:",
-    import.meta.env.VITE_API_URL
-);
-
-console.log(
-    "Profile photo URL:",
-    profilePhotoUrl
-);
-
 
     // ==================================================
     // NEW PROJECT
@@ -437,7 +449,7 @@ console.log(
                     SEARCH
                 ===================================== */}
 
-                <div className="search-box">
+                <div className="search-box" ref={searchContainerRef}>
 
 
                     <Search size={18} />
@@ -450,9 +462,16 @@ console.log(
     onChange={(event) => {
 
         setSearchTerm(event.target.value);
+        const hasQuery = event.target.value.trim() !== "";
+        setIsSearching(hasQuery);
+
+        if (!hasQuery) {
+            setProjectResults([]);
+            setQuotationResults([]);
+        }
 
         setShowSearchResults(
-            event.target.value.trim() !== ""
+            hasQuery
         );
 
     }}
@@ -467,7 +486,7 @@ console.log(
     }}
 />
 
-{showSearchResults && (
+{showSearchResults && searchTerm.trim() && (
 
     <div className="search-results-dropdown">
 

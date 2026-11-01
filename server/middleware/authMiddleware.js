@@ -274,9 +274,7 @@ const protect = async (req, res, next) => {
         // EXPIRED TOKEN
         // ==================================================
 
-        if (
-            error.name === "TokenExpiredError"
-        ) {
+        if (error.name === "TokenExpiredError") {
 
             return res.status(401).json({
 
@@ -292,9 +290,7 @@ const protect = async (req, res, next) => {
         // INVALID TOKEN
         // ==================================================
 
-        if (
-            error.name === "JsonWebTokenError"
-        ) {
+        if (["JsonWebTokenError", "NotBeforeError"].includes(error.name)) {
 
             return res.status(401).json({
 

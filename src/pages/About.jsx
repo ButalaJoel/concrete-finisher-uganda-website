@@ -7,10 +7,11 @@ import VisionMission from "../components/VisionMission";
 import WhyChooseUs from "../components/WhyChooseUs";
 import AboutCTA from "../components/AboutCTA";
 import CompanyStats from "../components/CompanyStats";
+import "../styles/AboutPage.css";
 
 function About() {
   return (
-    <>
+    <div className="about-page">
       <Navbar />
 
       <AboutHero />
@@ -21,7 +22,7 @@ function About() {
       <AboutCTA />
 
       <Footer />
-    </>
+    </div>
   );
 }
 

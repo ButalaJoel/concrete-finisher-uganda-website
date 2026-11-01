@@ -35,6 +35,11 @@ const quotationItemSchema = new mongoose.Schema({
 
         min: 0,
 
+        validate: {
+            validator: Number.isFinite,
+            message: "Quantity must be finite.",
+        },
+
     },
 
     unit: {
@@ -55,6 +60,11 @@ const quotationItemSchema = new mongoose.Schema({
 
         min: 0,
 
+        validate: {
+            validator: Number.isFinite,
+            message: "Unit price must be finite.",
+        },
+
     },
 
     amount: {
@@ -64,6 +74,11 @@ const quotationItemSchema = new mongoose.Schema({
         required: true,
 
         min: 0,
+
+        validate: {
+            validator: Number.isFinite,
+            message: "Item amount must be finite.",
+        },
 
     },
 
@@ -246,6 +261,11 @@ const officialQuotationSchema = new mongoose.Schema({
         required: true,
 
         min: 0,
+
+        validate: {
+            validator: Number.isFinite,
+            message: "Subtotal must be finite.",
+        },
 
     },
 

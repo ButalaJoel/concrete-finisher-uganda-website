@@ -32,7 +32,8 @@ import "../../styles/dashboard/RecentQuotations.css";
 function RecentQuotations({
     quotations,
     loading,
-    error
+    error,
+    refreshQuotations
 }) {
 
 
@@ -108,13 +109,14 @@ function RecentQuotations({
             ========================================= */}
 
             {loading && (
-
-                <p className="recent-message">
-
-                    Loading recent quotations...
-
-                </p>
-
+                <div className="dashboard-skeleton-list" role="status" aria-label="Loading recent quotations" aria-busy="true">
+                    {Array.from({ length: 3 }, (_, index) => (
+                        <div className="dashboard-skeleton-row" key={index} aria-hidden="true">
+                            <span className="dashboard-skeleton dashboard-skeleton-line" />
+                            <span className="dashboard-skeleton dashboard-skeleton-line dashboard-skeleton-line-short" />
+                        </div>
+                    ))}
+                </div>
             )}
 
 
@@ -124,11 +126,10 @@ function RecentQuotations({
 
             {!loading && error && (
 
-                <p className="recent-message recent-error">
-
-                    Unable to load recent quotations.
-
-                </p>
+                <div className="dashboard-state-message dashboard-state-error" role="alert">
+                    <p>Unable to load recent quotations.</p>
+                    <button type="button" onClick={refreshQuotations}>Try Again</button>
+                </div>
 
             )}
 

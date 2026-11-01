@@ -1,26 +1,75 @@
 import Quotation from "../models/Quotation.js";
 
+const CUSTOMER_QUOTATION_FIELDS = [
+  "fullName",
+  "company",
+  "phoneNumber",
+  "email",
+  "serviceRequired",
+  "propertyType",
+  "projectLocation",
+  "estimatedArea",
+  "preferredStartDate",
+  "projectDescription",
+];
+
 export const createQuotation = async (req, res) => {
-
   try {
+    if (!req.body || typeof req.body !== "object" || Array.isArray(req.body)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid quotation details.",
+      });
+    }
 
-    const quotation = await Quotation.create(req.body);
+    const customerDetails = {};
+
+    for (const field of CUSTOMER_QUOTATION_FIELDS) {
+      if (!Object.prototype.hasOwnProperty.call(req.body, field)) {
+        continue;
+      }
+
+      const value = req.body[field];
+
+      if (typeof value !== "string") {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid quotation details.",
+        });
+      }
+
+      const trimmedValue = value.trim();
+      customerDetails[field] =
+        field === "preferredStartDate" && trimmedValue === ""
+          ? undefined
+          : trimmedValue;
+    }
+
+    const quotation = await Quotation.create({
+      ...customerDetails,
+      status: "New",
+    });
 
     res.status(201).json({
       success: true,
       message: "Quotation submitted successfully.",
       data: quotation,
     });
-
   } catch (error) {
+    if (error.name === "ValidationError" || error.name === "CastError") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid quotation details.",
+      });
+    }
+
+    console.error("Create quotation error:", error.name);
 
     res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Unable to submit quotation.",
     });
-
   }
-
 };
 
 // ======================================================

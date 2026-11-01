@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 import {
   ChevronDown,
@@ -16,8 +16,6 @@ function Navbar() {
   // ================= Add the UI state =================
 
   const [menuOpen, setMenuOpen] = useState(false);
-
-  console.log(menuOpen);
 
   useEffect(() => {
 
@@ -44,13 +42,17 @@ function Navbar() {
     
       <header className="navbar">
 
-        <div className="logo-section">
+        <Link to="/" className="logo-section" aria-label="Concrete Finisher home">
           <img src={logo} alt="Concrete Finisher" />
-        </div>
+        </Link>
 
 {/* ================= Adding the Hamburger Button ================= */}
         <button
   className="menu-toggle"
+  type="button"
+  aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+  aria-expanded={menuOpen}
+  aria-controls="mobile-navigation"
   onClick={() => setMenuOpen(!menuOpen)}
 >
   {menuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -59,8 +61,8 @@ function Navbar() {
 
 <nav>
     <ul className="nav-links">
-        <li className="active">
-  <Link to="/">HOME</Link>
+        <li>
+  <NavLink to="/" end>HOME</NavLink>
 </li>
 
 {/* ================= about us dropdown link ================= */}
@@ -69,9 +71,9 @@ function Navbar() {
 
   <div className="dropdown-title">
 
-    <Link to="/about">
+    <NavLink to="/about">
       ABOUT US
-    </Link>
+    </NavLink>
 
     <ChevronDown size={13} strokeWidth={2} />
 
@@ -106,9 +108,9 @@ function Navbar() {
 
   <div className="dropdown-title">
 
-    <Link to="/services">
+    <NavLink to="/services">
       SERVICES
-    </Link>
+    </NavLink>
 
     <ChevronDown size={13} strokeWidth={2} />
 
@@ -154,9 +156,9 @@ function Navbar() {
 
     <div className="dropdown-title">
 
-        <Link to="/projects">
+        <NavLink to="/projects">
             PROJECTS
-        </Link>
+        </NavLink>
 
         <ChevronDown
             size={13}
@@ -201,7 +203,7 @@ function Navbar() {
 
 </li>
 <li>
-  <Link to="/contact">CONTACT US</Link>
+  <NavLink to="/contact">CONTACT US</NavLink>
 </li>
 
  </ul>
@@ -229,7 +231,7 @@ function Navbar() {
       </header>
 
       {menuOpen && (
-  <div className="mobile-menu">
+  <nav className="mobile-menu" id="mobile-navigation" aria-label="Mobile navigation">
 
     <div className="mobile-menu-header">
 
@@ -241,6 +243,8 @@ function Navbar() {
 
     <button
         className="mobile-close"
+        type="button"
+        aria-label="Close navigation menu"
         onClick={() => setMenuOpen(false)}
     >
         <X size={26} />
@@ -249,25 +253,25 @@ function Navbar() {
 </div>
 
   
-    <Link to="/" onClick={() => setMenuOpen(false)}>
+    <NavLink to="/" end className={({ isActive }) => `mobile-nav-link${isActive ? " is-current" : ""}`} onClick={() => setMenuOpen(false)}>
       HOME
-    </Link>
+    </NavLink>
 
-    <Link to="/about" onClick={() => setMenuOpen(false)}>
+    <NavLink to="/about" className={({ isActive }) => `mobile-nav-link${isActive ? " is-current" : ""}`} onClick={() => setMenuOpen(false)}>
       ABOUT US
-    </Link>
+    </NavLink>
 
-    <Link to="/services" onClick={() => setMenuOpen(false)}>
+    <NavLink to="/services" className={({ isActive }) => `mobile-nav-link${isActive ? " is-current" : ""}`} onClick={() => setMenuOpen(false)}>
       SERVICES
-    </Link>
+    </NavLink>
 
-    <Link to="/projects" onClick={() => setMenuOpen(false)}>
+    <NavLink to="/projects" className={({ isActive }) => `mobile-nav-link${isActive ? " is-current" : ""}`} onClick={() => setMenuOpen(false)}>
       PROJECTS
-    </Link>
+    </NavLink>
 
-    <Link to="/contact" onClick={() => setMenuOpen(false)}>
+    <NavLink to="/contact" className={({ isActive }) => `mobile-nav-link${isActive ? " is-current" : ""}`} onClick={() => setMenuOpen(false)}>
       CONTACT US
-    </Link>
+    </NavLink>
 
     <Link
       to="/contact"
@@ -277,7 +281,7 @@ function Navbar() {
       GET A QUOTE
     </Link>
 
-  </div>
+  </nav>
 )}
       
     </>

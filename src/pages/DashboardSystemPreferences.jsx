@@ -34,6 +34,7 @@ import {
 } from "react-router-dom";
 
 import "../styles/dashboard/DashboardSystemPreferences.css";
+import { getAuthHeaders } from "../utils/auth";
 
 
 // ======================================================
@@ -129,7 +130,9 @@ function DashboardSystemPreferences() {
 
 
                 const response =
-                    await fetch(API_URL);
+                    await fetch(API_URL, {
+                        headers: getAuthHeaders(),
+                    });
 
 
                 if (!response.ok) {
@@ -300,6 +303,7 @@ function DashboardSystemPreferences() {
 
                             "Content-Type":
                                 "application/json",
+                            ...getAuthHeaders(),
 
                         },
 

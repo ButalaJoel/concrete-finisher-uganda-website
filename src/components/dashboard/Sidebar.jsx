@@ -30,6 +30,7 @@ import {
 } from "react-router-dom";
 
 import logo from "../../assets/logo.png";
+import { clearAuthSession } from "../../utils/authSession";
 
 import "../../styles/dashboard/Sidebar.css";
 
@@ -38,6 +39,7 @@ import {
     LayoutDashboard,
     FileText,
     FilePlus,
+    Receipt,
     FolderKanban,
     BarChart3,
     Settings,
@@ -69,6 +71,12 @@ const menuItems = [
         title: "Create Quotation",
         icon: FilePlus,
         path: "/dashboard/quotations/create"
+    },
+
+    {
+        title: "Payment Receipts",
+        icon: Receipt,
+        path: "/dashboard/receipts"
     },
 
     {
@@ -195,33 +203,7 @@ function Sidebar({
     // ==================================================
 
     const handleLogout = () => {
-
-
-        // ==============================================
-        // REMOVE LOCAL STORAGE AUTHENTICATION
-        // ==============================================
-
-        localStorage.removeItem(
-            "cf_auth_token"
-        );
-
-        localStorage.removeItem(
-            "cf_admin"
-        );
-
-
-        // ==============================================
-        // REMOVE SESSION STORAGE AUTHENTICATION
-        // ==============================================
-
-        sessionStorage.removeItem(
-            "cf_auth_token"
-        );
-
-        sessionStorage.removeItem(
-            "cf_admin"
-        );
-
+        clearAuthSession();
 
         // ==============================================
         // CLOSE MOBILE SIDEBAR
@@ -489,6 +471,7 @@ function Sidebar({
                     <button
                         type="button"
                         onClick={handleLogout}
+                        aria-label="Log out of the admin dashboard"
                     >
 
                         <LogOut size={20} />

@@ -8,10 +8,11 @@ import ServiceProcess from "../components/ServiceProcess";
 import IndustriesSection from "../components/IndustriesSection";
 import ServicesFAQ from "../components/ServicesFAQ";
 import ServicesCTA from "../components/ServicesCTA";
+import "../styles/ServicesPages.css";
 
 function Services() {
   return (
-    <>
+    <div className="services-page">
       <Navbar />
 
       <ServicesHero />
@@ -39,7 +40,7 @@ function Services() {
       <ServicesCTA />
 
       <Footer />
-    </>
+    </div>
   );
 }
 

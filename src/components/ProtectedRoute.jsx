@@ -23,7 +23,9 @@
 // IMPORTS
 // ======================================================
 
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { hasAuthToken } from "../utils/authSession";
 
 
 // ======================================================
@@ -31,62 +33,24 @@ import { Navigate } from "react-router-dom";
 // ======================================================
 
 function ProtectedRoute({ children }) {
+    const [isAuthenticated, setIsAuthenticated] = useState(hasAuthToken);
 
+    useEffect(() => {
+        const syncAuthentication = () => setIsAuthenticated(hasAuthToken());
+        window.addEventListener("cf-auth-change", syncAuthentication);
+        window.addEventListener("storage", syncAuthentication);
 
-    // ==================================================
-    // CHECK PERSISTENT AUTHENTICATION
-    //
-    // Used when "Remember Me" was selected during login.
-    // ==================================================
+        return () => {
+            window.removeEventListener("cf-auth-change", syncAuthentication);
+            window.removeEventListener("storage", syncAuthentication);
+        };
+    }, []);
 
-    const persistentToken = localStorage.getItem(
-        "cf_auth_token"
-    );
-
-
-    // ==================================================
-    // CHECK SESSION AUTHENTICATION
-    //
-    // Used when "Remember Me" was NOT selected.
-    // ==================================================
-
-    const sessionToken = sessionStorage.getItem(
-        "cf_auth_token"
-    );
-
-
-    // ==================================================
-    // GET AVAILABLE TOKEN
-    // ==================================================
-
-    const token = persistentToken || sessionToken;
-
-
-    // ==================================================
-    // BLOCK UNAUTHORIZED ACCESS
-    // ==================================================
-
-    if (!token) {
-
-        return (
-
-            <Navigate
-                to="/login"
-                replace
-            />
-
-        );
-
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
     }
 
-
-    // ==================================================
-    // ALLOW AUTHORIZED ACCESS
-    // ==================================================
-
     return children;
-
-
 }
 
 

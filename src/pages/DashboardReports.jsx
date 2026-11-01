@@ -22,7 +22,7 @@
 // Joel Butala
 // ======================================================
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
     BarChart3,
@@ -36,6 +36,7 @@ import {
 } from "lucide-react";
 
 import "../styles/dashboard/DashboardReports.css";
+import { getAuthHeaders } from "../utils/auth";
 
 
 // ======================================================
@@ -71,21 +72,21 @@ function DashboardReports() {
 
     const [error, setError] = useState("");
 
+    const reportsRequestRef = useRef(null);
+
 
     // ==================================================
     // FETCH REPORTS
     // ==================================================
 
     const fetchReports = async () => {
+        reportsRequestRef.current?.abort();
+        const controller = new AbortController();
+        reportsRequestRef.current = controller;
+        setLoading(true);
+        setError("");
 
         try {
-
-            // Start loading.
-
-            setLoading(true);
-
-            setError("");
-
 
             // ==========================================
             // API REQUEST
@@ -94,7 +95,11 @@ function DashboardReports() {
             // ==========================================
 
             const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/reports`
+                `${import.meta.env.VITE_API_URL}/api/reports`,
+                {
+                    headers: getAuthHeaders(),
+                    signal: controller.signal,
+                }
             );
 
 
@@ -115,6 +120,10 @@ function DashboardReports() {
 
             const data = await response.json();
 
+            if (controller.signal.aborted) {
+                return;
+            }
+
 
             // ==========================================
             // SAVE REPORT DATA
@@ -125,6 +134,9 @@ function DashboardReports() {
         }
 
         catch (error) {
+            if (controller.signal.aborted) {
+                return;
+            }
 
             console.error(
                 "Reports fetch error:",
@@ -138,14 +150,15 @@ function DashboardReports() {
         }
 
         finally {
-
-            // Stop loading whether successful or failed.
-
-            setLoading(false);
+            if (!controller.signal.aborted) {
+                setLoading(false);
+            }
 
         }
 
     };
+
+    const refreshReports = fetchReports;
 
 
     // ==================================================
@@ -155,9 +168,17 @@ function DashboardReports() {
     // ==================================================
 
     useEffect(() => {
+        let isCurrent = true;
+        Promise.resolve().then(() => {
+            if (isCurrent) {
+                fetchReports();
+            }
+        });
 
-        fetchReports();
-
+        return () => {
+            isCurrent = false;
+            reportsRequestRef.current?.abort();
+        };
     }, []);
 
 
@@ -192,10 +213,21 @@ function DashboardReports() {
 
             <div className="dashboard-reports">
 
-                <div className="reports-loading">
-
-                    Loading reports...
-
+                <div className="dashboard-skeleton-list" role="status" aria-label="Loading reports" aria-busy="true">
+                    <span className="dashboard-skeleton dashboard-skeleton-heading" />
+                    <div className="dashboard-skeleton-cards">
+                        {Array.from({ length: 4 }, (_, index) => (
+                            <div className="dashboard-skeleton-card" key={index} aria-hidden="true">
+                                <span className="dashboard-skeleton dashboard-skeleton-line" />
+                                <span className="dashboard-skeleton dashboard-skeleton-stat" />
+                            </div>
+                        ))}
+                    </div>
+                    <div className="dashboard-skeleton-card" aria-hidden="true">
+                        {Array.from({ length: 5 }, (_, index) => (
+                            <span className="dashboard-skeleton dashboard-skeleton-line" key={index} />
+                        ))}
+                    </div>
                 </div>
 
             </div>
@@ -223,7 +255,8 @@ function DashboardReports() {
 
                     <button
                         type="button"
-                        onClick={fetchReports}
+                        onClick={refreshReports}
+                        disabled={loading}
                     >
 
                         <RefreshCw size={18} />
@@ -346,7 +379,8 @@ function DashboardReports() {
                 <button
                     type="button"
                     className="reports-refresh-btn"
-                    onClick={fetchReports}
+                    onClick={refreshReports}
+                    disabled={loading}
                 >
 
                     <RefreshCw size={18} />

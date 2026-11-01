@@ -22,6 +22,7 @@
 // ======================================================
 
 import express from "express";
+import { protect } from "../middleware/authMiddleware.js";
 
 
 // ======================================================
@@ -46,6 +47,10 @@ import {
     uploadProfile,
 
 } from "../config/multer.js";
+import {
+    handleImageUploadError,
+    validateImageUploads,
+} from "../middleware/imageUploadMiddleware.js";
 
 
 // ======================================================
@@ -53,6 +58,8 @@ import {
 // ======================================================
 
 const router = express.Router();
+
+router.use(protect);
 
 
 // ======================================================
@@ -93,7 +100,11 @@ router.put(
         "profilePhoto"
     ),
 
-    updateAdminProfile
+    validateImageUploads,
+
+    updateAdminProfile,
+
+    handleImageUploadError
 
 );
 

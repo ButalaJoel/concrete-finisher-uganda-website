@@ -28,18 +28,19 @@
 // ======================================================
 
 import {
-    useEffect,
     useState
 } from "react";
 
 
 import {
     useLocation,
+    useNavigate,
     useOutletContext
 } from "react-router-dom";
 
 
 import "../styles/dashboard/Quotations.css";
+import { getAuthHeaders } from "../utils/auth";
 
 
 // ======================================================
@@ -63,7 +64,8 @@ function DashboardQuotations() {
         setQuotations,
         loading,
         error,
-        setError
+        setError,
+        refreshQuotations
 
     } = useOutletContext();
 
@@ -80,6 +82,7 @@ function DashboardQuotations() {
 
     const location =
         useLocation();
+    const navigate = useNavigate();
 
 
     // ==================================================
@@ -106,22 +109,6 @@ function DashboardQuotations() {
 
 
     // ==================================================
-    // HIGHLIGHTED QUOTATION
-    //
-    // Stores the quotation currently opened from
-    // the global dashboard search.
-    // ==================================================
-
-    const [
-
-        highlightedQuotationId,
-
-        setHighlightedQuotationId
-
-    ] = useState(null);
-
-
-    // ==================================================
     // PAGINATION
     // ==================================================
 
@@ -141,160 +128,30 @@ function DashboardQuotations() {
     // CALCULATE TOTAL PAGES
     // ==================================================
 
-    const totalPages =
-        Math.ceil(
+    const searchedQuotationIndex = searchedQuotationId
+        ? quotations.findIndex(
+            (quotation) => quotation._id === searchedQuotationId
+        )
+        : -1;
 
-            quotations.length /
-            quotationsPerPage
+    const searchedQuotationPage = searchedQuotationIndex >= 0
+        ? Math.floor(searchedQuotationIndex / quotationsPerPage) + 1
+        : null;
 
-        );
+    const totalPages = Math.max(
+        1,
+        Math.ceil(quotations.length / quotationsPerPage)
+    );
 
+    const displayPage = searchedQuotationPage ||
+        Math.min(currentPage, totalPages);
 
-    // ==================================================
-    // OPEN SEARCHED QUOTATION
-    //
-    // When a quotation is selected from Header search:
-    //
-    // 1. Read its ID from the URL
-    // 2. Find it in the complete quotations array
-    // 3. Find its position/index
-    // 4. Calculate its pagination page
-    // 5. Automatically switch to that page
-    // 6. Highlight the quotation
-    // ==================================================
-
-    useEffect(() => {
-
-
-        // If no quotation was selected from search,
-        // there is nothing to open.
-
-        if (
-
-            !searchedQuotationId ||
-
-            quotations.length === 0
-
-        ) {
-
-            return;
-
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+        if (searchedQuotationId) {
+            navigate("/dashboard/quotations", { replace: true });
         }
-
-
-        // ==============================================
-        // FIND QUOTATION POSITION
-        //
-        // findIndex searches the complete quotations
-        // array, not only the currently displayed page.
-        // ==============================================
-
-        const quotationIndex =
-            quotations.findIndex(
-
-                (quotation) =>
-
-                    quotation._id ===
-                    searchedQuotationId
-
-            );
-
-
-        // ==============================================
-        // QUOTATION NOT FOUND
-        // ==============================================
-
-        if (
-            quotationIndex === -1
-        ) {
-
-            return;
-
-        }
-
-
-        // ==============================================
-        // CALCULATE CORRECT PAGE
-        //
-        // With 2 quotations per page:
-        //
-        // Index 0 → Page 1
-        // Index 1 → Page 1
-        // Index 2 → Page 2
-        // Index 3 → Page 2
-        // Index 4 → Page 3
-        // ==============================================
-
-        const quotationPage =
-
-            Math.floor(
-
-                quotationIndex /
-                quotationsPerPage
-
-            ) + 1;
-
-
-        // ==============================================
-        // SWITCH TO CORRECT PAGE
-        // ==============================================
-
-        setCurrentPage(
-            quotationPage
-        );
-
-
-        // ==============================================
-        // HIGHLIGHT SEARCHED QUOTATION
-        // ==============================================
-
-        setHighlightedQuotationId(
-            searchedQuotationId
-        );
-
-
-        // ==============================================
-        // REMOVE HIGHLIGHT AFTER 3 SECONDS
-        // ==============================================
-
-        const timer =
-            setTimeout(
-
-                () => {
-
-                    setHighlightedQuotationId(
-                        null
-                    );
-
-                },
-
-                3000
-
-            );
-
-
-        // ==============================================
-        // CLEANUP
-        //
-        // Clears the timer if the component unmounts
-        // or the searched quotation changes.
-        // ==============================================
-
-        return () => {
-
-            clearTimeout(
-                timer
-            );
-
-        };
-
-
-    }, [
-
-        searchedQuotationId,
-        quotations
-
-    ]);
+    };
 
 
     // ==================================================
@@ -303,7 +160,7 @@ function DashboardQuotations() {
 
     const startIndex =
 
-        (currentPage - 1) *
+        (displayPage - 1) *
         quotationsPerPage;
 
 
@@ -321,36 +178,6 @@ function DashboardQuotations() {
             endIndex
 
         );
-
-
-    // ==================================================
-    // KEEP PAGE VALID
-    //
-    // Prevents staying on a page that no longer exists.
-    // ==================================================
-
-    useEffect(() => {
-
-        if (
-
-            totalPages > 0 &&
-
-            currentPage > totalPages
-
-        ) {
-
-            setCurrentPage(
-                totalPages
-            );
-
-        }
-
-    }, [
-
-        currentPage,
-        totalPages
-
-    ]);
 
 
     // ==================================================
@@ -382,6 +209,7 @@ function DashboardQuotations() {
 
                             "Content-Type":
                                 "application/json",
+                            ...getAuthHeaders(),
 
                         },
 
@@ -475,14 +303,21 @@ function DashboardQuotations() {
 
                 <div className="quotations-page-header">
 
-                    <h1>
-                        Quotations
-                    </h1>
+                    <div>
+                        <h1>Quotations</h1>
+                        <p>Manage customer quotation requests.</p>
+                    </div>
 
-                    <p>
-                        Loading quotations...
-                    </p>
+                </div>
 
+                <div className="quotations-grid dashboard-skeleton-cards" role="status" aria-label="Loading quotations" aria-busy="true">
+                    {Array.from({ length: 2 }, (_, index) => (
+                        <div className="dashboard-skeleton-card" key={index} aria-hidden="true">
+                            <span className="dashboard-skeleton dashboard-skeleton-line" />
+                            <span className="dashboard-skeleton dashboard-skeleton-line dashboard-skeleton-line-short" />
+                            <span className="dashboard-skeleton dashboard-skeleton-block" />
+                        </div>
+                    ))}
                 </div>
 
             </section>
@@ -508,10 +343,12 @@ function DashboardQuotations() {
                         Quotations
                     </h1>
 
-                    <p>
-                        {error}
-                    </p>
+                    <p role="alert">{error}</p>
 
+                </div>
+
+                <div className="dashboard-state-message dashboard-state-error">
+                    <button type="button" onClick={refreshQuotations}>Try Again</button>
                 </div>
 
             </section>
@@ -593,7 +430,7 @@ function DashboardQuotations() {
 
                                         `quotation-card ${
 
-                                            highlightedQuotationId ===
+                                            searchedQuotationId ===
                                             quotation._id
 
                                                 ? "quotation-card-highlighted"
@@ -861,19 +698,10 @@ function DashboardQuotations() {
                                 className="pagination-button pagination-prev"
 
                                 disabled={
-                                    currentPage === 1
+                                    displayPage === 1
                                 }
 
-                                onClick={() =>
-
-                                    setCurrentPage(
-
-                                        (page) =>
-                                            page - 1
-
-                                    )
-
-                                }
+                                onClick={() => handlePageChange(displayPage - 1)}
 
                             >
 
@@ -916,7 +744,7 @@ function DashboardQuotations() {
 
                                                     `pagination-number ${
 
-                                                        currentPage ===
+                                                        displayPage ===
                                                         pageNumber
 
                                                             ? "active"
@@ -927,13 +755,7 @@ function DashboardQuotations() {
 
                                                 }
 
-                                                onClick={() =>
-
-                                                    setCurrentPage(
-                                                        pageNumber
-                                                    )
-
-                                                }
+                                                onClick={() => handlePageChange(pageNumber)}
 
                                             >
 
@@ -962,21 +784,12 @@ function DashboardQuotations() {
 
                                 disabled={
 
-                                    currentPage ===
+                                    displayPage ===
                                     totalPages
 
                                 }
 
-                                onClick={() =>
-
-                                    setCurrentPage(
-
-                                        (page) =>
-                                            page + 1
-
-                                    )
-
-                                }
+                                onClick={() => handlePageChange(displayPage + 1)}
 
                             >
 

@@ -172,7 +172,7 @@
 }
 
 .settings-action-button:hover {
-    background: #b8732e;
+    background: var(--brand-copper-dark);
     color: #ffffff;
 
     transform: translateY(-1px);

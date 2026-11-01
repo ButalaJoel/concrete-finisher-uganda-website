@@ -67,12 +67,10 @@ function HeroSection() {
             href="tel:+256780662557"
             className="contact-card"
           >
-            <h4>
-              <Phone size={15} strokeWidth={2} />
-              CALL US
-            </h4>
-
-            <p>+256 780 662 557</p>
+            <p>
+              <Phone size={16} strokeWidth={2} aria-hidden="true" />
+              <span>+256 780 662 557</span>
+            </p>
           </a>
 
           <a
@@ -81,24 +79,20 @@ function HeroSection() {
             rel="noopener noreferrer"
             className="contact-card"
           >
-            <h4>
-              <MessageCircleMore size={15} strokeWidth={2} />
-              WHATSAPP US
-            </h4>
-
-            <p>Chat on WhatsApp</p>
+            <p>
+              <MessageCircleMore size={16} strokeWidth={2} aria-hidden="true" />
+              <span>Chat on WhatsApp</span>
+            </p>
           </a>
 
           <a
             href="mailto:info@concretefinisherug.com"
             className="contact-card"
           >
-            <h4>
-              <Mail size={15} strokeWidth={2} />
-              EMAIL US
-            </h4>
-
-            <p>info@concretefinisherug.com</p>
+            <p>
+              <Mail size={16} strokeWidth={2} aria-hidden="true" />
+              <span>info@concretefinisherug.com</span>
+            </p>
           </a>
 
           <a
@@ -107,12 +101,10 @@ function HeroSection() {
             rel="noopener noreferrer"
             className="contact-card"
           >
-            <h4>
-              <MapPin size={15} strokeWidth={2} />
-              LOCATION
-            </h4>
-
-            <p>Kampala, Uganda</p>
+            <p>
+              <MapPin size={16} strokeWidth={2} aria-hidden="true" />
+              <span>Kampala, Uganda</span>
+            </p>
           </a>
 
         </div>

@@ -28,7 +28,8 @@ import "../../styles/dashboard/Activity.css";
 function Activity({
 
     quotations = [],
-    loading = false
+    loading = false,
+    error = ""
 
 }) {
 
@@ -47,9 +48,14 @@ function Activity({
                     Recent Activity
                 </h2>
 
-                <p className="activity-message">
-                    Loading recent activity...
-                </p>
+                <div className="dashboard-skeleton-list" role="status" aria-label="Loading recent activity" aria-busy="true">
+                    {Array.from({ length: 3 }, (_, index) => (
+                        <div className="dashboard-skeleton-row" key={index} aria-hidden="true">
+                            <span className="dashboard-skeleton dashboard-skeleton-line" />
+                            <span className="dashboard-skeleton dashboard-skeleton-line dashboard-skeleton-line-short" />
+                        </div>
+                    ))}
+                </div>
 
             </section>
 
@@ -139,7 +145,11 @@ function Activity({
                 EMPTY STATE
             ========================================= */}
 
-            {recentActivity.length === 0 ? (
+            {error ? (
+                <p className="dashboard-state-message dashboard-state-error" role="alert">
+                    Recent activity is unavailable because quotations could not be loaded.
+                </p>
+            ) : recentActivity.length === 0 ? (
 
                 <p className="activity-message">
                     No recent activity yet.

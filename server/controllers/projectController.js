@@ -33,6 +33,10 @@ import fs from "fs/promises";
 
 import path from "path";
 
+import uploadBufferToCloudinary from "../utils/cloudinaryUpload.js";
+
+import deleteImageFromCloudinary from "../utils/cloudinaryDelete.js";
+
 
 // ======================================================
 // HELPER: DELETE IMAGE FILE
@@ -66,12 +70,13 @@ const deleteImageFile = async (imagePath) => {
 
         const filePath =
             path.join(
-                process.cwd(),
+                globalThis.process.cwd(),
                 relativePath
             );
 
 
         await fs.unlink(filePath);
+        return true;
 
 
     } catch (error) {
@@ -79,15 +84,101 @@ const deleteImageFile = async (imagePath) => {
         // File cleanup should never cause the
         // main database operation to fail.
 
-        console.warn(
-            "Unable to delete image file:",
-            imagePath
-        );
+        if (error.code === "ENOENT") {
+            return true;
+        }
+
+        console.warn("Unable to delete local image file:", imagePath, error.message);
+        return false;
 
     }
 
 };
 
+// ======================================================
+// HELPER: DELETE STORED IMAGE
+//
+// Supports both:
+// • Old local /uploads images
+// • New Cloudinary images
+// ======================================================
+
+const deleteStoredImage = async (imageUrl) => {
+
+    if (!imageUrl) {
+        return;
+    }
+
+    if (
+        imageUrl.includes(
+            "res.cloudinary.com"
+        )
+    ) {
+
+        return await deleteImageFromCloudinary(
+            imageUrl
+        );
+
+    }
+
+    return await deleteImageFile(
+        imageUrl
+    );
+
+};
+
+const uploadAndTrack = async (file, folder, uploadedImages) => {
+    const result = await uploadBufferToCloudinary(file.buffer, folder);
+
+    if (!result?.secure_url) {
+        throw new Error("Cloudinary did not return a secure image URL.");
+    }
+
+    uploadedImages.push(result.secure_url);
+    return result.secure_url;
+};
+
+const cleanupUploadedImages = async (imageUrls, context) => {
+    for (const imageUrl of imageUrls) {
+        try {
+            const deleted = await deleteStoredImage(imageUrl);
+            if (deleted === false) {
+                console.error(
+                    `Failed to clean up project image after ${context}:`,
+                    imageUrl
+                );
+            }
+        } catch (error) {
+            console.error(
+                `Failed to clean up newly uploaded project image after ${context}:`,
+                error.message
+            );
+        }
+    }
+};
+
+const cleanupReplacedImages = async (
+    imageUrls,
+    projectId,
+    context = "update"
+) => {
+    for (const imageUrl of imageUrls.filter(Boolean)) {
+        try {
+            const deleted = await deleteStoredImage(imageUrl);
+            if (deleted === false) {
+                console.error(
+                    `Project ${projectId} was saved, but image cleanup failed after ${context}:`,
+                    imageUrl
+                );
+            }
+        } catch (error) {
+            console.error(
+                `Project ${projectId} was saved, but image cleanup failed after ${context}:`,
+                error.message
+            );
+        }
+    }
+};
 
 // ======================================================
 // CREATE PROJECT
@@ -103,44 +194,68 @@ const deleteImageFile = async (imagePath) => {
 
 export const createProject = async (req, res) => {
 
+    const uploadedImages = [];
+    let projectSaved = false;
+
     try {
 
 
         // ==================================================
-        // HERO IMAGE
-        // ==================================================
+// HERO IMAGE
+// ==================================================
 
-        const heroImage =
-            req.files?.heroImage
-                ? `/uploads/projects/${req.files.heroImage[0].filename}`
-                : "";
+let heroImage = "";
+
+if (req.files?.heroImage?.[0]) {
+
+    heroImage = await uploadAndTrack(
+        req.files.heroImage[0],
+        "concrete-finisher/projects",
+        uploadedImages
+    );
+
+}
+
+// ==================================================
+// BEFORE IMAGES
+// ==================================================
+
+let beforeImages = [];
+
+if (req.files?.beforeImages) {
+
+    for (const image of req.files.beforeImages) {
+        beforeImages.push(
+            await uploadAndTrack(
+                image,
+                "concrete-finisher/projects/before",
+                uploadedImages
+            )
+        );
+    }
+
+}
 
 
-        // ==================================================
-        // BEFORE IMAGES
-        // ==================================================
+// ==================================================
+// AFTER IMAGES
+// ==================================================
 
-        const beforeImages =
-            req.files?.beforeImages
-                ? req.files.beforeImages.map(
-                    (image) =>
-                        `/uploads/projects/${image.filename}`
-                )
-                : [];
+let afterImages = [];
 
+if (req.files?.afterImages) {
 
-        // ==================================================
-        // AFTER IMAGES
-        // ==================================================
+    for (const image of req.files.afterImages) {
+        afterImages.push(
+            await uploadAndTrack(
+                image,
+                "concrete-finisher/projects/after",
+                uploadedImages
+            )
+        );
+    }
 
-        const afterImages =
-            req.files?.afterImages
-                ? req.files.afterImages.map(
-                    (image) =>
-                        `/uploads/projects/${image.filename}`
-                )
-                : [];
-
+}
 
         // ==================================================
         // CREATE PROJECT
@@ -166,6 +281,7 @@ export const createProject = async (req, res) => {
 
             });
 
+        projectSaved = true;
 
         // ==================================================
         // SUCCESS RESPONSE
@@ -185,6 +301,9 @@ export const createProject = async (req, res) => {
 
     } catch (error) {
 
+        if (!projectSaved) {
+            await cleanupUploadedImages(uploadedImages, "project creation failure");
+        }
 
         console.error(
             "Create project error:",
@@ -273,6 +392,10 @@ export const createProject = async (req, res) => {
 // ======================================================
 
 export const updateProject = async (req, res) => {
+
+    const uploadedImages = [];
+    const replacedImages = [];
+    let projectSaved = false;
 
     try {
 
@@ -363,123 +486,136 @@ export const updateProject = async (req, res) => {
         });
 
 
-        // ==================================================
-        // HERO IMAGE UPDATE
-        //
-        // Only replace the existing hero image when
-        // a new image was uploaded.
-        // ==================================================
+// ==================================================
+// HERO IMAGE UPDATE
+//
+// New hero image is uploaded to Cloudinary.
+// Existing image is deleted only after the new
+// image has uploaded successfully.
+// ==================================================
 
-        if (req.files?.heroImage) {
+if (req.files?.heroImage?.[0]) {
 
+    const newHeroImage = await uploadAndTrack(
+        req.files.heroImage[0],
+        "concrete-finisher/projects",
+        uploadedImages
+    );
 
-            const newHeroImage =
-                `/uploads/projects/${req.files.heroImage[0].filename}`;
+    replacedImages.push(project.heroImage || project.image);
 
+    // Save new image
+    project.heroImage =
+        newHeroImage;
 
-            // Delete old hero image
-            await deleteImageFile(
-                project.heroImage
-            );
+    // Keep public website image field
+    // synchronized.
+    project.image =
+        newHeroImage;
 
-
-            // Save new hero image
-            project.heroImage =
-                newHeroImage;
-
-
-            // Keep public website image field
-            // synchronized.
-            project.image =
-                newHeroImage;
-
-        }
+}
 
 
-        // ==================================================
-        // BEFORE IMAGES UPDATE
-        //
-        // If new before images are uploaded,
-        // replace the existing before gallery.
-        // ==================================================
+// ==================================================
+// BEFORE IMAGES UPDATE
+//
+// Replaces the existing before gallery.
+// ==================================================
 
-        if (req.files?.beforeImages) {
+if (
+    req.files?.beforeImages?.length
+) {
 
+    // Upload new images FIRST
+    // so we don't destroy the old gallery
+    // if Cloudinary upload fails.
 
-            // Delete old before images
-
-            if (
-                Array.isArray(
-                    project.beforeImages
-                )
-            ) {
-
-                for (
-                    const image of
-                    project.beforeImages
-                ) {
-
-                    await deleteImageFile(
-                        image
-                    );
-
-                }
-
-            }
+    const newBeforeImages = [];
+    for (const image of req.files.beforeImages) {
+        newBeforeImages.push(
+            await uploadAndTrack(
+                image,
+                "concrete-finisher/projects/before",
+                uploadedImages
+            )
+        );
+    }
 
 
-            // Create new before image paths
+    // Delete old gallery
+    if (
+        Array.isArray(
+            project.beforeImages
+        )
+    ) {
 
-            project.beforeImages =
-                req.files.beforeImages.map(
-                    (image) =>
-                        `/uploads/projects/${image.filename}`
-                );
+        for (
+            const image of
+            project.beforeImages
+        ) {
+
+            replacedImages.push(image);
 
         }
 
-
-        // ==================================================
-        // AFTER IMAGES UPDATE
-        //
-        // If new after images are uploaded,
-        // replace the existing after gallery.
-        // ==================================================
-
-        if (req.files?.afterImages) {
+    }
 
 
-            // Delete old after images
+    // Save new gallery
+    project.beforeImages =
+        newBeforeImages;
 
-            if (
-                Array.isArray(
-                    project.afterImages
-                )
-            ) {
-
-                for (
-                    const image of
-                    project.afterImages
-                ) {
-
-                    await deleteImageFile(
-                        image
-                    );
-
-                }
-
-            }
+}
 
 
-            // Create new after image paths
+// ==================================================
+// AFTER IMAGES UPDATE
+//
+// Replaces the existing after gallery.
+// ==================================================
 
-            project.afterImages =
-                req.files.afterImages.map(
-                    (image) =>
-                        `/uploads/projects/${image.filename}`
-                );
+if (
+    req.files?.afterImages?.length
+) {
+
+    // Upload new images FIRST
+
+    const newAfterImages = [];
+    for (const image of req.files.afterImages) {
+        newAfterImages.push(
+            await uploadAndTrack(
+                image,
+                "concrete-finisher/projects/after",
+                uploadedImages
+            )
+        );
+    }
+
+
+    // Delete old gallery
+    if (
+        Array.isArray(
+            project.afterImages
+        )
+    ) {
+
+        for (
+            const image of
+            project.afterImages
+        ) {
+
+            replacedImages.push(image);
 
         }
+
+    }
+
+
+    // Save new gallery
+    project.afterImages =
+        newAfterImages;
+
+}
 
 
         // ==================================================
@@ -489,6 +625,8 @@ export const updateProject = async (req, res) => {
         const updatedProject =
             await project.save();
 
+        projectSaved = true;
+        await cleanupReplacedImages(replacedImages, project._id);
 
         // ==================================================
         // SUCCESS RESPONSE
@@ -509,6 +647,9 @@ export const updateProject = async (req, res) => {
 
     } catch (error) {
 
+        if (!projectSaved) {
+            await cleanupUploadedImages(uploadedImages, "project update failure");
+        }
 
         console.error(
             "Update project error:",
@@ -648,68 +789,25 @@ export const deleteProject = async (req, res) => {
 
 
         // ==================================================
-        // DELETE HERO IMAGE
-        // ==================================================
-
-        await deleteImageFile(
-            project.heroImage
-        );
-
-
-        // ==================================================
-        // DELETE BEFORE IMAGES
-        // ==================================================
-
-        if (
-            Array.isArray(
-                project.beforeImages
-            )
-        ) {
-
-            for (
-                const image of
-                project.beforeImages
-            ) {
-
-                await deleteImageFile(
-                    image
-                );
-
-            }
-
-        }
-
-
-        // ==================================================
-        // DELETE AFTER IMAGES
-        // ==================================================
-
-        if (
-            Array.isArray(
-                project.afterImages
-            )
-        ) {
-
-            for (
-                const image of
-                project.afterImages
-            ) {
-
-                await deleteImageFile(
-                    image
-                );
-
-            }
-
-        }
-
-
-        // ==================================================
         // DELETE PROJECT FROM DATABASE
         // ==================================================
 
-        await Project.findByIdAndDelete(
-            req.params.id
+        const deletedProject = await Project.findByIdAndDelete(req.params.id);
+        if (!deletedProject) {
+            return res.status(404).json({
+                success: false,
+                message: "Project not found.",
+            });
+        }
+
+        await cleanupReplacedImages(
+            [
+                deletedProject.heroImage || deletedProject.image,
+                ...(deletedProject.beforeImages || []),
+                ...(deletedProject.afterImages || []),
+            ],
+            deletedProject._id,
+            "project deletion"
         );
 
 

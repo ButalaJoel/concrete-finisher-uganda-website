@@ -66,7 +66,7 @@
 
 .company-button{
     display:inline-block;
-    background:#b07b4d;
+    background:var(--brand-copper-dark);
     color:white;
     text-decoration:none;
     padding:18px 35px;
@@ -134,10 +134,10 @@
 =================================================== */
 
 .process-grid{
-    margin-top:60px;
+    margin-top:40px;
     display:grid;
     grid-template-columns:repeat(2,1fr);
-    gap:35px;
+    gap:24px;
 }
 
 
@@ -145,7 +145,7 @@
     background:#fff;
     border:1px solid #ececec;
     border-radius:16px;
-    padding:40px;
+    padding:30px;
     transition:.35s;
     box-shadow:0 10px 25px rgba(0,0,0,.05);
 }

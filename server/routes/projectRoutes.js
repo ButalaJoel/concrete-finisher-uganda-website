@@ -31,7 +31,12 @@ import {
     getProjectBySlug,
 } from "../controllers/projectController.js";
 
-import upload from "../config/multer.js";
+import upload, { uploadLimits } from "../config/multer.js";
+import { protect } from "../middleware/authMiddleware.js";
+import {
+    handleImageUploadError,
+    validateImageUploads,
+} from "../middleware/imageUploadMiddleware.js";
 
 const router = express.Router();
 
@@ -51,6 +56,8 @@ router.post(
 
     "/",
 
+    protect,
+
     upload.fields([
 
         {
@@ -60,17 +67,21 @@ router.post(
 
         {
             name: "beforeImages",
-            maxCount: 4,
+            maxCount: uploadLimits.projectGalleryImages,
         },
 
         {
             name: "afterImages",
-            maxCount: 4,
+            maxCount: uploadLimits.projectGalleryImages,
         },
 
     ]),
 
-    createProject
+    validateImageUploads,
+
+    createProject,
+
+    handleImageUploadError
 
 );
 
@@ -96,6 +107,8 @@ router.put(
 
     "/:id",
 
+    protect,
+
     upload.fields([
 
         {
@@ -105,17 +118,21 @@ router.put(
 
         {
             name: "beforeImages",
-            maxCount: 4,
+            maxCount: uploadLimits.projectGalleryImages,
         },
 
         {
             name: "afterImages",
-            maxCount: 4,
+            maxCount: uploadLimits.projectGalleryImages,
         },
 
     ]),
 
-    updateProject
+    validateImageUploads,
+
+    updateProject,
+
+    handleImageUploadError
 
 );
 
@@ -137,6 +154,8 @@ router.put(
 router.delete(
 
     "/:id",
+
+    protect,
 
     deleteProject
 
@@ -167,6 +186,8 @@ router.delete(
 router.get(
 
     "/stats",
+
+    protect,
 
     getProjectStats
 

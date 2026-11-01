@@ -50,6 +50,7 @@ const quotationSchema = new mongoose.Schema({
 
   status: {
     type: String,
+    enum: ["New", "Contacted", "Follow Up", "Approved", "Rejected"],
     default: "New",
   },
 

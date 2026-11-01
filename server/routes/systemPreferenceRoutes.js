@@ -22,6 +22,7 @@
 // ======================================================
 
 import express from "express";
+import { protect } from "../middleware/authMiddleware.js";
 
 
 // ======================================================
@@ -43,6 +44,8 @@ import {
 
 const router =
     express.Router();
+
+router.use(protect);
 
 
 // ======================================================

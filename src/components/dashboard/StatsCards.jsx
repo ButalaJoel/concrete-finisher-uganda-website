@@ -32,6 +32,7 @@ import {
     Clock3,
     CircleDollarSign
 } from "lucide-react";
+import { getAuthHeaders } from "../../utils/auth";
 
 import "../../styles/dashboard/StatsCards.css";
 
@@ -47,7 +48,7 @@ import "../../styles/dashboard/StatsCards.css";
 // Tells us whether quotation data is still loading.
 // ======================================================
 
-function StatsCards({ quotations, loading }) {
+function StatsCards({ quotations, loading, error }) {
 
 
     // ==================================================
@@ -81,6 +82,12 @@ function StatsCards({ quotations, loading }) {
     const [projectStatsLoading, setProjectStatsLoading] =
         useState(true);
 
+    const [projectStatsError, setProjectStatsError] =
+        useState(false);
+
+    const [projectStatsRequest, setProjectStatsRequest] =
+        useState(0);
+
 
     // ==================================================
     // FETCH PROJECT STATISTICS
@@ -96,11 +103,13 @@ function StatsCards({ quotations, loading }) {
     // ==================================================
 
     useEffect(() => {
-
+        const controller = new AbortController();
 
         const fetchProjectStats = async () => {
 
             try {
+                setProjectStatsLoading(true);
+                setProjectStatsError(false);
 
 
                 // ==========================================
@@ -109,8 +118,11 @@ function StatsCards({ quotations, loading }) {
 
                 const response = await fetch(
 
-                    `${import.meta.env.VITE_API_URL}/api/projects/stats`
-
+                    `${import.meta.env.VITE_API_URL}/api/projects/stats`,
+                    {
+                        headers: getAuthHeaders(),
+                        signal: controller.signal,
+                    }
                 );
 
 
@@ -134,6 +146,13 @@ function StatsCards({ quotations, loading }) {
                 const result =
                     await response.json();
 
+                if (!result?.data || typeof result.data !== "object") {
+                    throw new Error("Project statistics are unavailable.");
+                }
+
+                if (controller.signal.aborted) {
+                    return;
+                }
 
                 // ==========================================
                 // SAVE STATISTICS
@@ -147,25 +166,21 @@ function StatsCards({ quotations, loading }) {
 
 
             } catch (error) {
-
+                if (controller.signal.aborted) {
+                    return;
+                }
 
                 console.error(
-
                     "Project statistics error:",
-
                     error
-
                 );
 
+                setProjectStatsError(true);
 
             } finally {
-
-
-                // ==========================================
-                // FINISH LOADING
-                // ==========================================
-
-                setProjectStatsLoading(false);
+                if (!controller.signal.aborted) {
+                    setProjectStatsLoading(false);
+                }
 
             }
 
@@ -175,7 +190,9 @@ function StatsCards({ quotations, loading }) {
         fetchProjectStats();
 
 
-    }, []);
+        return () => controller.abort();
+
+    }, [projectStatsRequest]);
 
 
     // ==================================================
@@ -283,10 +300,13 @@ function StatsCards({ quotations, loading }) {
             title: "New Quotations",
 
             value: loading
-                ? "..."
+                ? null
+                : error
+                ? "Unavailable"
                 : newQuotationCount,
 
             icon: ClipboardList,
+            isLoading: loading,
 
         },
 
@@ -300,10 +320,13 @@ function StatsCards({ quotations, loading }) {
             title: "Active Projects",
 
             value: projectStatsLoading
-                ? "..."
+                ? null
+                : projectStatsError
+                ? "Unavailable"
                 : projectStats.activeProjects,
 
             icon: FolderOpen,
+            isLoading: projectStatsLoading,
 
         },
 
@@ -317,10 +340,13 @@ function StatsCards({ quotations, loading }) {
             title: "Pending",
 
             value: projectStatsLoading
-                ? "..."
+                ? null
+                : projectStatsError
+                ? "Unavailable"
                 : projectStats.pendingProjects,
 
             icon: Clock3,
+            isLoading: projectStatsLoading,
 
         },
 
@@ -334,12 +360,15 @@ function StatsCards({ quotations, loading }) {
             title: "Revenue",
 
             value: projectStatsLoading
-                ? "..."
+                ? null
+                : projectStatsError
+                ? "Unavailable"
                 : formatRevenue(
                     projectStats.revenue
                 ),
 
             icon: CircleDollarSign,
+            isLoading: projectStatsLoading,
 
         }
 
@@ -352,7 +381,7 @@ function StatsCards({ quotations, loading }) {
 
     return (
 
-        <section className="stats-grid">
+        <section className="stats-grid" aria-busy={loading || projectStatsLoading}>
 
 
             {cards.map((card) => {
@@ -370,6 +399,7 @@ function StatsCards({ quotations, loading }) {
                     <div
                         className="stat-card"
                         key={card.title}
+                        aria-busy={card.isLoading}
                     >
 
 
@@ -391,9 +421,9 @@ function StatsCards({ quotations, loading }) {
                         <div className="stat-content">
 
                             <h2>
-
-                                {card.value}
-
+                                {card.isLoading ? (
+                                    <span className="dashboard-skeleton dashboard-skeleton-stat" aria-label="Loading" />
+                                ) : card.value}
                             </h2>
 
 
@@ -413,6 +443,17 @@ function StatsCards({ quotations, loading }) {
             })}
 
 
+            {projectStatsError && (
+                <p className="dashboard-stats-error" role="alert">
+                    Project statistics could not be loaded.
+                    <button
+                        type="button"
+                        onClick={() => setProjectStatsRequest((request) => request + 1)}
+                    >
+                        Try Again
+                    </button>
+                </p>
+            )}
         </section>
 
     );

@@ -25,6 +25,8 @@
 
     width:280px;
     height:100vh;
+    box-sizing:border-box;
+    overflow-y:auto;
 
     background:#2E1B12;
 

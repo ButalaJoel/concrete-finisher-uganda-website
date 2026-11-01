@@ -211,20 +211,25 @@ const generateQuotationPdf = async (
     quotation
 ) => {
 
+    const company =
+        quotation.companySnapshot || {};
+
+    const settings =
+        quotation.settingsSnapshot || {};
+
+    const logo =
+        await loadLogo(
+            company.logo
+        );
+
     return new Promise(
-        async (resolve, reject) => {
+        (resolve, reject) => {
 
             try {
 
                 // ==========================================
                 // SNAPSHOTS
                 // ==========================================
-
-                const company =
-                    quotation.companySnapshot || {};
-
-                const settings =
-                    quotation.settingsSnapshot || {};
 
 
                 const currency =
@@ -336,11 +341,6 @@ const generateQuotationPdf = async (
                 // ==========================================
                 // HEADER
                 // ==========================================
-
-                const logo =
-                    await loadLogo(
-                        company.logo
-                    );
 
 
                 let headerY =

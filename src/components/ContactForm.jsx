@@ -17,6 +17,7 @@ function ContactForm() {
   const [formData, setFormData] = useState(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submissionError, setSubmissionError] = useState("");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -46,6 +47,7 @@ function ContactForm() {
 
     // Start submission
     setIsSubmitting(true);
+    setSubmissionError("");
 
     try {
       // Send quotation to backend
@@ -65,14 +67,6 @@ function ContactForm() {
         throw new Error("Failed to submit quotation.");
       }
 
-      // Convert backend response to JavaScript
-      const data = await response.json();
-
-      console.log(
-        "Quotation submitted successfully:",
-        data
-      );
-
       // Clear all form fields
       setFormData(initialFormData);
 
@@ -85,9 +79,8 @@ function ContactForm() {
       }, 5000);
 
     } catch (error) {
-      console.error(
-        "Quotation submission error:",
-        error
+      setSubmissionError(
+        error.message || "Unable to submit your request. Please try again."
       );
 
     } finally {
@@ -113,11 +106,18 @@ function ContactForm() {
           site inspection.
         </p>
 
+        {submissionError && (
+          <p className="contact-form-error" role="alert" aria-live="polite">
+            {submissionError}
+          </p>
+        )}
+
       </div>
 
       <form
         className="contact-form"
         onSubmit={handleSubmit}
+        aria-busy={isSubmitting}
       >
 
         <div className="form-row">
@@ -293,7 +293,7 @@ function ContactForm() {
 
         </div>
 
-        <div className="form-group">
+        <div className="form-group form-group-date">
 
           <label>Preferred Start Date</label>
 

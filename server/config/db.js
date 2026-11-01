@@ -41,7 +41,7 @@ const connectDB = async () => {
 
         await mongoose.connect(
 
-            process.env.MONGO_URI
+            globalThis.process.env.MONGO_URI
 
         );
 
@@ -71,20 +71,11 @@ console.log(
         );
 
         console.error(
-
-            error.message
-
+            "MongoDB connection failed with error type:",
+            error.name || "UnknownError"
         );
 
-
-        // ==================================================
-        // STOP SERVER
-        //
-        // The application should not continue running if
-        // the database connection fails.
-        // ==================================================
-
-        process.exit(1);
+        throw error;
 
     }
 

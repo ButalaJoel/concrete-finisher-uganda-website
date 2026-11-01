@@ -27,21 +27,35 @@
 import "../styles/dashboard/DashboardProjects.css";
 
 import {
+    useCallback,
     useEffect,
+    useRef,
     useState
 } from "react";
 
 import {
     useSearchParams
 } from "react-router-dom";
+import { getAuthHeaders } from "../utils/auth";
 
 
 // ======================================================
 // API BASE URL
 // ======================================================
 
-const API_URL =
-    `${import.meta.env.VITE_API_URL}/api/projects`;
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_URL = `${API_BASE_URL}/api/projects`;
+
+const getImageUrl = (imagePath) => {
+    if (!imagePath) return "";
+    if (
+        imagePath.startsWith("http://") ||
+        imagePath.startsWith("https://")
+    ) {
+        return imagePath;
+    }
+    return `${API_BASE_URL}${imagePath}`;
+};
 
 
 // ======================================================
@@ -240,33 +254,7 @@ function DashboardProjects() {
     const [message, setMessage] =
         useState("");
 
-
-    // ==================================================
-    // GET IMAGE URL
-    // ==================================================
-
-    const getImageUrl = (imagePath) => {
-
-        if (!imagePath) {
-
-            return "";
-
-        }
-
-
-        if (
-            imagePath.startsWith("http://") ||
-            imagePath.startsWith("https://")
-        ) {
-
-            return imagePath;
-
-        }
-
-
-        return `${import.meta.env.VITE_API_URL}${imagePath}`;
-
-    };
+    const projectsRequestRef = useRef(null);
 
 
     // ==================================================
@@ -282,7 +270,10 @@ function DashboardProjects() {
     //
     // ==================================================
 
-    const fetchProjects = async (page = 1) => {
+    const fetchProjects = useCallback(async (page = 1) => {
+        projectsRequestRef.current?.abort();
+        const controller = new AbortController();
+        projectsRequestRef.current = controller;
 
         setProjectsLoading(true);
 
@@ -294,13 +285,18 @@ function DashboardProjects() {
             const response =
                 await fetch(
 
-                    `${API_URL}?page=${page}&limit=6`
+                    `${API_URL}?page=${page}&limit=6`,
+                    { signal: controller.signal }
 
                 );
 
 
             const result =
                 await response.json();
+
+            if (controller.signal.aborted) {
+                return;
+            }
 
 
             // ==========================================
@@ -370,6 +366,9 @@ function DashboardProjects() {
 
 
         } catch (error) {
+            if (controller.signal.aborted) {
+                return;
+            }
 
             console.error(
 
@@ -388,41 +387,11 @@ function DashboardProjects() {
             );
 
         } finally {
-
-            setProjectsLoading(false);
-
-        }
-
-    };
-
-
-        // ==================================================
-    // LOAD PROJECTS OR OPEN SEARCHED PROJECT
-    //
-    // Normal dashboard visit:
-    //
-    // Load page 1.
-    //
-    // Search navigation:
-    //
-    // Open the exact project from the URL.
-    // ==================================================
-
-    useEffect(() => {
-
-        if (searchedProjectSlug) {
-
-            openSearchedProject(
-                searchedProjectSlug
-            );
-
-            return;
+            if (!controller.signal.aborted) {
+                setProjectsLoading(false);
+            }
 
         }
-
-
-        fetchProjects(1);
-
 
     }, []);
 
@@ -436,9 +405,12 @@ function DashboardProjects() {
     // to another pagination page.
     // ==================================================
 
-    const openSearchedProject = async (
+    const openSearchedProject = useCallback(async (
         projectSlug
     ) => {
+        projectsRequestRef.current?.abort();
+        const controller = new AbortController();
+        projectsRequestRef.current = controller;
 
         try {
 
@@ -456,13 +428,18 @@ function DashboardProjects() {
 
                     `${API_URL}/${encodeURIComponent(
                         projectSlug
-                    )}`
+                    )}`,
+                    { signal: controller.signal }
 
                 );
 
 
             const result =
                 await response.json();
+
+            if (controller.signal.aborted) {
+                return;
+            }
 
 
             // ==========================================
@@ -670,6 +647,9 @@ function DashboardProjects() {
 
 
         } catch (error) {
+            if (controller.signal.aborted) {
+                return;
+            }
 
             console.error(
 
@@ -688,12 +668,33 @@ function DashboardProjects() {
             );
 
         } finally {
-
-            setProjectsLoading(false);
+            if (!controller.signal.aborted) {
+                setProjectsLoading(false);
+            }
 
         }
 
-    };
+    }, [setSearchParams]);
+
+    useEffect(() => {
+        let isCurrent = true;
+        Promise.resolve().then(() => {
+            if (!isCurrent) {
+                return;
+            }
+
+            if (searchedProjectSlug) {
+                openSearchedProject(searchedProjectSlug);
+            } else {
+                fetchProjects(1);
+            }
+        });
+
+        return () => {
+            isCurrent = false;
+            projectsRequestRef.current?.abort();
+        };
+    }, [fetchProjects, openSearchedProject, searchedProjectSlug]);
 
     // ==================================================
     // HANDLE TEXT INPUTS
@@ -1226,6 +1227,7 @@ function DashboardProjects() {
                     {
 
                         method,
+                        headers: getAuthHeaders(),
 
                         body: data,
 
@@ -1376,6 +1378,7 @@ function DashboardProjects() {
                     {
 
                         method: "DELETE",
+                        headers: getAuthHeaders(),
 
                     }
 
@@ -2493,14 +2496,17 @@ function DashboardProjects() {
 
                 {projectsLoading && (
 
-                    <div className="projects-loading-state">
-
-                        <p>
-
-                            Loading projects...
-
-                        </p>
-
+                    <div className="dashboard-project-list dashboard-skeleton-cards" role="status" aria-label="Loading projects" aria-busy="true">
+                        {Array.from({ length: 3 }, (_, index) => (
+                            <div className="dashboard-project-card dashboard-skeleton-card" key={index} aria-hidden="true">
+                                <span className="dashboard-skeleton dashboard-skeleton-image" />
+                                <div className="dashboard-skeleton-content">
+                                    <span className="dashboard-skeleton dashboard-skeleton-line" />
+                                    <span className="dashboard-skeleton dashboard-skeleton-line dashboard-skeleton-line-short" />
+                                    <span className="dashboard-skeleton dashboard-skeleton-block" />
+                                </div>
+                            </div>
+                        ))}
                     </div>
 
                 )}

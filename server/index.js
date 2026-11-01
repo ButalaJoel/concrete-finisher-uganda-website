@@ -24,6 +24,7 @@
 // ======================================================
 
 
+import "dotenv/config";
 
 import path from "path";
 
@@ -36,12 +37,16 @@ import express from "express";
 import cors from "cors";
 
 import dns from "dns";
+import {
+    createCorsOptions,
+    securityHeaders,
+} from "./middleware/securityMiddleware.js";
 
 
 // ======================================================
 // DATABASE
 // ======================================================
-import dotenv from "dotenv";
+
 import connectDB from "./config/db.js";
 
 
@@ -54,6 +59,7 @@ import quotationRoutes from "./routes/quotationRoutes.js";
 import quotationSettingRoutes from "./routes/quotationSettingRoutes.js";
 
 import officialQuotationRoutes from "./routes/officialQuotationRoutes.js";
+import paymentReceiptRoutes from "./routes/paymentReceiptRoutes.js";
 
 import projectRoutes from "./routes/projectRoutes.js";
 
@@ -68,24 +74,22 @@ import systemPreferenceRoutes from "./routes/systemPreferenceRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 
 
-dotenv.config();
+
 
 dns.setServers([
     "1.1.1.1",
     "8.8.8.8"
 ]);
 
-// ======================================================
-// CONNECT TO DATABASE
-// ======================================================
-
-connectDB();
+const corsOptions = createCorsOptions();
 
 // ======================================================
 // CREATE EXPRESS APP
 // ======================================================
 
 const app = express();
+
+app.disable("x-powered-by");
 
 
 // ======================================================
@@ -106,6 +110,8 @@ const __dirname =
     path.dirname(
         __filename
     );
+
+app.use(securityHeaders);
 
 
 // ======================================================
@@ -144,9 +150,7 @@ app.use(
 // MIDDLEWARE
 // ======================================================
 
-app.use(
-    cors()
-);
+app.use(cors(corsOptions));
 
 app.use(
     express.json()
@@ -186,6 +190,11 @@ app.use(
 app.use(
     "/api/official-quotations",
     officialQuotationRoutes
+);
+
+app.use(
+    "/api/payment-receipts",
+    paymentReceiptRoutes
 );
 
 
@@ -324,24 +333,24 @@ app.get(
 
 
 // ======================================================
-// START SERVER
+// START SERVER ONLY AFTER DATABASE IS READY
 // ======================================================
 
-const PORT =
-    process.env.PORT || 5000;
+const startServer = async () => {
+    try {
+        await connectDB();
 
-app.listen(
-
-    PORT,
-
-     "0.0.0.0",
-
-    () => {
-
-        console.log(
-            `Server running on port ${PORT}`
+        const PORT = globalThis.process.env.PORT || 5000;
+        app.listen(PORT, "0.0.0.0", () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    } catch (error) {
+        console.error(
+            "Server startup aborted because MongoDB is unavailable:",
+            error.name || "UnknownError"
         );
-
+        globalThis.process.exitCode = 1;
     }
+};
 
-);
+startServer();

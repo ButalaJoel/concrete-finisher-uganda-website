@@ -71,7 +71,12 @@ const loginAdmin = async (req, res) => {
         // VALIDATE INPUT
         // ==================================================
 
-        if (!email || !password) {
+        if (
+            typeof email !== "string" ||
+            !email.trim() ||
+            typeof password !== "string" ||
+            !password
+        ) {
 
             return res.status(400).json({
 
@@ -91,9 +96,9 @@ const loginAdmin = async (req, res) => {
             await Admin.findOne({
 
                 email:
-                    email.toLowerCase(),
+                    email.trim().toLowerCase(),
 
-            });
+            }).select("+password");
 
 
 
@@ -334,7 +339,9 @@ const changePassword = async (req, res) => {
         // ==================================================
 
         if (
+            typeof currentPassword !== "string" ||
             !currentPassword ||
+            typeof newPassword !== "string" ||
             !newPassword
         ) {
 
@@ -378,7 +385,7 @@ const changePassword = async (req, res) => {
 
                 req.admin._id
 
-            );
+            ).select("+password");
 
 
         // ==================================================

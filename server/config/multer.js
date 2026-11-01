@@ -1,257 +1,99 @@
-// ======================================================
-// FILE: multer.js
-//
-// PROJECT:
-// Concrete Finisher Uganda Website
-//
-// PURPOSE:
-// Handles image uploads.
-//
-// RESPONSIBILITIES:
-// • Upload project images
-// • Upload administrator profile photos
-//
-// AUTHOR:
-// Joel Butala
-// ======================================================
-
-
-// ======================================================
-// IMPORTS
-// ======================================================
-
 import multer from "multer";
+import fs from "node:fs";
+import path from "node:path";
+import { randomUUID } from "node:crypto";
+import {
+    getImageExtension,
+    imageFileFilter,
+} from "../middleware/imageUploadMiddleware.js";
 
-import fs from "fs";
+const parsePositiveInteger = (name, defaultValue) => {
+    const rawValue = process.env[name];
 
-import path from "path";
+    if (rawValue === undefined || rawValue === "") {
+        return defaultValue;
+    }
 
+    const value = Number(rawValue);
 
-// ======================================================
-// PROJECT IMAGE STORAGE
-//
-// Upload location:
-//
-// server/uploads/projects
-// ======================================================
+    if (!Number.isSafeInteger(value) || value <= 0) {
+        throw new Error(`${name} must be a positive whole number.`);
+    }
 
-const projectStorage = multer.diskStorage({
+    return value;
+};
 
-    destination(req, file, cb) {
+const megabytesToBytes = (name, defaultValue) => {
+    const megabytes = parsePositiveInteger(name, defaultValue);
+    const bytes = megabytes * 1024 * 1024;
 
-        const uploadPath =
-            path.join(
-                "uploads",
-                "projects"
-            );
+    if (!Number.isSafeInteger(bytes)) {
+        throw new Error(`${name} is too large.`);
+    }
 
-        if (!fs.existsSync(uploadPath)) {
+    return bytes;
+};
 
-            fs.mkdirSync(
-                uploadPath,
-                {
-                    recursive: true,
-                }
-            );
+export const uploadLimits = {
+    projectImageBytes: megabytesToBytes("UPLOAD_PROJECT_IMAGE_MAX_MB", 10),
+    profilePhotoBytes: megabytesToBytes("UPLOAD_PROFILE_PHOTO_MAX_MB", 5),
+    companyLogoBytes: megabytesToBytes("UPLOAD_COMPANY_LOGO_MAX_MB", 5),
+    projectGalleryImages: parsePositiveInteger(
+        "UPLOAD_PROJECT_GALLERY_MAX_IMAGES",
+        4
+    ),
+};
 
+const createDiskStorage = (folder, filenamePrefix) => multer.diskStorage({
+    destination(req, file, callback) {
+        const uploadPath = path.join("uploads", folder);
+
+        try {
+            fs.mkdirSync(uploadPath, { recursive: true });
+            callback(null, uploadPath);
+        } catch (error) {
+            callback(error);
         }
-
-        cb(
-            null,
-            uploadPath
-        );
-
     },
 
-
-    filename(req, file, cb) {
-
-        const uniqueName =
-
-            Date.now() +
-
-            "-" +
-
-            file.originalname.replace(
-                /\s+/g,
-                "-"
-            );
-
-        cb(
+    filename(req, file, callback) {
+        callback(
             null,
-            uniqueName
+            `${filenamePrefix}-${randomUUID()}.${getImageExtension(file.mimetype)}`
         );
-
     },
-
 });
-
-
-// ======================================================
-// PROFILE PHOTO STORAGE
-//
-// Upload location:
-//
-// server/uploads/profiles
-// ======================================================
-
-const profileStorage = multer.diskStorage({
-
-    destination(req, file, cb) {
-
-        const uploadPath =
-            path.join(
-                "uploads",
-                "profiles"
-            );
-
-        if (!fs.existsSync(uploadPath)) {
-
-            fs.mkdirSync(
-                uploadPath,
-                {
-                    recursive: true,
-                }
-            );
-
-        }
-
-        cb(
-            null,
-            uploadPath
-        );
-
-    },
-
-
-    filename(req, file, cb) {
-
-        const uniqueName =
-
-            "profile-" +
-
-            Date.now() +
-
-            "-" +
-
-            file.originalname.replace(
-                /\s+/g,
-                "-"
-            );
-
-        cb(
-            null,
-            uniqueName
-        );
-
-    },
-
-});
-
-// ======================================================
-// COMPANY LOGO STORAGE
-//
-// Upload location:
-//
-// server/uploads/company
-// ======================================================
-
-const companyStorage = multer.diskStorage({
-
-    destination(req, file, cb) {
-
-        const uploadPath =
-            path.join(
-                "uploads",
-                "company"
-            );
-
-        if (!fs.existsSync(uploadPath)) {
-
-            fs.mkdirSync(
-                uploadPath,
-                {
-                    recursive: true,
-                }
-            );
-
-        }
-
-        cb(
-            null,
-            uploadPath
-        );
-
-    },
-
-
-    filename(req, file, cb) {
-
-        const uniqueName =
-
-            "company-" +
-
-            Date.now() +
-
-            "-" +
-
-            file.originalname.replace(
-                /\s+/g,
-                "-"
-            );
-
-        cb(
-            null,
-            uniqueName
-        );
-
-    },
-
-});
-
-// ======================================================
-// PROJECT UPLOAD
-// ======================================================
 
 const upload = multer({
-
-    storage: projectStorage,
-
+    storage: multer.memoryStorage(),
+    fileFilter: imageFileFilter,
+    limits: {
+        fileSize: uploadLimits.projectImageBytes,
+        files: 1 + uploadLimits.projectGalleryImages * 2,
+    },
 });
-
-
-// ======================================================
-// PROFILE PHOTO UPLOAD
-// ======================================================
 
 const uploadProfile = multer({
-
-    storage: profileStorage,
-
+    storage: createDiskStorage("profiles", "profile"),
+    fileFilter: imageFileFilter,
+    limits: {
+        fileSize: uploadLimits.profilePhotoBytes,
+        files: 1,
+    },
 });
-
-
-// ======================================================
-// COMPANY LOGO UPLOAD
-// ======================================================
 
 const uploadCompanyLogo = multer({
-
-    storage: companyStorage,
-
+    storage: createDiskStorage("company", "company"),
+    fileFilter: imageFileFilter,
+    limits: {
+        fileSize: uploadLimits.companyLogoBytes,
+        files: 1,
+    },
 });
 
-
-// ======================================================
-// EXPORTS
-// ======================================================
-
 export {
-
     uploadProfile,
-
     uploadCompanyLogo,
-
 };
 
 export default upload;

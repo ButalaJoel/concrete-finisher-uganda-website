@@ -7,6 +7,190 @@
     color:#111;
 }
 
+.project-detail-loading{
+    min-height:100vh;
+    padding-top:0;
+}
+
+.project-detail-skeleton-hero{
+    min-height:75vh;
+    padding:120px 5% 50px;
+    display:flex;
+    align-items:center;
+    background:linear-gradient(100deg,#eee9e3 20%,#f8f6f3 40%,#eee9e3 60%);
+    background-size:200% 100%;
+    animation:project-detail-shimmer 1.5s ease-in-out infinite;
+}
+
+.project-detail-skeleton-content{
+    width:min(1200px,90%);
+    margin:0 auto;
+}
+
+.project-detail-skeleton-line{
+    display:block;
+    height:16px;
+    margin:0 0 18px;
+    border-radius:6px;
+    background:linear-gradient(100deg,#e1dcd6 20%,#f4f1ed 40%,#e1dcd6 60%);
+    background-size:200% 100%;
+    animation:project-detail-shimmer 1.5s ease-in-out infinite;
+}
+
+.project-detail-skeleton-label{
+    width:110px;
+    height:12px;
+}
+
+.project-detail-skeleton-title{
+    width:min(600px,90%);
+    height:54px;
+}
+
+.project-detail-skeleton-copy{
+    width:min(460px,90%);
+}
+
+.project-detail-skeleton-section-title{
+    width:min(360px,75%);
+    height:32px;
+}
+
+.project-detail-skeleton-info{
+    padding-top:44px;
+    padding-bottom:60px;
+}
+
+.project-detail-load-error{
+    min-height:calc(100vh - 180px);
+    display:flex;
+    align-items:center;
+    padding:130px 0 60px;
+}
+
+.project-detail-load-error .project-detail-container{
+    text-align:center;
+}
+
+.project-detail-load-error h2{
+    margin:0 0 22px;
+    font-size:clamp(24px,4vw,36px);
+    line-height:1.25;
+}
+
+.project-detail-load-error button,
+.project-detail-load-error a{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    min-height:46px;
+    margin:6px;
+    padding:10px 20px;
+    border:1px solid var(--brand-copper-dark);
+    border-radius:999px;
+    background:var(--brand-copper-dark);
+    color:#fff;
+    font:inherit;
+    font-weight:700;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.project-detail-load-error a{
+    background:transparent;
+    color:#24160d;
+}
+
+.project-detail-load-error button:focus-visible,
+.project-detail-load-error a:focus-visible{
+    outline:3px solid #c18a52;
+    outline-offset:3px;
+}
+
+@keyframes project-detail-shimmer{
+    to{background-position-x:-200%;}
+}
+
+@media (prefers-reduced-motion: reduce){
+    .project-detail-skeleton-hero,
+    .project-detail-skeleton-line{
+        animation:none;
+    }
+}
+
+.project-detail-not-found{
+    min-height:calc(100vh - 180px);
+    display:grid;
+    place-items:center;
+    padding:100px 6% 60px;
+    background:#f8f5f1;
+}
+
+.project-detail-not-found-content{
+    width:min(680px, 100%);
+    text-align:center;
+}
+
+.project-detail-not-found-code{
+    margin:0;
+    color:var(--brand-copper-dark);
+    font-size:clamp(72px, 14vw, 120px);
+    font-weight:800;
+    line-height:1;
+}
+
+.project-detail-not-found-content h1{
+    margin:18px 0 12px;
+    color:#24160d;
+    font-size:clamp(28px, 5vw, 42px);
+    line-height:1.15;
+}
+
+.project-detail-not-found-content > p:not(.project-detail-not-found-code){
+    color:#666;
+    font-size:16px;
+    line-height:1.6;
+}
+
+.project-detail-not-found-actions{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:26px;
+}
+
+.project-detail-not-found-actions a{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:46px;
+    padding:11px 22px;
+    border:1px solid var(--brand-copper-dark);
+    border-radius:999px;
+    background:var(--brand-copper-dark);
+    color:#fff;
+    font-weight:700;
+    text-decoration:none;
+}
+
+.project-detail-not-found-actions a:last-child{
+    background:transparent;
+    color:#24160d;
+}
+
+.project-detail-not-found-actions a:hover{
+    background:#24160d;
+    border-color:#24160d;
+    color:#fff;
+}
+
+.project-detail-not-found-actions a:focus-visible{
+    outline:3px solid #c18a52;
+    outline-offset:3px;
+}
+
 /* ==========================================
    GLOBAL CONTAINER
 ========================================== */
@@ -396,8 +580,23 @@
 
 @media(max-width:768px){
 
+    .project-detail-skeleton-hero{
+        min-height:400px;
+        padding:120px 5% 40px;
+    }
+
+    .project-detail-skeleton-title{
+        height:38px;
+    }
+
+    .project-detail-load-error{
+        padding-top:120px;
+    }
+
     .project-detail-hero{
-        min-height:320px;
+        box-sizing:border-box;
+        min-height:400px;
+        padding-top:90px;
     }
 
     .project-detail-content h1{

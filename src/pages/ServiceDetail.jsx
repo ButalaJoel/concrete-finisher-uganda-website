@@ -1,6 +1,9 @@
 import { useParams, Link } from "react-router-dom";
 import { servicesData } from "../data/servicesData";
 import "../App.css";
+import "../styles/ServicesPages.css";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 function ServiceDetail() {
   const { slug } = useParams();
@@ -8,10 +11,24 @@ function ServiceDetail() {
   const service = servicesData.find((item) => item.slug === slug);
 
   if (!service) {
-    return <h1>Service not found</h1>;
+    return (
+      <>
+        <Navbar />
+        <main className="route-not-found">
+          <p className="route-not-found-label">SERVICE NOT FOUND</p>
+          <h1>That service is unavailable.</h1>
+          <Link to="/services" className="route-not-found-link">
+            View All Services
+          </Link>
+        </main>
+        <Footer />
+      </>
+    );
   }
 
   return (
+    <>
+    <Navbar />
     <main className="service-detail-page">
       <section
         className="service-detail-hero"
@@ -74,6 +91,8 @@ function ServiceDetail() {
 </Link>
       </section>
     </main>
+    <Footer />
+    </>
   );
 }
 

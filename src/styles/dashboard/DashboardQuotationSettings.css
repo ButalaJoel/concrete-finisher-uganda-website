@@ -58,11 +58,11 @@
 
 .quotation-settings-back-button:hover {
 
-    background: #b8732e;
+    background: var(--brand-copper-dark);
 
     color: #ffffff;
 
-    border-color: #b8732e;
+    border-color: var(--brand-copper-dark);
 
 }
 
@@ -419,20 +419,20 @@
 
 .quotation-settings-save-button {
 
-    background: #b8732e;
+    background: var(--brand-copper-dark);
 
     color: #ffffff;
 
-    border: 1px solid #b8732e;
+    border: 1px solid var(--brand-copper-dark);
 
 }
 
 
 .quotation-settings-save-button:hover {
 
-    background: #a86527;
+    background: #6d4326;
 
-    border-color: #a86527;
+    border-color: #6d4326;
 
 }
 

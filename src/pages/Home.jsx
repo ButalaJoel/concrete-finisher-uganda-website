@@ -8,11 +8,6 @@ import HeroSection from "../components/HeroSection";
 
 import "../App.css";
 
-import heroImage from "../assets/hero.png";
-
-import {
-ArrowRight, 
-} from "lucide-react";
 function Home(){
   return (
     <>

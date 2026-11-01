@@ -21,6 +21,7 @@ import {
     BrowserRouter,
     Routes,
     Route,
+    Link,
 } from "react-router-dom";
 
 
@@ -71,11 +72,32 @@ import DashboardSystemPreferences from "./pages/DashboardSystemPreferences";
 import DashboardSecuritySettings from "./pages/DashboardSecuritySettings";
 import DashboardQuotationSettings from "./pages/DashboardQuotationSettings";
 import DashboardCreateQuotation from "./pages/DashboardCreateQuotation";
+import DashboardReceipts from "./pages/DashboardReceipts";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import "./App.css";
 
 
 // ======================================================
 // APP COMPONENT
 // ======================================================
+
+function NotFound() {
+    return (
+        <>
+            <Navbar />
+            <main className="route-not-found">
+                <p className="route-not-found-label">PAGE NOT FOUND</p>
+                <h1>We can’t find that page.</h1>
+                <p>The address may have changed or the page may no longer be available.</p>
+                <Link to="/" className="route-not-found-link">
+                    Return to Home
+                </Link>
+            </main>
+            <Footer />
+        </>
+    );
+}
 
 function App() {
 
@@ -196,6 +218,21 @@ function App() {
     element={<DashboardCreateQuotation />}
 />
 
+<Route
+    path="receipts"
+    element={<DashboardReceipts />}
+/>
+
+<Route
+    path="receipts/new"
+    element={<DashboardReceipts />}
+/>
+
+<Route
+    path="receipts/:id"
+    element={<DashboardReceipts />}
+/>
+
 
                     {/* ===============================
                         PROJECTS
@@ -274,6 +311,10 @@ function App() {
 
                 </Route>
 
+                <Route
+                    path="*"
+                    element={<NotFound />}
+                />
 
             </Routes>
 

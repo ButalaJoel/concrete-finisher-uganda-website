@@ -49,7 +49,8 @@ function DashboardHome() {
 
         quotations = [],
         loading,
-        error
+        error,
+        refreshQuotations
 
     } = useOutletContext();
 
@@ -70,6 +71,7 @@ function DashboardHome() {
             <StatsCards
                 quotations={quotations}
                 loading={loading}
+                error={error}
             />
 
 
@@ -81,6 +83,7 @@ function DashboardHome() {
                 quotations={quotations}
                 loading={loading}
                 error={error}
+                refreshQuotations={refreshQuotations}
             />
 
 
@@ -91,6 +94,7 @@ function DashboardHome() {
             <Activity
                 quotations={quotations}
                 loading={loading}
+                error={error}
             />
 
 

@@ -29,8 +29,10 @@ import { Outlet } from "react-router-dom";
 
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import { getAuthHeaders } from "../../utils/auth";
 
 import "../../styles/dashboard/Dashboard.css";
+import "../../styles/dashboard/DashboardPolish.css";
 
 
 function DashboardLayout() {
@@ -64,7 +66,9 @@ function DashboardLayout() {
     // ERROR STATE
     // ==================================================
 
-    const [error, setError] = useState(null);
+    const [error, setError] = useState("");
+
+    const [quotationRequest, setQuotationRequest] = useState(0);
 
 
     // ==================================================
@@ -103,13 +107,20 @@ function DashboardLayout() {
     // ==================================================
 
     useEffect(() => {
+        const controller = new AbortController();
 
         const fetchQuotations = async () => {
 
             try {
+                setLoading(true);
+                setError("");
 
                 const response = await fetch(
-                    `${import.meta.env.VITE_API_URL}/api/quotations`
+                    `${import.meta.env.VITE_API_URL}/api/quotations`,
+                    {
+                        headers: getAuthHeaders(),
+                        signal: controller.signal,
+                    }
                 );
 
 
@@ -124,11 +135,17 @@ function DashboardLayout() {
 
                 const result = await response.json();
 
+                if (!Array.isArray(result.data)) {
+                    throw new Error("Quotation data is unavailable.");
+                }
 
                 setQuotations(result.data);
 
 
             } catch (error) {
+                if (controller.signal.aborted) {
+                    return;
+                }
 
                 console.error(
                     "Dashboard quotation error:",
@@ -136,14 +153,15 @@ function DashboardLayout() {
                 );
 
 
-                setError(
-                    "Unable to load dashboard quotation data."
-                );
+                setQuotations([]);
+                setError(error.message || "Unable to load dashboard quotation data.");
 
 
             } finally {
 
-                setLoading(false);
+                if (!controller.signal.aborted) {
+                    setLoading(false);
+                }
 
             }
 
@@ -153,7 +171,9 @@ function DashboardLayout() {
         fetchQuotations();
 
 
-    }, []);
+        return () => controller.abort();
+
+    }, [quotationRequest]);
 
 
     // ==================================================
@@ -168,6 +188,11 @@ function DashboardLayout() {
         (quotation) => quotation.status === "New"
 
     ).length;
+
+    const refreshQuotations = () => {
+        setLoading(true);
+        setQuotationRequest((request) => request + 1);
+    };
 
 
     return (
@@ -218,7 +243,8 @@ function DashboardLayout() {
         setQuotations,
         loading,
         error,
-        setError
+        setError,
+        refreshQuotations
         
     }}
 />

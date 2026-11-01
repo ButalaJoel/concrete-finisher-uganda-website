@@ -89,6 +89,8 @@ const adminSchema = new mongoose.Schema(
 
             required: true,
 
+            select: false,
+
         },
 
 
@@ -172,6 +174,18 @@ const adminSchema = new mongoose.Schema(
     {
 
         timestamps: true,
+        toJSON: {
+            transform(_document, returned) {
+                delete returned.password;
+                return returned;
+            },
+        },
+        toObject: {
+            transform(_document, returned) {
+                delete returned.password;
+                return returned;
+            },
+        },
 
     }
 

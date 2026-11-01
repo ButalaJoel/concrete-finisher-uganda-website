@@ -18,6 +18,22 @@ server/.env
 server/.env.*
 !server/.env.example
 
+# Local credentials and private keys
+.netrc
+.npmrc
+credentials.json
+service-account*.json
+*-service-account*.json
+id_rsa
+id_ed25519
+*.pem
+*.p12
+*.pfx
+*.key
+*.jks
+*.keystore
+*.ppk
+
 
 # ==========================================
 # BUILD OUTPUT

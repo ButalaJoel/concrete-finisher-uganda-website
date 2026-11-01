@@ -30,7 +30,7 @@
 // Joel Butala
 // ======================================================
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import {
     FileText,
@@ -45,6 +45,12 @@ import { useNavigate } from "react-router-dom";
 
 import "../styles/dashboard/DashboardCreateQuotation.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+const quotationsPerPage = 3;
+const getAuthToken = () =>
+    localStorage.getItem("cf_auth_token") ||
+    sessionStorage.getItem("cf_auth_token");
+
 
 // ======================================================
 // CREATE QUOTATION
@@ -53,14 +59,6 @@ import "../styles/dashboard/DashboardCreateQuotation.css";
 function DashboardCreateQuotation() {
 
     const navigate = useNavigate();
-
-
-    // ==================================================
-    // API URL
-    // ==================================================
-
-    const API_URL =
-        import.meta.env.VITE_API_URL;
 
 
     // ==================================================
@@ -122,15 +120,6 @@ function DashboardCreateQuotation() {
 
 const [generatingPdfQuotation, setGeneratingPdfQuotation] =
     useState(null);
-
-    // ==================================================
-    // PAGINATION SETTINGS
-    //
-    // Three quotation cards are displayed per page.
-    // ==================================================
-
-    const quotationsPerPage = 3;
-
 
     // ==================================================
     // QUOTATION DETAILS
@@ -196,7 +185,7 @@ const [generatingPdfQuotation, setGeneratingPdfQuotation] =
 
             {
 
-                id: Date.now(),
+                id: "initial-item",
 
                 description: "",
 
@@ -209,27 +198,6 @@ const [generatingPdfQuotation, setGeneratingPdfQuotation] =
             },
 
         ]);
-
-
-    // ==================================================
-    // GET AUTH TOKEN
-    // ==================================================
-
-    const getAuthToken = () => {
-
-        return (
-
-            localStorage.getItem(
-                "cf_auth_token"
-            ) ||
-
-            sessionStorage.getItem(
-                "cf_auth_token"
-            )
-
-        );
-
-    };
 
 
     // ==================================================
@@ -270,12 +238,9 @@ const [generatingPdfQuotation, setGeneratingPdfQuotation] =
     // These records come from MongoDB.
     // ==================================================
 
-    const fetchOfficialQuotations = async () => {
-
+    const fetchOfficialQuotations = useCallback(async () => {
         setQuotationsLoading(true);
-
         setQuotationsError("");
-
 
         try {
 
@@ -381,7 +346,9 @@ const [generatingPdfQuotation, setGeneratingPdfQuotation] =
 
         }
 
-    };
+    }, []);
+
+    const refreshOfficialQuotations = fetchOfficialQuotations;
 
 
     // ==================================================
@@ -389,15 +356,10 @@ const [generatingPdfQuotation, setGeneratingPdfQuotation] =
     // ==================================================
 
     useEffect(() => {
-
         const loadPreferences = async () => {
+            setLoadingPreferences(true);
 
             try {
-
-                setLoadingPreferences(true);
-
-                setError("");
-
 
                 const token =
                     getAuthToken();
@@ -513,9 +475,17 @@ const [generatingPdfQuotation, setGeneratingPdfQuotation] =
         };
 
 
-        loadPreferences();
+        let isCurrent = true;
+        Promise.resolve().then(() => {
+            if (isCurrent) {
+                loadPreferences();
+            }
+        });
 
-    }, [API_URL]);
+        return () => {
+            isCurrent = false;
+        };
+    }, []);
 
 
     // ==================================================
@@ -523,10 +493,17 @@ const [generatingPdfQuotation, setGeneratingPdfQuotation] =
     // ==================================================
 
     useEffect(() => {
+        let isCurrent = true;
+        Promise.resolve().then(() => {
+            if (isCurrent) {
+                fetchOfficialQuotations();
+            }
+        });
 
-        fetchOfficialQuotations();
-
-    }, [API_URL]);
+        return () => {
+            isCurrent = false;
+        };
+    }, [fetchOfficialQuotations]);
 
 
     // ==================================================
@@ -1804,12 +1781,10 @@ const handleGenerateQuotationPdf = async (
 
             <div className="create-quotation-page">
 
-                <div className="quotation-builder-card">
-
-                    <p>
-                        Loading quotation preferences...
-                    </p>
-
+                <div className="quotation-builder-card dashboard-skeleton-list" role="status" aria-label="Loading quotation preferences" aria-busy="true">
+                    <span className="dashboard-skeleton dashboard-skeleton-heading" />
+                    <span className="dashboard-skeleton dashboard-skeleton-line" />
+                    <span className="dashboard-skeleton dashboard-skeleton-block" />
                 </div>
 
             </div>
@@ -2899,12 +2874,13 @@ const handleGenerateQuotationPdf = async (
 
                 {quotationsLoading && (
 
-                    <div className="quotations-loading-state">
-
-                        <p>
-                            Loading official quotations...
-                        </p>
-
+                    <div className="dashboard-skeleton-list" role="status" aria-label="Loading official quotations" aria-busy="true">
+                        {Array.from({ length: 3 }, (_, index) => (
+                            <div className="dashboard-skeleton-row" key={index} aria-hidden="true">
+                                <span className="dashboard-skeleton dashboard-skeleton-line" />
+                                <span className="dashboard-skeleton dashboard-skeleton-line dashboard-skeleton-line-short" />
+                            </div>
+                        ))}
                     </div>
 
                 )}
@@ -2928,9 +2904,7 @@ const handleGenerateQuotationPdf = async (
 
                                 type="button"
 
-                                onClick={
-                                    fetchOfficialQuotations
-                                }
+                                onClick={refreshOfficialQuotations}
 
                             >
 

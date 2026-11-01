@@ -6,6 +6,10 @@ import {
   useParams,
   Link,
 } from "react-router-dom";
+import { RefreshCw } from "lucide-react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import { fetchProjectBySlug } from "../utils/projectsApi";
 
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -28,6 +32,23 @@ function ProjectDetail() {
 
   const [error, setError] =
     useState("");
+
+  const [notFound, setNotFound] =
+    useState(false);
+
+  const [resolvedSlug, setResolvedSlug] = useState("");
+
+  const [retryCount, setRetryCount] = useState(0);
+  const isRequestLoading = loading || resolvedSlug !== slug;
+
+  const retryProjectFetch = () => {
+    setLoading(true);
+    setError("");
+    setNotFound(false);
+    setProject(null);
+    setResolvedSlug("");
+    setRetryCount((count) => count + 1);
+  };
 
 
   // ======================================================
@@ -54,6 +75,7 @@ function ProjectDetail() {
   // ======================================================
 
   useEffect(() => {
+    const controller = new AbortController();
 
     const fetchProject = async () => {
 
@@ -62,58 +84,64 @@ function ProjectDetail() {
         setLoading(true);
 
         setError("");
+        setNotFound(false);
+        setProject(null);
+        setResolvedSlug("");
 
-        const response = await fetch(
-          `${API_URL}/api/projects/${encodeURIComponent(slug)}`
-        );
-
-        if (!response.ok) {
-
-          if (response.status === 404) {
-
-            throw new Error(
-              "Project not found."
-            );
-
-          }
-
-          throw new Error(
-            "Unable to load project."
-          );
-
+        if (!slug) {
+          throw new Error("Unable to load this project.");
         }
 
-        const result = await response.json();
+        const result = await fetchProjectBySlug({
+          apiUrl: API_URL,
+          slug,
+          signal: controller.signal,
+        });
+
+        if (controller.signal.aborted) {
+          return;
+        }
+
+        if (result.notFound) {
+          setNotFound(true);
+          setResolvedSlug(slug);
+          return;
+        }
 
         setProject(result.data);
+        setResolvedSlug(slug);
 
 
-      } catch (error) {
+      } catch (fetchError) {
+
+        if (controller.signal.aborted) {
+          return;
+        }
 
         console.error(
           "Project detail error:",
-          error
+          fetchError
         );
 
-        setError(
-          error.message ||
-          "Unable to load project."
-        );
+        setError("Unable to load this project. Please try again.");
+        setResolvedSlug(slug);
 
       } finally {
 
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
 
       }
 
     };
 
 
-    if (slug) {
-      fetchProject();
-    }
+    fetchProject();
 
-  }, [slug]);
+    return () => controller.abort();
+
+  }, [slug, retryCount]);
 
 
   // ======================================================
@@ -160,20 +188,26 @@ function ProjectDetail() {
   // LOADING
   // ======================================================
 
-  if (loading) {
+  if (isRequestLoading) {
 
     return (
-      <div className="project-detail-page">
-
-        <div className="project-detail-container">
-
-          <h2>
-            Loading project...
-          </h2>
-
-        </div>
-
-      </div>
+      <>
+        <Navbar />
+        <main className="project-detail-page project-detail-loading" role="status" aria-label="Loading project" aria-busy="true">
+          <div className="project-detail-skeleton-hero" aria-hidden="true">
+            <div className="project-detail-skeleton-content">
+              <span className="project-detail-skeleton-line project-detail-skeleton-label" />
+              <span className="project-detail-skeleton-line project-detail-skeleton-title" />
+              <span className="project-detail-skeleton-line project-detail-skeleton-copy" />
+            </div>
+          </div>
+          <div className="project-detail-container project-detail-skeleton-info" aria-hidden="true">
+            <span className="project-detail-skeleton-line project-detail-skeleton-section-title" />
+            <span className="project-detail-skeleton-line project-detail-skeleton-copy" />
+          </div>
+        </main>
+        <Footer />
+      </>
     );
 
   }
@@ -183,26 +217,45 @@ function ProjectDetail() {
   // ERROR
   // ======================================================
 
-  if (error || !project) {
+  if (notFound) {
 
     return (
-      <div className="project-detail-page">
-
-        <div className="project-detail-container">
-
-          <h2>
-            {error || "Project not found."}
-          </h2>
-
-          <Link to="/projects">
-            Back to Projects
-          </Link>
-
-        </div>
-
-      </div>
+      <>
+        <Navbar />
+        <main className="project-detail-page project-detail-not-found">
+          <div className="project-detail-not-found-content">
+            <p className="project-detail-not-found-code">404</p>
+            <h1>This project is currently unavailable.</h1>
+            <p>The project may have been removed or its link may have changed.</p>
+            <div className="project-detail-not-found-actions">
+              <Link to="/projects">Back to Projects</Link>
+              <Link to="/services">Explore Services</Link>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </>
     );
 
+  }
+
+  if (error || !project) {
+    return (
+      <>
+        <Navbar />
+        <main className="project-detail-page project-detail-load-error">
+          <div className="project-detail-container" role="alert">
+            <h2>{error || "Unable to load this project."}</h2>
+            <button type="button" onClick={retryProjectFetch}>
+              <RefreshCw size={17} aria-hidden="true" />
+              Retry
+            </button>
+            <Link to="/projects">Back to Projects</Link>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
   }
 
 
@@ -220,7 +273,9 @@ function ProjectDetail() {
 
   return (
 
-    <div className="project-detail-page">
+    <>
+    <Navbar />
+    <main className="project-detail-page">
 
 
       {/* ==================================================
@@ -251,13 +306,13 @@ function ProjectDetail() {
                 {project.title}
               </h1>
 
-              <p>
-                {project.shortDescription}
-              </p>
-
-            </div>
+            <p>
+              {project.shortDescription}
+            </p>
 
           </div>
+
+        </div>
 
         </div>
 
@@ -721,7 +776,9 @@ function ProjectDetail() {
 
       )}
 
-    </div>
+    </main>
+    <Footer />
+    </>
 
   );
 

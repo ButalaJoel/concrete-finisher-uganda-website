@@ -19,10 +19,13 @@
 
 
 // ======================================================
-// IMPORT ADMIN MODEL
-// ======================================================
-
-import Admin from "../models/Admin.js";
+const serializeAdminProfile = (admin) => ({
+    id: admin._id.toString(),
+    fullName: admin.fullName,
+    email: admin.email,
+    phoneNumber: admin.phoneNumber,
+    profilePhoto: admin.profilePhoto,
+});
 
 
 // ======================================================
@@ -33,9 +36,7 @@ import Admin from "../models/Admin.js";
 // PURPOSE:
 // Returns the administrator profile information.
 //
-// IF NO PROFILE EXISTS:
-// Returns a friendly response indicating that the
-// administrator profile has not yet been created.
+// Returns only fields needed by the administrator UI.
 // ======================================================
 
 const getAdminProfile = async (req, res) => {
@@ -43,11 +44,10 @@ const getAdminProfile = async (req, res) => {
     try {
 
         // ==============================================
-        // FIND ADMINISTRATOR
+        // Use the administrator authenticated by protect.
         // ==============================================
 
-        const admin =
-            await Admin.findOne();
+        const admin = req.admin;
 
 
         // ==============================================
@@ -71,9 +71,7 @@ const getAdminProfile = async (req, res) => {
         // ==============================================
 
         res.status(200).json({
-
-            admin,
-
+            admin: serializeAdminProfile(admin),
         });
 
     }
@@ -116,9 +114,6 @@ const getAdminProfile = async (req, res) => {
 // • Phone number
 // • Profile photo
 //
-// IF NO ADMIN PROFILE EXISTS:
-// Creates the first administrator profile.
-//
 // PROFILE PHOTO:
 // If a new image is uploaded, its path is saved in
 // MongoDB.
@@ -151,8 +146,7 @@ const updateAdminProfile = async (req, res) => {
         // FIND EXISTING ADMINISTRATOR
         // ==============================================
 
-        let admin =
-            await Admin.findOne();
+        const admin = req.admin;
 
 
         // ==============================================
@@ -169,67 +163,6 @@ const updateAdminProfile = async (req, res) => {
 
             profilePhoto =
                 `/uploads/profiles/${req.file.filename}`;
-
-        }
-
-
-        // ==============================================
-        // CREATE INITIAL ADMIN PROFILE
-        //
-        // This happens the first time the administrator
-        // saves their profile.
-        // ==============================================
-
-        if (!admin) {
-
-            // ------------------------------------------
-            // VALIDATE REQUIRED FIELDS
-            // ------------------------------------------
-
-            if (!fullName || !email) {
-
-                return res.status(400).json({
-
-                    message:
-                        "Full name and email are required.",
-
-                });
-
-            }
-
-
-            // ------------------------------------------
-            // CREATE PROFILE
-            // ------------------------------------------
-
-            admin =
-                await Admin.create({
-
-                    fullName,
-
-                    email,
-
-                    phoneNumber:
-                        phoneNumber || "",
-
-                    profilePhoto:
-                        profilePhoto || "",
-
-                });
-
-
-            // ------------------------------------------
-            // RETURN CREATED PROFILE
-            // ------------------------------------------
-
-            return res.status(201).json({
-
-                message:
-                    "Administrator profile created successfully.",
-
-                admin,
-
-            });
 
         }
 
@@ -311,7 +244,7 @@ const updateAdminProfile = async (req, res) => {
             message:
                 "Administrator profile updated successfully.",
 
-            admin,
+            admin: serializeAdminProfile(admin),
 
         });
 

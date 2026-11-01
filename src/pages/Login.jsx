@@ -17,20 +17,8 @@ import {
     Eye,
     EyeOff,
     LogIn,
+    Phone,
 } from "lucide-react";
-
-
-// =========================================================
-// SOCIAL MEDIA ICONS
-// These require the react-icons package.
-// =========================================================
-
-import {
-    FaTiktok,
-    FaInstagram,
-    FaFacebookF,
-    FaYoutube,
-} from "react-icons/fa";
 
 
 // =========================================================
@@ -335,54 +323,27 @@ const handleSubmit = async (event) => {
 
 
                         <p className="cf-login-social-title">
-                            Follow Concrete Finisher
+                            Contact Concrete Finisher
                         </p>
 
 
                         <div className="cf-login-social-links">
 
 
-                            {/* TIKTOK */}
-
                             <a
-                                href="#"
+                                href="tel:+256780662557"
                                 className="cf-login-social-link"
-                                aria-label="TikTok"
+                                aria-label="Call Concrete Finisher"
                             >
-                                <FaTiktok />
+                                <Phone />
                             </a>
 
-
-                            {/* INSTAGRAM */}
-
                             <a
-                                href="#"
+                                href="mailto:info@concretefinisherug.com"
                                 className="cf-login-social-link"
-                                aria-label="Instagram"
+                                aria-label="Email Concrete Finisher"
                             >
-                                <FaInstagram />
-                            </a>
-
-
-                            {/* FACEBOOK */}
-
-                            <a
-                                href="#"
-                                className="cf-login-social-link"
-                                aria-label="Facebook"
-                            >
-                                <FaFacebookF />
-                            </a>
-
-
-                            {/* YOUTUBE */}
-
-                            <a
-                                href="#"
-                                className="cf-login-social-link"
-                                aria-label="YouTube"
-                            >
-                                <FaYoutube />
+                                <Mail />
                             </a>
 
 
@@ -599,12 +560,12 @@ const handleSubmit = async (event) => {
                                 </label>
 
 
-                                <button
-                                    type="button"
+                                <a
+                                    href="mailto:info@concretefinisherug.com?subject=Dashboard%20password%20reset"
                                     className="cf-login-forgot-button"
                                 >
-                                    Forgot Password?
-                                </button>
+                                    Forgot Password? Contact Support
+                                </a>
 
 
                             </div>

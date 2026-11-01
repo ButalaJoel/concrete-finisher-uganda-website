@@ -42,20 +42,6 @@ function DashboardSecuritySettings() {
     };
 
 
-    const handleSubmit = (event) => {
-
-        event.preventDefault();
-
-        // Authentication logic will be connected later.
-        console.log({
-            currentPassword,
-            newPassword,
-            confirmPassword,
-        });
-
-    };
-
-
     return (
 
         <div className="security-settings-page">
@@ -118,12 +104,15 @@ function DashboardSecuritySettings() {
 
                 </div>
 
+                <p className="password-helper-text" role="note">
+                    Password changes are not available in this portal yet.
+                    Contact the account administrator for a password reset.
+                </p>
 
                 {/* PASSWORD FORM */}
 
                 <form
                     className="security-password-form"
-                    onSubmit={handleSubmit}
                 >
 
 
@@ -153,6 +142,7 @@ function DashboardSecuritySettings() {
                                 }
                                 placeholder="Enter your current password"
                                 value={currentPassword}
+                                disabled
                                 onChange={(event) =>
                                     setCurrentPassword(event.target.value)
                                 }
@@ -162,6 +152,7 @@ function DashboardSecuritySettings() {
                             <button
                                 type="button"
                                 className="password-toggle-button"
+                                disabled
                                 onClick={() =>
                                     setShowCurrentPassword(
                                         !showCurrentPassword
@@ -206,6 +197,7 @@ function DashboardSecuritySettings() {
                                 }
                                 placeholder="Enter your new password"
                                 value={newPassword}
+                                disabled
                                 onChange={(event) =>
                                     setNewPassword(event.target.value)
                                 }
@@ -215,6 +207,7 @@ function DashboardSecuritySettings() {
                             <button
                                 type="button"
                                 className="password-toggle-button"
+                                disabled
                                 onClick={() =>
                                     setShowNewPassword(!showNewPassword)
                                 }
@@ -262,6 +255,7 @@ function DashboardSecuritySettings() {
                                 }
                                 placeholder="Confirm your new password"
                                 value={confirmPassword}
+                                disabled
                                 onChange={(event) =>
                                     setConfirmPassword(event.target.value)
                                 }
@@ -271,6 +265,7 @@ function DashboardSecuritySettings() {
                             <button
                                 type="button"
                                 className="password-toggle-button"
+                                disabled
                                 onClick={() =>
                                     setShowConfirmPassword(
                                         !showConfirmPassword
@@ -305,8 +300,9 @@ function DashboardSecuritySettings() {
                         <button
                             type="submit"
                             className="update-password-button"
+                            disabled
                         >
-                            Update Password
+                            Password Change Unavailable
                         </button>
 
                     </div>

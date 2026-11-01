@@ -32,6 +32,7 @@ import {
   getQuotations,
   updateQuotationStatus,
 } from "../controllers/quotationController.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -49,7 +50,7 @@ router.post("/", createQuotation);
 // GET /api/quotations
 // ======================================================
 
-router.get("/", getQuotations);
+router.get("/", protect, getQuotations);
 
 // ======================================================
 // UPDATE QUOTATION STATUS
@@ -61,7 +62,7 @@ router.get("/", getQuotations);
 // PATCH /api/quotations/6a6894b3fe0592445d6f013f
 // ======================================================
 
-router.patch("/:id", updateQuotationStatus);
+router.patch("/:id", protect, updateQuotationStatus);
 
 
 

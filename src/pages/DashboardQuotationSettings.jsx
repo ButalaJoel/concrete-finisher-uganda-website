@@ -693,12 +693,14 @@ const handleSubmit = async (event) => {
                     <button
     type="submit"
     className="quotation-settings-save-button"
-    disabled={saving}
+                    disabled={saving || loading}
 >
-    {saving
-        ? "Saving..."
-        : "Save Settings"
-    }
+                    {loading
+                        ? "Loading Settings..."
+                        : saving
+                        ? "Saving..."
+                        : "Save Settings"
+                    }
 </button>
                 </div>
 

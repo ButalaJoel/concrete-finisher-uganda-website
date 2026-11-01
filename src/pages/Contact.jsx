@@ -8,10 +8,11 @@ import ContactMap from "../components/ContactMap";
 import ContactReasons from "../components/ContactReasons";
 
 import "../styles/Contact.css";
+import "../styles/ContactPage.css";
 
 function Contact() {
   return (
-    <>
+    <div className="contact-page">
       <Navbar />
 
       <ContactHero />
@@ -25,7 +26,7 @@ function Contact() {
       <ContactReasons />
 
       <Footer />
-    </>
+    </div>
   );
 }
 

@@ -41,6 +41,7 @@ import {
 } from "react-router-dom";
 
 import "../styles/dashboard/DashboardCompanySettings.css";
+import { getAuthHeaders } from "../utils/auth";
 
 
 // ======================================================
@@ -176,7 +177,9 @@ function DashboardCompanySettings() {
 
 
                 const response =
-                    await fetch(API_URL);
+                    await fetch(API_URL, {
+                        headers: getAuthHeaders(),
+                    });
 
 
                 // ==========================================
@@ -470,6 +473,7 @@ function DashboardCompanySettings() {
                     {
 
                         method: "PUT",
+                        headers: getAuthHeaders(),
 
                         body: companyFormData,
 

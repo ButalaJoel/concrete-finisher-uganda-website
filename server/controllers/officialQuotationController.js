@@ -26,8 +26,13 @@
 // IMPORT MODELS
 // ======================================================
 
+import mongoose from "mongoose";
+
 import OfficialQuotation
     from "../models/OfficialQuotation.js";
+
+import QuotationCounter
+    from "../models/QuotationCounter.js";
 
 import SystemPreference
     from "../models/SystemPreference.js";
@@ -58,6 +63,9 @@ import generateQuotationPdf
 // to be reused.
 // ======================================================
 
+const escapeRegex = (value) =>
+    value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 const generateQuotationNumber = async (prefix) => {
 
     // --------------------------------------------------
@@ -69,69 +77,58 @@ const generateQuotationNumber = async (prefix) => {
             .trim()
             .toUpperCase();
 
-
-    // --------------------------------------------------
-    // FIND QUOTATIONS USING THIS PREFIX
-    // --------------------------------------------------
-
-    const quotations =
-        await OfficialQuotation.find({
-
-            quotationNumber: {
-
-                $regex:
-                    `^${cleanPrefix}-`,
-
-                $options: "i",
-
-            },
-
-        })
-        .select("quotationNumber")
-        .lean();
-
-
-    // --------------------------------------------------
-    // FIND HIGHEST NUMBER
-    // --------------------------------------------------
-
-    let highestNumber = 0;
-
-
-    for (const quotation of quotations) {
-
-        const match =
-            quotation.quotationNumber.match(
-                /-(\d+)$/
-            );
-
-
-        if (!match) {
-
-            continue;
-
-        }
-
-
-        const number =
-            Number(match[1]);
-
-
-        if (number > highestNumber) {
-
-            highestNumber = number;
-
-        }
-
+    if (!cleanPrefix) {
+        throw new Error("Quotation number prefix cannot be empty.");
     }
 
+    // Seed a new counter from saved records, so introducing the
+    // counter does not restart numbering for existing quotations.
+    let counter = await QuotationCounter.findById(cleanPrefix).lean();
 
-    // --------------------------------------------------
-    // INCREASE NUMBER
-    // --------------------------------------------------
+    if (!counter) {
+        const existingQuotations = await OfficialQuotation.find({
+            quotationNumber: {
+                $regex: `^${escapeRegex(cleanPrefix)}-`,
+                $options: "i",
+            },
+        })
+            .select("quotationNumber")
+            .lean();
 
-    const nextNumber =
-        highestNumber + 1;
+        const highestNumber = existingQuotations.reduce(
+            (highest, quotation) => {
+                const match = quotation.quotationNumber.match(/-(\d+)$/);
+                const value = match ? Number(match[1]) : 0;
+                return Number.isSafeInteger(value)
+                    ? Math.max(highest, value)
+                    : highest;
+            },
+            0
+        );
+
+        try {
+            await QuotationCounter.create({
+                _id: cleanPrefix,
+                sequence: highestNumber,
+            });
+        } catch (error) {
+            // Concurrent first requests may both try to seed the same
+            // counter. The unique _id lets one win; the other increments it.
+            if (error.code !== 11000) {
+                throw error;
+            }
+        }
+    }
+
+    const updatedCounter = await QuotationCounter.findOneAndUpdate(
+        { _id: cleanPrefix },
+        { $inc: { sequence: 1 } },
+        { new: true, runValidators: true }
+    );
+
+    if (!updatedCounter || !Number.isSafeInteger(updatedCounter.sequence)) {
+        throw new Error("Unable to allocate a quotation number.");
+    }
 
 
     // --------------------------------------------------
@@ -144,11 +141,106 @@ const generateQuotationNumber = async (prefix) => {
     // --------------------------------------------------
 
     const formattedNumber =
-        String(nextNumber).padStart(3, "0");
+        String(updatedCounter.sequence).padStart(3, "0");
 
 
     return `${cleanPrefix}-${formattedNumber}`;
 
+};
+
+const createInputError = (message) => {
+    const error = new Error(message);
+    error.statusCode = 400;
+    return error;
+};
+
+const getQuotationErrorStatus = (error) => {
+    if (error.statusCode) {
+        return error.statusCode;
+    }
+    if (error.name === "ValidationError" || error.name === "CastError") {
+        return 400;
+    }
+    return error.code === 11000 ? 409 : 500;
+};
+
+const normalizeQuotationItems = (items) => {
+    if (!Array.isArray(items) || items.length === 0) {
+        throw createInputError("At least one quotation item is required.");
+    }
+
+    const normalizedItems = items.map((item) => {
+        if (
+            !item ||
+            typeof item.description !== "string" ||
+            !item.description.trim() ||
+            typeof item.unit !== "string" ||
+            !item.unit.trim()
+        ) {
+            throw createInputError(
+                "Every quotation item must have a description and unit."
+            );
+        }
+
+        const parseNumber = (value) => {
+            if (
+                (typeof value !== "number" && typeof value !== "string") ||
+                (typeof value === "string" && !value.trim())
+            ) {
+                return NaN;
+            }
+            return Number(value);
+        };
+        const quantity = parseNumber(item.quantity);
+        const unitPrice = parseNumber(item.unitPrice);
+
+        if (!Number.isFinite(quantity) || quantity < 0) {
+            throw createInputError(
+                "Item quantity must be a finite, non-negative number."
+            );
+        }
+
+        if (!Number.isFinite(unitPrice) || unitPrice < 0) {
+            throw createInputError(
+                "Item unit price must be a finite, non-negative number."
+            );
+        }
+
+        const amount = quantity * unitPrice;
+        if (!Number.isFinite(amount) || amount < 0) {
+            throw createInputError("Quotation item amount is invalid.");
+        }
+
+        return {
+            description: item.description.trim(),
+            quantity,
+            unit: item.unit.trim(),
+            unitPrice,
+            amount,
+        };
+    });
+
+    const subtotal = normalizedItems.reduce(
+        (total, item) => total + item.amount,
+        0
+    );
+
+    if (!Number.isFinite(subtotal) || subtotal < 0) {
+        throw createInputError("Quotation subtotal is invalid.");
+    }
+
+    return { items: normalizedItems, subtotal };
+};
+
+const parseQuotationDate = (value, label) => {
+    if (typeof value !== "string" || !value.trim()) {
+        throw createInputError(`${label} must be a valid date.`);
+    }
+    const parsedDate = new Date(value);
+    if (Number.isNaN(parsedDate.getTime())) {
+        throw createInputError(`${label} must be a valid date.`);
+    }
+    return parsedDate;
 };
 
 
@@ -168,6 +260,10 @@ const createOfficialQuotation =
             // GET REQUEST DATA
             // ==============================================
 
+            const body =
+                req.body && typeof req.body === "object"
+                    ? req.body
+                    : {};
             const {
 
                 quotationDate,
@@ -180,7 +276,7 @@ const createOfficialQuotation =
 
                 items,
 
-            } = req.body;
+            } = body;
 
 
             // ==============================================
@@ -189,8 +285,10 @@ const createOfficialQuotation =
 
             if (
                 !customer ||
-                !customer.fullName ||
-                !customer.phoneNumber
+                typeof customer.fullName !== "string" ||
+                !customer.fullName.trim() ||
+                typeof customer.phoneNumber !== "string" ||
+                !customer.phoneNumber.trim()
             ) {
 
                 return res.status(400).json({
@@ -208,23 +306,6 @@ const createOfficialQuotation =
             // ==============================================
             // VALIDATE ITEMS
             // ==============================================
-
-            if (
-                !Array.isArray(items) ||
-                items.length === 0
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "At least one quotation item is required.",
-
-                });
-
-            }
-
 
             // ==============================================
             // LOAD SYSTEM PREFERENCES
@@ -296,89 +377,10 @@ const createOfficialQuotation =
             // CALCULATE ITEMS
             // ==============================================
 
-            const quotationItems =
-                items.map((item) => {
-
-                    const quantity =
-                        Number(item.quantity || 0);
-
-                    const unitPrice =
-                        Number(item.unitPrice || 0);
-
-
-                    if (!item.description) {
-
-                        throw new Error(
-                            "Every quotation item must have a description."
-                        );
-
-                    }
-
-
-                    if (!item.unit) {
-
-                        throw new Error(
-                            "Every quotation item must have a unit."
-                        );
-
-                    }
-
-
-                    if (quantity < 0) {
-
-                        throw new Error(
-                            "Item quantity cannot be negative."
-                        );
-
-                    }
-
-
-                    if (unitPrice < 0) {
-
-                        throw new Error(
-                            "Item unit price cannot be negative."
-                        );
-
-                    }
-
-
-                    const amount =
-                        quantity * unitPrice;
-
-
-                    return {
-
-                        description:
-                            item.description.trim(),
-
-                        quantity,
-
-                        unit:
-                            item.unit.trim(),
-
-                        unitPrice,
-
-                        amount,
-
-                    };
-
-                });
-
-
-            // ==============================================
-            // CALCULATE SUBTOTAL
-            // ==============================================
-
-            const subtotal =
-                quotationItems.reduce(
-
-                    (total, item) =>
-
-                        total + item.amount,
-
-                    0
-
-                );
+            const {
+                items: quotationItems,
+                subtotal,
+            } = normalizeQuotationItems(items);
 
 
             // ==============================================
@@ -403,9 +405,9 @@ const createOfficialQuotation =
             // ==============================================
 
             const finalQuotationDate =
-                quotationDate
-                    ? new Date(quotationDate)
-                    : new Date();
+                quotationDate === undefined || quotationDate === null
+                    ? new Date()
+                    : parseQuotationDate(quotationDate, "Quotation date");
 
 
             // ==============================================
@@ -420,10 +422,10 @@ const createOfficialQuotation =
             let finalValidUntil;
 
 
-            if (validUntil) {
+            if (validUntil !== undefined && validUntil !== null) {
 
                 finalValidUntil =
-                    new Date(validUntil);
+                    parseQuotationDate(validUntil, "Valid-until date");
 
             } else {
 
@@ -441,6 +443,12 @@ const createOfficialQuotation =
 
                 );
 
+            }
+
+            if (finalValidUntil < finalQuotationDate) {
+                throw createInputError(
+                    "Valid-until date cannot be earlier than the quotation date."
+                );
             }
 
 
@@ -630,13 +638,14 @@ const createOfficialQuotation =
             );
 
 
-            return res.status(500).json({
+            const statusCode = getQuotationErrorStatus(error);
+            return res.status(statusCode).json({
 
                 success: false,
 
-                message:
-                    error.message ||
-                    "Unable to create official quotation.",
+                message: statusCode === 500
+                    ? "Unable to create official quotation."
+                    : error.message,
 
             });
 
@@ -905,323 +914,230 @@ const updateOfficialQuotation =
     async (req, res) => {
 
         try {
+            if (!mongoose.isValidObjectId(req.params.id)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid quotation identifier.",
+                });
+            }
 
-            // ==============================================
-            // GET REQUEST DATA
-            // ==============================================
+            const quotation = await OfficialQuotation.findById(req.params.id);
+            if (!quotation) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Official quotation not found.",
+                });
+            }
+
+            const body = req.body || {};
+            const requestedStatus = body.status;
+            const allowedStatuses = [
+                "Draft",
+                "Issued",
+                "Accepted",
+                "Rejected",
+                "Expired",
+            ];
+
+            if (
+                requestedStatus !== undefined &&
+                !allowedStatuses.includes(requestedStatus)
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid quotation status.",
+                });
+            }
+
+            const hasContentChanges = [
+                "quotationDate",
+                "validUntil",
+                "customer",
+                "project",
+                "items",
+            ].some((field) => body[field] !== undefined);
+
+            if (
+                quotation.status === "Draft" &&
+                requestedStatus === "Issued" &&
+                !hasContentChanges
+            ) {
+                const issuedQuotation =
+                    await OfficialQuotation.findOneAndUpdate(
+                        { _id: quotation._id, status: "Draft" },
+                        { $set: { status: "Issued" } },
+                        { new: true, runValidators: true }
+                    );
+
+                if (!issuedQuotation) {
+                    return res.status(409).json({
+                        success: false,
+                        message: "The quotation changed during this request. Reload it and try again.",
+                    });
+                }
+
+                return res.status(200).json({
+                    success: true,
+                    message: "Official quotation issued successfully.",
+                    data: issuedQuotation,
+                });
+            }
+
+            // Only draft documents may have their contents edited. Once issued,
+            // a status-only transition is permitted without changing the saved
+            // document used to render the existing PDF format.
+            if (quotation.status !== "Draft") {
+                if (hasContentChanges) {
+                    return res.status(409).json({
+                        success: false,
+                        message: "Only draft quotations can be edited. Issued quotation contents are preserved.",
+                    });
+                }
+
+                const allowedTransitions = {
+                    Issued: ["Accepted", "Rejected", "Expired"],
+                    Accepted: [],
+                    Rejected: [],
+                    Expired: [],
+                };
+                const nextStatuses = allowedTransitions[quotation.status] || [];
+
+                if (
+                    !requestedStatus ||
+                    !nextStatuses.includes(requestedStatus)
+                ) {
+                    return res.status(409).json({
+                        success: false,
+                        message: "This quotation status cannot be changed.",
+                    });
+                }
+
+                const statusUpdated = await OfficialQuotation.findOneAndUpdate(
+                    {
+                        _id: quotation._id,
+                        status: quotation.status,
+                    },
+                    { $set: { status: requestedStatus } },
+                    { new: true, runValidators: true }
+                );
+
+                if (!statusUpdated) {
+                    return res.status(409).json({
+                        success: false,
+                        message: "The quotation changed during this request. Reload it and try again.",
+                    });
+                }
+
+                return res.status(200).json({
+                    success: true,
+                    message: "Official quotation status updated successfully.",
+                    data: statusUpdated,
+                });
+            }
 
             const {
-
                 quotationDate,
-
                 validUntil,
-
                 customer,
-
                 project,
-
                 items,
-
-                status,
-
-            } = req.body;
-
-
-            // ==============================================
-            // VALIDATE CUSTOMER
-            // ==============================================
+            } = body;
 
             if (
                 !customer ||
-                !customer.fullName ||
-                !customer.phoneNumber
+                typeof customer.fullName !== "string" ||
+                !customer.fullName.trim() ||
+                typeof customer.phoneNumber !== "string" ||
+                !customer.phoneNumber.trim()
             ) {
-
                 return res.status(400).json({
-
                     success: false,
-
-                    message:
-                        "Customer name and phone number are required.",
-
+                    message: "Customer name and phone number are required.",
                 });
-
             }
 
-
-            // ==============================================
-            // VALIDATE ITEMS
-            // ==============================================
-
-            if (
-                !Array.isArray(items) ||
-                items.length === 0
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "At least one quotation item is required.",
-
-                });
-
-            }
-
-
-            // ==============================================
-            // RECALCULATE ITEMS
-            //
-            // Never trust the subtotal or amount sent by
-            // the frontend.
-            // ==============================================
-
-            const quotationItems =
-                items.map((item) => {
-
-                    const quantity =
-                        Number(item.quantity || 0);
-
-                    const unitPrice =
-                        Number(item.unitPrice || 0);
-
-
-                    if (!item.description) {
-
-                        throw new Error(
-                            "Every quotation item must have a description."
-                        );
-
-                    }
-
-
-                    if (!item.unit) {
-
-                        throw new Error(
-                            "Every quotation item must have a unit."
-                        );
-
-                    }
-
-
-                    if (quantity < 0) {
-
-                        throw new Error(
-                            "Item quantity cannot be negative."
-                        );
-
-                    }
-
-
-                    if (unitPrice < 0) {
-
-                        throw new Error(
-                            "Item unit price cannot be negative."
-                        );
-
-                    }
-
-
-                    const amount =
-                        quantity * unitPrice;
-
-
-                    return {
-
-                        description:
-                            item.description.trim(),
-
-                        quantity,
-
-                        unit:
-                            item.unit.trim(),
-
-                        unitPrice,
-
-                        amount,
-
-                    };
-
-                });
-
-
-            // ==============================================
-            // RECALCULATE SUBTOTAL
-            // ==============================================
-
-            const subtotal =
-                quotationItems.reduce(
-
-                    (total, item) =>
-
-                        total + item.amount,
-
-                    0
-
-                );
-
-
-            // ==============================================
-            // BUILD UPDATE DATA
-            //
-            // quotationNumber is deliberately NOT included.
-            // companySnapshot/settingsSnapshot are also
-            // deliberately NOT included.
-            // ==============================================
+            const {
+                items: quotationItems,
+                subtotal,
+            } = normalizeQuotationItems(items);
 
             const updateData = {
-
                 customer: {
-
-                    fullName:
-                        customer.fullName.trim(),
-
-                    company:
-                        customer.company || "",
-
-                    phoneNumber:
-                        customer.phoneNumber.trim(),
-
-                    email:
-                        customer.email || "",
-
-                    address:
-                        customer.address || "",
-
+                    fullName: customer.fullName.trim(),
+                    company: customer.company || "",
+                    phoneNumber: customer.phoneNumber.trim(),
+                    email: customer.email || "",
+                    address: customer.address || "",
                 },
-
                 project: {
-
-                    projectName:
-                        project?.projectName || "",
-
-                    projectLocation:
-                        project?.projectLocation || "",
-
-                    projectDescription:
-                        project?.projectDescription || "",
-
+                    projectName: project?.projectName || "",
+                    projectLocation: project?.projectLocation || "",
+                    projectDescription: project?.projectDescription || "",
                 },
-
-                items:
-                    quotationItems,
-
+                items: quotationItems,
                 subtotal,
-
             };
 
-
-            // ==============================================
-            // UPDATE DATES ONLY WHEN PROVIDED
-            // ==============================================
-
-            if (quotationDate) {
-
-                updateData.quotationDate =
-                    new Date(quotationDate);
-
-            }
-
-
-            if (validUntil) {
-
-                updateData.validUntil =
-                    new Date(validUntil);
-
-            }
-
-
-            // ==============================================
-            // UPDATE STATUS IF PROVIDED
-            // ==============================================
-
-            if (status) {
-
-                const allowedStatuses = [
-
-                    "Draft",
-                    "Issued",
-                    "Accepted",
-                    "Rejected",
-                    "Expired",
-
-                ];
-
-
-                if (
-                    !allowedStatuses.includes(status)
-                ) {
-
-                    return res.status(400).json({
-
-                        success: false,
-
-                        message:
-                            "Invalid quotation status.",
-
-                    });
-
-                }
-
-
-                updateData.status =
-                    status;
-
-            }
-
-
-            // ==============================================
-            // UPDATE QUOTATION
-            // ==============================================
-
-            const quotation =
-                await OfficialQuotation.findByIdAndUpdate(
-
-                    req.params.id,
-
-                    updateData,
-
-                    {
-                        new: true,
-                        runValidators: true,
-                    }
-
+            if (quotationDate !== undefined) {
+                updateData.quotationDate = parseQuotationDate(
+                    quotationDate,
+                    "Quotation date"
                 );
-
-
-            // ==============================================
-            // QUOTATION NOT FOUND
-            // ==============================================
-
-            if (!quotation) {
-
-                return res.status(404).json({
-
-                    success: false,
-
-                    message:
-                        "Official quotation not found.",
-
-                });
-
             }
 
+            if (validUntil !== undefined) {
+                updateData.validUntil = parseQuotationDate(
+                    validUntil,
+                    "Valid-until date"
+                );
+            }
 
-            // ==============================================
-            // SUCCESS RESPONSE
-            // ==============================================
+            const effectiveQuotationDate =
+                updateData.quotationDate || quotation.quotationDate;
+            const effectiveValidUntil =
+                updateData.validUntil || quotation.validUntil;
+
+            if (effectiveValidUntil < effectiveQuotationDate) {
+                throw createInputError(
+                    "Valid-until date cannot be earlier than the quotation date."
+                );
+            }
+
+            if (
+                requestedStatus !== undefined &&
+                requestedStatus !== "Draft" &&
+                requestedStatus !== "Issued"
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message: "A draft quotation may only remain Draft or be Issued.",
+                });
+            }
+
+            if (requestedStatus !== undefined) {
+                updateData.status = requestedStatus;
+            }
+
+            const updatedQuotation = await OfficialQuotation.findOneAndUpdate(
+                {
+                    _id: quotation._id,
+                    status: "Draft",
+                },
+                { $set: updateData },
+                { new: true, runValidators: true }
+            );
+
+            if (!updatedQuotation) {
+                return res.status(409).json({
+                    success: false,
+                    message: "Only draft quotations can be edited. Reload the quotation and try again.",
+                });
+            }
 
             return res.status(200).json({
-
                 success: true,
-
-                message:
-                    "Official quotation updated successfully.",
-
-                data:
-                    quotation,
-
+                message: "Official quotation updated successfully.",
+                data: updatedQuotation,
             });
 
 
@@ -1236,13 +1152,14 @@ const updateOfficialQuotation =
             );
 
 
-            return res.status(500).json({
+            const statusCode = getQuotationErrorStatus(error);
+            return res.status(statusCode).json({
 
                 success: false,
 
-                message:
-                    error.message ||
-                    "Unable to update official quotation.",
+                message: statusCode === 500
+                    ? "Unable to update official quotation."
+                    : error.message,
 
             });
 
@@ -1263,29 +1180,37 @@ const deleteOfficialQuotation =
 
         try {
 
-            const quotation =
-                await OfficialQuotation.findByIdAndDelete(
-
-                    req.params.id
-
-                );
-
-
-            // ----------------------------------------------
-            // QUOTATION NOT FOUND
-            // ----------------------------------------------
-
-            if (!quotation) {
-
-                return res.status(404).json({
-
+            if (!mongoose.isValidObjectId(req.params.id)) {
+                return res.status(400).json({
                     success: false,
+                    message: "Invalid quotation identifier.",
+                });
+            }
 
-                    message:
-                        "Official quotation not found.",
-
+            const deletedQuotation =
+                await OfficialQuotation.findOneAndDelete({
+                    _id: req.params.id,
+                    status: "Draft",
                 });
 
+            if (!deletedQuotation) {
+                const existingQuotation = await OfficialQuotation.findById(
+                    req.params.id
+                )
+                    .select("status")
+                    .lean();
+
+                if (!existingQuotation) {
+                    return res.status(404).json({
+                        success: false,
+                        message: "Official quotation not found.",
+                    });
+                }
+
+                return res.status(409).json({
+                    success: false,
+                    message: "Issued or finalized quotations cannot be permanently deleted.",
+                });
             }
 
 
