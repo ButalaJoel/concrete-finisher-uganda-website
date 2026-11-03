@@ -3,6 +3,9 @@ import { Link, useSearchParams } from "react-router-dom";
 import { AlertCircle, FolderOpen, RefreshCw } from "lucide-react";
 import projectsHeroImage from "../assets/projects/darling-namanve/after-3.jpg";
 import { fetchProjectsPage } from "../utils/projectsApi";
+import SiteShell from "../components/SiteShell";
+import PageHero from "../components/PageHero";
+import CtaBand from "../components/CtaBand";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -199,73 +202,16 @@ function Projects() {
 
 
   return (
-    <>
+    <SiteShell>
+      <PageHero
+        image={projectsHeroImage}
+        crumb={[{ label: "Projects" }]}
+        title="Projects built to perform"
+        intro="Floors we've prepared and finished for factories, businesses and homes. Open a project to see it before and after."
+      />
 
-      {/* ==================================================
-          HERO SECTION
-      ================================================== */}
-
-      <section
-  className="projects-page-hero"
-  style={{
-    backgroundImage: `
-      url(${projectsHeroImage})
-    `,
-  }}
->
-
-  <div className="projects-page-hero-overlay">
-
-    <div className="projects-page-hero-content">
-
-      <p className="section-label">
-        OUR WORK
-      </p>
-
-      <h1>
-        Projects Built to Perform
-      </h1>
-
-      <p>
-        Explore flooring, concrete finishing and
-        waterproofing projects completed for
-        residential, commercial and industrial spaces.
-      </p>
-
-    </div>
-
-  </div>
-
-</section>
-
-      {/* ==================================================
-          INTRO SECTION
-      ================================================== */}
-
-      <section className="projects-page-intro">
-
-        <p className="section-label">
-          OUR PROJECTS
-        </p>
-
-        <h2>
-          Quality Finishes. Lasting Results.
-        </h2>
-
-        <p>
-          Every project is approached with the right
-          preparation, materials and application process
-          to deliver durable, professional results.
-        </p>
-
-      </section>
-
-
-      {/* ==================================================
-          PROJECT GALLERY
-      ================================================== */}
-
-      <section className="projects-page-gallery">
+      <section className="section projects-page-gallery">
+        <div className="wrap">
 
 
         {/* ==================================================
@@ -474,7 +420,7 @@ function Projects() {
                   currentPage === 1
                 }
               >
-                ← Previous
+                Previous
               </button>
 
 
@@ -521,45 +467,19 @@ function Projects() {
                   currentPage === totalPages
                 }
               >
-                Next →
+                Next
               </button>
 
             </div>
 
           )}
 
+        </div>
       </section>
 
 
-      {/* ==================================================
-          CTA SECTION
-      ================================================== */}
-
-      <section className="projects-page-cta">
-
-        <p className="section-label">
-          START YOUR PROJECT
-        </p>
-
-        <h2>
-          Have a Floor or Surface That Needs Finishing?
-        </h2>
-
-        <p>
-          Tell us about your project and our team will
-          recommend the right solution for your space.
-        </p>
-
-        <Link
-          to="/contact"
-          className="projects-page-cta-button"
-        >
-          Request a Site Inspection
-        </Link>
-
-      </section>
-
-    </>
+      <CtaBand />
+    </SiteShell>
   );
 }
 

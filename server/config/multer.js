@@ -74,7 +74,7 @@ const upload = multer({
 });
 
 const uploadProfile = multer({
-    storage: createDiskStorage("profiles", "profile"),
+    storage: multer.memoryStorage(),
     fileFilter: imageFileFilter,
     limits: {
         fileSize: uploadLimits.profilePhotoBytes,
@@ -83,7 +83,7 @@ const uploadProfile = multer({
 });
 
 const uploadCompanyLogo = multer({
-    storage: createDiskStorage("company", "company"),
+    storage: multer.memoryStorage(),
     fileFilter: imageFileFilter,
     limits: {
         fileSize: uploadLimits.companyLogoBytes,

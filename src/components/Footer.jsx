@@ -1,146 +1,75 @@
-// Footer.jsx
+import { Link } from "react-router-dom";
+import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 
 import logo from "../assets/logo.png";
-import { Link } from "react-router-dom";
+import { CONTACT } from "../data/contact";
 
 function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <>
-      <footer className="footer">
+    <footer className="footer">
+      <div className="wrap footer__top">
+        <div className="footer__brand">
+          <img src={logo} alt="Concrete Finisher" className="footer__logo" width="900" height="261" />
+          <p>
+            Epoxy flooring, polished concrete, terrazzo, stamping and waterproofing
+            for factories, businesses and homes across Uganda.
+          </p>
+        </div>
 
-  <div className="footer-top">
+        <div className="footer__col">
+          <h2>Company</h2>
+          <ul>
+            <li><Link to="/about">About us</Link></li>
+            <li><Link to="/company#process">How we work</Link></li>
+            <li><Link to="/projects">Projects</Link></li>
+            <li><Link to="/company#faq">FAQs</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+          </ul>
+        </div>
 
-    <div className="footer-column footer-brand">
+        <div className="footer__col">
+          <h2>Services</h2>
+          <ul>
+            <li><Link to="/services/epoxy-flooring">Epoxy flooring</Link></li>
+            <li><Link to="/services/concrete-polishing">Concrete polishing</Link></li>
+            <li><Link to="/services/concrete-stamping">Concrete stamping</Link></li>
+            <li><Link to="/services/terrazzo-flooring">Terrazzo flooring</Link></li>
+            <li><Link to="/services/waterproofing">Waterproofing</Link></li>
+            <li><Link to="/services/surface-preparation">Surface preparation</Link></li>
+          </ul>
+        </div>
 
-      <img
-        src={logo}
-        alt="Concrete Finisher"
-        className="footer-logo"
-      />
+        <div className="footer__col">
+          <h2>Get in touch</h2>
+          <ul className="footer__contact">
+            <li>
+              <a href={CONTACT.phoneHref}><Phone size={16} aria-hidden="true" />{CONTACT.phone}</a>
+            </li>
+            <li>
+              <a href={CONTACT.whatsappHref} target="_blank" rel="noopener noreferrer">
+                <MessageCircle size={16} aria-hidden="true" />WhatsApp us
+              </a>
+            </li>
+            <li>
+              <a href={CONTACT.emailHref}><Mail size={16} aria-hidden="true" />{CONTACT.email}</a>
+            </li>
+            <li>
+              <a href={CONTACT.mapsHref} target="_blank" rel="noopener noreferrer">
+                <MapPin size={16} aria-hidden="true" />
+                {CONTACT.addressLine1}, {CONTACT.addressLine2}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-      <p>
-        Professional concrete finishing specialists
-        delivering epoxy flooring, concrete polishing,
-        stamping, terrazzo and waterproofing solutions
-        across Uganda.
-      </p>
-
-    </div>
-
-    <div className="footer-column">
-
-      <h3>QUICK LINKS</h3>
-
-      <ul>
-
-  <li>
-    <Link to="/">Home</Link>
-  </li>
-
-  <li>
-    <Link to="/about">About Us</Link>
-  </li>
-
-  <li>
-    <Link to="/services">Services</Link>
-  </li>
-
-  <li>
-    <Link to="/projects">Projects</Link>
-  </li>
-
-  <li>
-    <Link to="/contact">Contact Us</Link>
-  </li>
-
-</ul>
-    </div>
-
-    <div className="footer-column">
-
-      <h3>OUR SERVICES</h3>
-
-      <ul>
-
-  <li>
-    <Link to="/services/epoxy-flooring">
-      Epoxy Flooring
-    </Link>
-  </li>
-
-  <li>
-    <Link to="/services/concrete-polishing">
-      Concrete Polishing
-    </Link>
-  </li>
-
-  <li>
-    <Link to="/services/concrete-stamping">
-      Concrete Stamping
-    </Link>
-  </li>
-
-  <li>
-    <Link to="/services/terrazzo-flooring">
-      Terrazzo Flooring
-    </Link>
-  </li>
-
-  <li>
-    <Link to="/services/waterproofing">
-      Waterproofing
-    </Link>
-  </li>
-
-</ul>
-    </div>
-
-    <div className="footer-column">
-
-      <h3>CONTACT INFO</h3>
-
-      <ul>
-
-  <li>
-    <a href="tel:+256780662557">
-      +256 780 662 557
-    </a>
-  </li>
-
-  <li>
-    <a href="mailto:info@concretefinisherug.com">
-      info@concretefinisherug.com
-    </a>
-  </li>
-
-  <li>
-    <a
-      href="https://maps.google.com/?q=Concrete+Finisher+Uganda+Kampala"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      Kampala, Uganda
-    </a>
-  </li>
-
-</ul>
-
-    </div>
-
-  </div>
-
-  <div className="footer-bottom">
-
-    <p>
-      © 2026 Concrete Finisher Uganda.
-      All Rights Reserved.
-    </p>
-
-  </div>
-
-</footer>
-
-    </>
+      <div className="wrap footer__bottom">
+        <p>© {year} Concrete Finisher Uganda. All rights reserved.</p>
+        <Link to="/login" className="footer__staff">Staff login</Link>
+      </div>
+    </footer>
   );
 }
 

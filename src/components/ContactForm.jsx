@@ -89,254 +89,111 @@ function ContactForm() {
     }
   };
 
+  const fieldProps = (name) => ({
+    id: `quote-${name}`,
+    name,
+    value: formData[name],
+    onChange: handleChange,
+  });
+
   return (
-    <section className="contact-form-section">
-
-      <div className="contact-form-header">
-
-        <span>REQUEST A QUOTATION</span>
-
-        <h2>
-          Tell Us About Your Project
-        </h2>
-
+    <div className="quote-form">
+      <div className="quote-form__head">
+        <h2 className="h2">Request a quotation</h2>
         <p>
-          Complete the form below and our specialists will review your
-          requirements before preparing a free quotation or arranging a
-          site inspection.
+          Fill in what you know. A specialist will review it and call you to arrange
+          a site inspection. Fields marked * are required.
         </p>
-
-        {submissionError && (
-          <p className="contact-form-error" role="alert" aria-live="polite">
-            {submissionError}
-          </p>
-        )}
-
       </div>
 
-      <form
-        className="contact-form"
-        onSubmit={handleSubmit}
-        aria-busy={isSubmitting}
-      >
+      {submissionError && (
+        <p className="form-alert form-alert--error" role="alert">
+          {submissionError}
+        </p>
+      )}
 
-        <div className="form-row">
+      {isSubmitted && (
+        <p className="form-alert form-alert--success" role="status">
+          Thanks, your request has been sent. We'll be in touch within one working day.
+        </p>
+      )}
 
-          <div className="form-group">
-
-            <label>Full Name *</label>
-
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              placeholder="John Doe"
-              required
-            />
-
+      <form className="form" onSubmit={handleSubmit} aria-busy={isSubmitting}>
+        <div className="form__grid">
+          <div className="field">
+            <label htmlFor="quote-fullName">Full name *</label>
+            <input type="text" autoComplete="name" required {...fieldProps("fullName")} />
           </div>
 
-          <div className="form-group">
-
-            <label>Company (Optional)</label>
-
-            <input
-              type="text"
-              name="company"
-              value={formData.company}
-              onChange={handleChange}
-              placeholder="ABC Ltd"
-            />
-
+          <div className="field">
+            <label htmlFor="quote-company">Company</label>
+            <input type="text" autoComplete="organization" {...fieldProps("company")} />
           </div>
 
-        </div>
-
-        <div className="form-row">
-
-          <div className="form-group">
-
-            <label>Phone Number *</label>
-
-            <input
-              type="tel"
-              name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              placeholder="+256..."
-              required
-            />
-
+          <div className="field">
+            <label htmlFor="quote-phoneNumber">Phone number *</label>
+            <input type="tel" autoComplete="tel" placeholder="+256" required {...fieldProps("phoneNumber")} />
           </div>
 
-          <div className="form-group">
-
-            <label>Email Address</label>
-
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="you@example.com"
-            />
-
+          <div className="field">
+            <label htmlFor="quote-email">Email</label>
+            <input type="email" autoComplete="email" {...fieldProps("email")} />
           </div>
 
-        </div>
-
-        <div className="form-row">
-
-          <div className="form-group">
-
-            <label>Service Required *</label>
-
-            <select
-              name="serviceRequired"
-              value={formData.serviceRequired}
-              onChange={handleChange}
-              required
-            >
-
-              <option value="">Select Service</option>
-
-              <option value="Epoxy Flooring">
-                Epoxy Flooring
-              </option>
-
-              <option value="Concrete Polishing">
-                Concrete Polishing
-              </option>
-
-              <option value="Concrete Stamping">
-                Concrete Stamping
-              </option>
-
-              <option value="Terrazzo Flooring">
-                Terrazzo Flooring
-              </option>
-
-              <option value="Surface Preparation">
-                Surface Preparation
-              </option>
-
-              <option value="Waterproofing">
-                Waterproofing
-              </option>
-
+          <div className="field">
+            <label htmlFor="quote-serviceRequired">Service *</label>
+            <select required {...fieldProps("serviceRequired")}>
+              <option value="">Choose a service</option>
+              <option value="Epoxy Flooring">Epoxy flooring</option>
+              <option value="Concrete Polishing">Concrete polishing</option>
+              <option value="Concrete Stamping">Concrete stamping</option>
+              <option value="Terrazzo Flooring">Terrazzo flooring</option>
+              <option value="Surface Preparation">Surface preparation</option>
+              <option value="Waterproofing">Waterproofing</option>
             </select>
-
           </div>
 
-          <div className="form-group">
-
-            <label>Property Type *</label>
-
-            <select
-              name="propertyType"
-              value={formData.propertyType}
-              onChange={handleChange}
-              required
-            >
-
-              <option value="">Select Property</option>
-
-              <option value="Residential">
-                Residential
-              </option>
-
-              <option value="Commercial">
-                Commercial
-              </option>
-
-              <option value="Industrial">
-                Industrial
-              </option>
-
+          <div className="field">
+            <label htmlFor="quote-propertyType">Property type *</label>
+            <select required {...fieldProps("propertyType")}>
+              <option value="">Choose a property type</option>
+              <option value="Residential">Residential</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Industrial">Industrial</option>
             </select>
-
           </div>
 
-        </div>
+          <div className="field">
+            <label htmlFor="quote-projectLocation">Project location *</label>
+            <input type="text" placeholder="e.g. Namanve, Mukono" required {...fieldProps("projectLocation")} />
+          </div>
 
-        <div className="form-row">
+          <div className="field">
+            <label htmlFor="quote-estimatedArea">Approximate area (m²)</label>
+            <input type="number" min="0" inputMode="numeric" {...fieldProps("estimatedArea")} />
+          </div>
 
-          <div className="form-group">
+          <div className="field">
+            <label htmlFor="quote-preferredStartDate">Preferred start date</label>
+            <input type="date" {...fieldProps("preferredStartDate")} />
+          </div>
 
-            <label>Project Location *</label>
-
-            <input
-              type="text"
-              name="projectLocation"
-              value={formData.projectLocation}
-              onChange={handleChange}
-              placeholder="Kampala"
+          <div className="field field--full">
+            <label htmlFor="quote-projectDescription">About the project *</label>
+            <textarea
+              rows="6"
+              placeholder="What is the space used for? What condition is the floor in now?"
               required
+              {...fieldProps("projectDescription")}
             />
-
           </div>
-
-          <div className="form-group">
-
-            <label>Estimated Area (m²)</label>
-
-            <input
-              type="number"
-              name="estimatedArea"
-              value={formData.estimatedArea}
-              onChange={handleChange}
-              placeholder="500"
-            />
-
-          </div>
-
         </div>
 
-        <div className="form-group form-group-date">
-
-          <label>Preferred Start Date</label>
-
-          <input
-            type="date"
-            name="preferredStartDate"
-            value={formData.preferredStartDate}
-            onChange={handleChange}
-          />
-
-        </div>
-
-        <div className="form-group">
-
-          <label>Project Description *</label>
-
-          <textarea
-            rows="7"
-            name="projectDescription"
-            value={formData.projectDescription}
-            onChange={handleChange}
-            placeholder="Tell us about your project..."
-            required
-          />
-
-        </div>
-
-        <button
-          type="submit"
-          className="contact-submit-btn"
-          disabled={isSubmitting || isSubmitted}
-        >
-          {isSubmitting
-            ? "SUBMITTING..."
-            : isSubmitted
-            ? "QUOTATION REQUEST SENT ✓"
-            : "REQUEST FREE QUOTATION"
-          }
+        <button type="submit" className="btn btn--primary btn--lg" disabled={isSubmitting || isSubmitted}>
+          {isSubmitting ? "Sending request…" : isSubmitted ? "Request sent" : "Send quotation request"}
         </button>
-
       </form>
-
-    </section>
+    </div>
   );
 }
 

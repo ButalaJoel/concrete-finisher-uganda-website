@@ -1,31 +1,21 @@
+const STATS = [
+  { value: "100+", label: "Projects completed" },
+  { value: "8+", label: "Years of experience" },
+  { value: "6", label: "Floor systems installed" },
+  { value: "24/7", label: "Customer support line" },
+];
+
 function CompanyStats() {
   return (
-    <section className="company-stats">
-
-     <div className="stats-wrapper">
-
-      <div className="stat-card">
-        <h2>100+</h2>
-        <p>Projects Completed</p>
-      </div>
-
-      <div className="stat-card">
-        <h2>8+</h2>
-        <p>Years Experience</p>
-      </div>
-
-      <div className="stat-card">
-        <h2>100%</h2>
-        <p>Client Satisfaction</p>
-      </div>
-
-      <div className="stat-card">
-        <h2>24/7</h2>
-        <p>Customer Support</p>
-      </div>
-
-       </div>
-
+    <section className="stat-band" aria-label="Company figures">
+      <dl className="wrap stat-band__grid">
+        {STATS.map((s) => (
+          <div key={s.label}>
+            <dt>{s.value}</dt>
+            <dd>{s.label}</dd>
+          </div>
+        ))}
+      </dl>
     </section>
   );
 }

@@ -1,24 +1,24 @@
-
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import ProjectsSection from "../components/ProjectsSection";
-import ServicesSection from "../components/ServicesSection";
-import MetricsSection from "../components/MetricsSection";
+import SiteShell from "../components/SiteShell";
 import HeroSection from "../components/HeroSection";
+import MetricsSection from "../components/MetricsSection";
+import ServicesSection from "../components/ServicesSection";
+import ProcessSteps from "../components/ProcessSteps";
+import ProjectsSection from "../components/ProjectsSection";
+import CtaBand from "../components/CtaBand";
 
-import "../App.css";
-
-function Home(){
+function Home() {
   return (
-    <>
-    <Navbar />
-    <HeroSection />
-    <MetricsSection />
-    <ServicesSection />
-    <ProjectsSection />
-    <Footer />
-    </>
-
+    <SiteShell className="site--home">
+      <HeroSection />
+      <MetricsSection />
+      <ServicesSection
+        title="Floor systems we install"
+        intro="Six services, one team. We recommend the system after we've seen the slab and know how the space will be used."
+      />
+      <ProcessSteps />
+      <ProjectsSection />
+      <CtaBand />
+    </SiteShell>
   );
 }
 

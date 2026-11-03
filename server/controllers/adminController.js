@@ -18,6 +18,8 @@
 // ======================================================
 
 
+import storeUploadedImage from "../utils/storeUploadedImage.js";
+
 // ======================================================
 const serializeAdminProfile = (admin) => ({
     id: admin._id.toString(),
@@ -162,7 +164,7 @@ const updateAdminProfile = async (req, res) => {
         if (req.file) {
 
             profilePhoto =
-                `/uploads/profiles/${req.file.filename}`;
+                await storeUploadedImage(req.file, "profiles");
 
         }
 

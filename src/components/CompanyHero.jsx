@@ -1,39 +1,19 @@
 import { Link } from "react-router-dom";
+import PageHero from "./PageHero";
+import heroImage from "../assets/projects/darling-namanve/after-4.jpg";
 
 function CompanyHero() {
   return (
-    <section className="company-hero">
-
-      <div className="company-hero-overlay">
-
-        <div className="company-container">
-
-          <p className="company-section-label">
-            ABOUT COMPANY
-          </p>
-
-          <h1>
-            Building Durable Concrete Solutions Across Uganda
-          </h1>
-
-          <p>
-            Learn more about Concrete Finisher Uganda, our experience,
-            our process and our commitment to delivering professional
-            concrete finishing solutions.
-          </p>
-
-          <Link
-            to="/contact"
-            className="company-button"
-          >
-            Request a Site Inspection
-          </Link>
-
-        </div>
-
+    <PageHero
+      image={heroImage}
+      crumb={[{ label: "About us", to: "/about" }, { label: "Company" }]}
+      title="Building durable concrete floors across Uganda"
+      intro="Our experience, the way we work on site and answers to the questions clients ask most."
+    >
+      <div className="page-hero__actions">
+        <Link to="/contact#quote" className="btn btn--primary">Request a site inspection</Link>
       </div>
-
-    </section>
+    </PageHero>
   );
 }
 

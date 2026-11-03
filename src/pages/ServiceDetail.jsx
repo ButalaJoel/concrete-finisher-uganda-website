@@ -1,98 +1,92 @@
-import { useParams, Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { Check } from "lucide-react";
+
 import { servicesData } from "../data/servicesData";
-import "../App.css";
-import "../styles/ServicesPages.css";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import { SERVICES } from "../data/services";
+import SiteShell from "../components/SiteShell";
+import PageHero from "../components/PageHero";
+import CtaBand from "../components/CtaBand";
 
 function ServiceDetail() {
   const { slug } = useParams();
-
   const service = servicesData.find((item) => item.slug === slug);
 
   if (!service) {
     return (
-      <>
-        <Navbar />
-        <main className="route-not-found">
-          <p className="route-not-found-label">SERVICE NOT FOUND</p>
-          <h1>That service is unavailable.</h1>
-          <Link to="/services" className="route-not-found-link">
-            View All Services
-          </Link>
-        </main>
-        <Footer />
-      </>
+      <SiteShell>
+        <section className="not-found wrap">
+          <h1 className="h2">That service isn't available.</h1>
+          <p className="lede">The link may be out of date. See the full list of services instead.</p>
+          <Link to="/services" className="btn btn--primary">View all services</Link>
+        </section>
+      </SiteShell>
     );
   }
 
+  const others = SERVICES.filter((s) => s.slug !== slug).slice(0, 3);
+
   return (
-    <>
-    <Navbar />
-    <main className="service-detail-page">
-      <section
-        className="service-detail-hero"
-        style={{
-          backgroundImage: `linear-gradient(rgba(12, 10, 8, 0.72), rgba(12, 10, 8, 0.72)), url(${service.heroImage})`,
-        }}
+    <SiteShell>
+      <PageHero
+        image={service.heroImage}
+        crumb={[{ label: "Services", to: "/services" }, { label: service.title }]}
+        title={service.title}
+        intro={service.shortDescription}
       >
-        <div className="service-detail-hero-content">
-          <p className="section-tag">OUR SERVICES</p>
-          <h1>{service.title}</h1>
-          <p>{service.shortDescription}</p>
+        <div className="page-hero__actions">
+          <Link to="/contact#quote" className="btn btn--primary">Get a quote for {service.title.toLowerCase()}</Link>
         </div>
-      </section>
+      </PageHero>
 
-      <section className="service-overview">
-        <div className="service-overview-content">
-          <p className="section-tag">ABOUT THIS SERVICE</p>
-          <h2>Built for Performance and Protection</h2>
-          <p>{service.overview}</p>
-        </div>
-      </section>
-
-      <section className="service-detail-info">
-        <div className="service-detail-info-grid">
-          <div className="service-detail-list">
-            <p className="section-tag">KEY BENEFITS</p>
-            <h2>Why Choose {service.title}?</h2>
-
-            <ul>
-              {service.benefits.map((benefit) => (
-                <li key={benefit}>{benefit}</li>
-              ))}
-            </ul>
+      <section className="section">
+        <div className="wrap detail">
+          <div className="prose">
+            <h2 className="h2">About this service</h2>
+            <p className="lede">{service.overview}</p>
           </div>
 
-          <div className="service-detail-list">
-            <p className="section-tag">IDEAL FOR</p>
-            <h2>Recommended Applications</h2>
-
-            <ul>
-              {service.applications.map((application) => (
-                <li key={application}>{application}</li>
-              ))}
-            </ul>
+          <div className="detail__lists">
+            <div className="checklist">
+              <h3>Benefits</h3>
+              <ul>
+                {service.benefits.map((b) => (
+                  <li key={b}><Check size={18} aria-hidden="true" />{b}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="checklist">
+              <h3>Where it's used</h3>
+              <ul className="tags">
+                {service.applications.map((a) => (
+                  <li key={a}>{a}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="service-detail-cta">
-        <p className="section-tag">START YOUR PROJECT</p>
-        <h2>Need a Durable Flooring Solution?</h2>
-        <p>
-          Talk to our team about the right flooring system for your space.
-        </p>
-        <Link
-    to="/contact"
-    className="service-detail-btn"
->
-    Request a Site Inspection
-</Link>
+      <section className="section section--tint">
+        <div className="wrap">
+          <div className="section-head">
+            <h2 className="h2">Other services</h2>
+            <Link to="/services" className="link-arrow section-head__link">All services</Link>
+          </div>
+          <ul className="service-grid">
+            {others.map((s) => (
+              <li key={s.slug}>
+                <Link to={`/services/${s.slug}`} className="service-card">
+                  <div className="service-card__img"><img src={s.image} alt="" loading="lazy" /></div>
+                  <div className="service-card__body"><h3>{s.title}</h3><p>{s.text}</p></div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
-    </main>
-    <Footer />
-    </>
+
+      <CtaBand title={`Need ${service.title.toLowerCase()}?`} />
+    </SiteShell>
   );
 }
 

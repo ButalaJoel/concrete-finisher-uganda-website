@@ -1,115 +1,62 @@
 import { Link } from "react-router-dom";
-import heroVideo from "../assets/hero-video.mp4";
-import "../styles/HeroSection.css";
+import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 
-import {
-  Phone,
-  MessageCircleMore,
-  Mail,
-  MapPin,
-  ArrowRight
-} from "lucide-react";
+import heroVideo from "../assets/hero-video.mp4";
+import heroPoster from "../assets/services/polishing.jpg";
+import { CONTACT } from "../data/contact";
 
 function HeroSection() {
   return (
     <section className="hero">
-
-      {/* Background Video */}
-      <video
-        className="hero-video"
-        autoPlay
-        muted
-        loop
-        playsInline
-      >
-        <source src={heroVideo} type="video/mp4" />
-      </video>
-
-      {/* Dark Overlay */}
-      <div className="hero-overlay"></div>
-
-      {/* Hero Content */}
-      <div className="hero-content">
-
-        <p className="subtitle">
-          PREMIUM CONCRETE FINISHING SOLUTIONS
-        </p>
-
-        <h1>
-          Precision Floors.
-          <br />
-          <span>Built to Last.</span>
-        </h1>
-
-        <p className="hero-text">
-          We deliver high-performance flooring systems including epoxy
-          flooring, concrete polishing, grinding, stamping,
-          terrazzo, waterproofing and decorative finishes.
-        </p>
-
-        <div className="hero-buttons">
-
-          <Link to="/contact" className="primary-btn">
-            GET FREE QUOTE
-            <ArrowRight size={15} />
-          </Link>
-
-          <Link to="/projects" className="secondary-btn">
-            VIEW OUR PROJECTS
-            <ArrowRight size={15} />
-          </Link>
-
-        </div>
-
-        <div className="contact-bar">
-
-          <a
-            href="tel:+256780662557"
-            className="contact-card"
-          >
-            <p>
-              <Phone size={16} strokeWidth={2} aria-hidden="true" />
-              <span>+256 780 662 557</span>
-            </p>
-          </a>
-
-          <a
-            href="https://wa.me/256780662557"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="contact-card"
-          >
-            <p>
-              <MessageCircleMore size={16} strokeWidth={2} aria-hidden="true" />
-              <span>Chat on WhatsApp</span>
-            </p>
-          </a>
-
-          <a
-            href="mailto:info@concretefinisherug.com"
-            className="contact-card"
-          >
-            <p>
-              <Mail size={16} strokeWidth={2} aria-hidden="true" />
-              <span>info@concretefinisherug.com</span>
-            </p>
-          </a>
-
-          <a
-            href="https://maps.google.com/?q=Kampala,Uganda"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="contact-card"
-          >
-            <p>
-              <MapPin size={16} strokeWidth={2} aria-hidden="true" />
-              <span>Kampala, Uganda</span>
-            </p>
-          </a>
-
-        </div>
-
+      <div className="hero__media" aria-hidden="true">
+        <video autoPlay muted loop playsInline preload="metadata" poster={heroPoster}>
+          <source src={heroVideo} type="video/mp4" />
+        </video>
       </div>
+
+      <div className="wrap hero__content">
+        <p className="hero__kicker">Concrete finishing specialists, Kampala</p>
+        <h1>Precision floors, built to last.</h1>
+        <p className="hero__lede">
+          Epoxy flooring, concrete polishing, grinding, stamping, terrazzo and
+          waterproofing for factories, warehouses, businesses and homes across Uganda.
+        </p>
+        <div className="hero__actions">
+          <Link to="/contact#quote" className="btn btn--primary btn--lg">
+            Get a free quote
+          </Link>
+          <Link to="/projects" className="btn btn--outline-light btn--lg">
+            See our projects
+          </Link>
+        </div>
+      </div>
+
+      <ul className="hero__strip wrap" aria-label="Contact options">
+        <li>
+          <a href={CONTACT.phoneHref}>
+            <Phone size={18} aria-hidden="true" />
+            <span><small>Call</small>{CONTACT.phone}</span>
+          </a>
+        </li>
+        <li>
+          <a href={CONTACT.whatsappHref} target="_blank" rel="noopener noreferrer">
+            <MessageCircle size={18} aria-hidden="true" />
+            <span><small>WhatsApp</small>Send photos of your floor</span>
+          </a>
+        </li>
+        <li>
+          <a href={CONTACT.emailHref}>
+            <Mail size={18} aria-hidden="true" />
+            <span><small>Email</small>{CONTACT.email}</span>
+          </a>
+        </li>
+        <li>
+          <a href={CONTACT.mapsHref} target="_blank" rel="noopener noreferrer">
+            <MapPin size={18} aria-hidden="true" />
+            <span><small>Office</small>Luzira, Kampala</span>
+          </a>
+        </li>
+      </ul>
     </section>
   );
 }

@@ -1,55 +1,30 @@
+import { Coins, Shield, Sparkles, Wrench } from "lucide-react";
+
+const BENEFITS = [
+  { icon: Shield, title: "Durable", text: "Built to handle heavy traffic, impact and demanding environments." },
+  { icon: Sparkles, title: "Low maintenance", text: "Sealed, seamless surfaces that are quick to clean and cheaper to run." },
+  { icon: Wrench, title: "Professionally installed", text: "Applied by trained crews using industrial equipment and tested methods." },
+  { icon: Coins, title: "Cost effective", text: "Long service life means lower cost over the life of the building." },
+];
+
 function ServicesBenefits() {
   return (
-    <section className="services-benefits">
-
-      <div className="container">
-
-        <span className="section-tag">
-          WHY OUR SOLUTIONS
-        </span>
-
-        <h2>
-          Flooring Built For Performance
-        </h2>
-
-        <div className="benefits-grid">
-
-          <div className="benefit-card">
-            <h3>Durable</h3>
-            <p>
-              Designed to withstand heavy traffic
-              and demanding environments.
-            </p>
-          </div>
-
-          <div className="benefit-card">
-            <h3>Low Maintenance</h3>
-            <p>
-              Easy to clean and maintain,
-              reducing operational costs.
-            </p>
-          </div>
-
-          <div className="benefit-card">
-            <h3>Professional Installation</h3>
-            <p>
-              Installed by experienced flooring
-              specialists using modern equipment.
-            </p>
-          </div>
-
-          <div className="benefit-card">
-            <h3>Cost Effective</h3>
-            <p>
-              Long-term flooring solutions that
-              maximize value and durability.
-            </p>
-          </div>
-
+    <div className="section section--dark">
+      <div className="wrap">
+        <div className="section-head">
+          <h2 className="h2">Floors built for performance</h2>
         </div>
-
+        <ul className="reasons reasons--dark">
+          {BENEFITS.map(({ icon: Icon, title, text }) => (
+            <li key={title}>
+              <Icon size={26} strokeWidth={1.6} aria-hidden="true" />
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </li>
+          ))}
+        </ul>
       </div>
-    </section>
+    </div>
   );
 }
 

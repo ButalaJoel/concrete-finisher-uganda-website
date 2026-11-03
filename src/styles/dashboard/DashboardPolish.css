@@ -230,7 +230,7 @@
 
 .recent-quotation-item,
 .activity-item {
-    border-color: #eee9e3;
+    border-color: #ecebe7;
 }
 
 .view-all-quotations {
@@ -270,7 +270,7 @@
 
 .dashboard-content td,
 .dashboard-content th {
-    border-color: #eee9e3;
+    border-color: #ecebe7;
 }
 
 .dashboard-content .quotation-status,
@@ -367,7 +367,7 @@
     display: grid;
     gap: 10px;
     padding: 14px 4px;
-    border-bottom: 1px solid #eee9e3;
+    border-bottom: 1px solid #ecebe7;
 }
 
 .dashboard-skeleton-row:last-child {

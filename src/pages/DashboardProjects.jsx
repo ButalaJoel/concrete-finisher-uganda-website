@@ -1665,6 +1665,14 @@ function DashboardProjects() {
 
                 </h2>
 
+                <div className="dp-grid">
+
+
+                <div className="dp-field">
+
+
+                    <label htmlFor="project-title">Project Title *</label>
+
 
                 <input
 
@@ -1672,7 +1680,9 @@ function DashboardProjects() {
 
                     name="title"
 
-                    placeholder="Project Title"
+                    id="project-title"
+
+                    placeholder="e.g. Darling Uganda factory floor"
 
                     value={formData.title}
 
@@ -1683,13 +1693,24 @@ function DashboardProjects() {
                 />
 
 
+                </div>
+
+
+                <div className="dp-field">
+
+
+                    <label htmlFor="project-slug">Project Slug *</label>
+
+
                 <input
 
                     type="text"
 
                     name="slug"
 
-                    placeholder="Project Slug"
+                    id="project-slug"
+
+                    placeholder="Used in the web address, e.g. darling-factory-floor"
 
                     value={formData.slug}
 
@@ -1700,13 +1721,24 @@ function DashboardProjects() {
                 />
 
 
+                </div>
+
+
+                <div className="dp-field">
+
+
+                    <label htmlFor="project-category">Category *</label>
+
+
                 <input
 
                     type="text"
 
                     name="category"
 
-                    placeholder="Category"
+                    id="project-category"
+
+                    placeholder="e.g. Epoxy Flooring"
 
                     value={formData.category}
 
@@ -1717,13 +1749,24 @@ function DashboardProjects() {
                 />
 
 
+                </div>
+
+
+                <div className="dp-field">
+
+
+                    <label htmlFor="project-service">Service *</label>
+
+
                 <input
 
                     type="text"
 
                     name="service"
 
-                    placeholder="Service"
+                    id="project-service"
+
+                    placeholder="e.g. Epoxy Flooring"
 
                     value={formData.service}
 
@@ -1734,13 +1777,24 @@ function DashboardProjects() {
                 />
 
 
+                </div>
+
+
+                <div className="dp-field">
+
+
+                    <label htmlFor="project-client">Client *</label>
+
+
                 <input
 
                     type="text"
 
                     name="client"
 
-                    placeholder="Client"
+                    id="project-client"
+
+                    placeholder="Client or company name"
 
                     value={formData.client}
 
@@ -1751,13 +1805,24 @@ function DashboardProjects() {
                 />
 
 
+                </div>
+
+
+                <div className="dp-field">
+
+
+                    <label htmlFor="project-location">Location *</label>
+
+
                 <input
 
                     type="text"
 
                     name="location"
 
-                    placeholder="Location"
+                    id="project-location"
+
+                    placeholder="e.g. Namanve, Mukono"
 
                     value={formData.location}
 
@@ -1768,13 +1833,24 @@ function DashboardProjects() {
                 />
 
 
+                </div>
+
+
+                <div className="dp-field">
+
+
+                    <label htmlFor="project-industry">Industry *</label>
+
+
                 <input
 
                     type="text"
 
                     name="industry"
 
-                    placeholder="Industry"
+                    id="project-industry"
+
+                    placeholder="e.g. Manufacturing"
 
                     value={formData.industry}
 
@@ -1785,13 +1861,24 @@ function DashboardProjects() {
                 />
 
 
+                </div>
+
+
+                <div className="dp-field">
+
+
+                    <label htmlFor="project-surfaceArea">Surface Area</label>
+
+
                 <input
 
                     type="text"
 
                     name="surfaceArea"
 
-                    placeholder="Surface Area"
+                    id="project-surfaceArea"
+
+                    placeholder="e.g. 8,000 m²"
 
                     value={formData.surfaceArea}
 
@@ -1800,13 +1887,24 @@ function DashboardProjects() {
                 />
 
 
+                </div>
+
+
+                <div className="dp-field">
+
+
+                    <label htmlFor="project-completionTime">Completion Time</label>
+
+
                 <input
 
                     type="text"
 
                     name="completionTime"
 
-                    placeholder="Completion Time"
+                    id="project-completionTime"
+
+                    placeholder="e.g. 1 month"
 
                     value={formData.completionTime}
 
@@ -1815,13 +1913,24 @@ function DashboardProjects() {
                 />
 
 
+                </div>
+
+
+                <div className="dp-field">
+
+
+                    <label htmlFor="project-system">Flooring / Finishing System</label>
+
+
                 <input
 
                     type="text"
 
                     name="system"
 
-                    placeholder="Flooring / Finishing System"
+                    id="project-system"
+
+                    placeholder="Products or system used"
 
                     value={formData.system}
 
@@ -1829,6 +1938,12 @@ function DashboardProjects() {
 
                 />
 
+
+                </div>
+
+
+
+                </div>
 
                 {/* ====================================
                     PROJECT STATUS + VALUE
@@ -1986,12 +2101,22 @@ function DashboardProjects() {
 
                 </h2>
 
+                <div className="dp-grid">
+
+
+                <div className="dp-field dp-field--full">
+
+
+                    <label htmlFor="project-shortDescription">Short Description</label>
+
 
                 <textarea
 
                     name="shortDescription"
 
-                    placeholder="Short Description"
+                    id="project-shortDescription"
+
+                    placeholder="One or two sentences shown on project cards"
 
                     value={formData.shortDescription}
 
@@ -2000,11 +2125,22 @@ function DashboardProjects() {
                 />
 
 
+                </div>
+
+
+                <div className="dp-field dp-field--full">
+
+
+                    <label htmlFor="project-overview">Project Overview</label>
+
+
                 <textarea
 
                     name="overview"
 
-                    placeholder="Project Overview"
+                    id="project-overview"
+
+                    placeholder="What was done and why"
 
                     value={formData.overview}
 
@@ -2013,11 +2149,22 @@ function DashboardProjects() {
                 />
 
 
+                </div>
+
+
+                <div className="dp-field dp-field--full">
+
+
+                    <label htmlFor="project-challenge">Project Challenge</label>
+
+
                 <textarea
 
                     name="challenge"
 
-                    placeholder="Project Challenge"
+                    id="project-challenge"
+
+                    placeholder="The problem with the floor before"
 
                     value={formData.challenge}
 
@@ -2026,11 +2173,22 @@ function DashboardProjects() {
                 />
 
 
+                </div>
+
+
+                <div className="dp-field dp-field--full">
+
+
+                    <label htmlFor="project-solution">Project Solution</label>
+
+
                 <textarea
 
                     name="solution"
 
-                    placeholder="Project Solution"
+                    id="project-solution"
+
+                    placeholder="How the team solved it"
 
                     value={formData.solution}
 
@@ -2038,6 +2196,12 @@ function DashboardProjects() {
 
                 />
 
+
+                </div>
+
+
+
+                </div>
 
                 {/* ====================================
                     HERO IMAGE

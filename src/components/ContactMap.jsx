@@ -1,69 +1,29 @@
+import { CONTACT } from "../data/contact";
+
 function ContactMap() {
   return (
-    <section className="contact-map-section">
-
-      <div className="contact-map-header">
-
-        <span>VISIT OUR OFFICE</span>
-
-        <h2>Find Concrete Finisher Uganda</h2>
-
-        <p>
-          Visit our office in Kampala for consultations, quotations and
-          project discussions. Our team is ready to help you choose the
-          right flooring solution.
-        </p>
-
-      </div>
-
-      <div className="contact-map-container">
-
-        <div className="map-frame">
-
-          <iframe
-            title="Concrete Finisher Uganda Location"
-            src="https://www.google.com/maps?q=Plot+56+6th+Street+Industrial+Area+Kampala&output=embed"
-            loading="lazy"
-            allowFullScreen
-          ></iframe>
-
-        </div>
-
-        <div className="map-details">
-
-          <h3>Office Location</h3>
-
-          <p>
-            Plot 56, 6th Street<br />
-            Industrial Area<br />
-            Kampala, Uganda
+    <section className="section section--tint">
+      <div className="wrap map">
+        <div className="map__text">
+          <h2 className="h2">Visit our office</h2>
+          <p className="lede">
+            {CONTACT.addressLine1}, {CONTACT.addressLine2}. Come in to discuss your
+            project, see finish samples and get product advice.
           </p>
-
-          <div className="map-features">
-
-            <div>✓ Customer Parking Available</div>
-
-            <div>✓ Easy Access for Site Visits</div>
-
-            <div>✓ Professional Consultations</div>
-
-            <div>✓ Product & Flooring Advice</div>
-
-          </div>
-
-          <a
-            href="https://maps.google.com/?q=Plot+56+6th+Street+Industrial+Area+Kampala"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="map-btn"
-          >
+          <a href={CONTACT.mapsHref} target="_blank" rel="noopener noreferrer" className="btn btn--outline">
             Open in Google Maps
           </a>
-
         </div>
-
+        <div className="map__frame">
+          <iframe
+            title="Map showing the Concrete Finisher Uganda office"
+            src={CONTACT.mapsEmbed}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+          />
+        </div>
       </div>
-
     </section>
   );
 }

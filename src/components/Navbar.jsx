@@ -1,290 +1,158 @@
-import { Link, NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { ChevronDown, Menu, Phone, X } from "lucide-react";
+
 import logo from "../assets/logo.png";
-import {
-  ChevronDown,
-  ArrowRight,
-  Menu,
-  X,
-} from "lucide-react";
+import { CONTACT } from "../data/contact";
 
-import { useState, useEffect } from "react";
-
-import "../styles/Navbar.css";
+const NAV_ITEMS = [
+  { label: "Home", to: "/", end: true },
+  {
+    label: "About",
+    to: "/about",
+    children: [
+      { label: "Who we are", to: "/about" },
+      { label: "Company overview", to: "/company#company" },
+      { label: "How we work", to: "/company#process" },
+      { label: "FAQs", to: "/company#faq" },
+    ],
+  },
+  {
+    label: "Services",
+    to: "/services",
+    children: [
+      { label: "Epoxy flooring", to: "/services/epoxy-flooring" },
+      { label: "Concrete polishing", to: "/services/concrete-polishing" },
+      { label: "Concrete stamping", to: "/services/concrete-stamping" },
+      { label: "Terrazzo flooring", to: "/services/terrazzo-flooring" },
+      { label: "Waterproofing", to: "/services/waterproofing" },
+      { label: "Surface preparation", to: "/services/surface-preparation" },
+    ],
+  },
+  {
+    label: "Projects",
+    to: "/projects",
+    children: [
+      { label: "All projects", to: "/projects" },
+      { label: "Epoxy flooring", to: "/projects?category=Epoxy Flooring" },
+      { label: "Concrete polishing", to: "/projects?category=Concrete Polishing" },
+      { label: "Waterproofing", to: "/projects?category=Waterproofing" },
+      { label: "Decorative finishes", to: "/projects?category=Decorative Finishes" },
+    ],
+  },
+  { label: "Contact", to: "/contact" },
+];
 
 function Navbar() {
-
-  // ================= Add the UI state =================
-
-  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+  // The menu remembers which page it was opened on, so it closes itself
+  // as soon as the visitor navigates somewhere else.
+  const [openedOn, setOpenedOn] = useState(null);
+  const menuOpen = openedOn === location.key;
+  const setMenuOpen = (next) => {
+    const open = typeof next === "function" ? next(menuOpen) : next;
+    setOpenedOn(open ? location.key : null);
+  };
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
-  if (menuOpen) {
-
-    document.body.style.overflow = "hidden";
-
-  } else {
-
-    document.body.style.overflow = "auto";
-
-  }
-
-  return () => {
-
-    document.body.style.overflow = "auto";
-
-  };
-
-}, [menuOpen]);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <>
-    
-      <header className="navbar">
-
-        <Link to="/" className="logo-section" aria-label="Concrete Finisher home">
-          <img src={logo} alt="Concrete Finisher" />
+    <header className={`nav${scrolled ? " nav--scrolled" : ""}`}>
+      <div className="nav__inner">
+        <Link to="/" className="nav__logo" aria-label="Concrete Finisher Uganda, home">
+          <img src={logo} alt="Concrete Finisher" width="900" height="261" />
         </Link>
 
-{/* ================= Adding the Hamburger Button ================= */}
-        <button
-  className="menu-toggle"
-  type="button"
-  aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
-  aria-expanded={menuOpen}
-  aria-controls="mobile-navigation"
-  onClick={() => setMenuOpen(!menuOpen)}
->
-  {menuOpen ? <X size={28} /> : <Menu size={28} />}
-</button>
+        <nav className="nav__links" aria-label="Main navigation">
+          <ul>
+            {NAV_ITEMS.map((item) => (
+              <li key={item.label} className={item.children ? "has-menu" : undefined}>
+                <NavLink to={item.to} end={item.end} className="nav__link">
+                  {item.label}
+                  {item.children && <ChevronDown size={14} aria-hidden="true" />}
+                </NavLink>
 
+                {item.children && (
+                  <ul className="nav__menu">
+                    {item.children.map((child) => (
+                      <li key={child.to}>
+                        <Link to={child.to}>{child.label}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-<nav>
-    <ul className="nav-links">
-        <li>
-  <NavLink to="/" end>HOME</NavLink>
-</li>
-
-{/* ================= about us dropdown link ================= */}
-
-<li className="dropdown">
-
-  <div className="dropdown-title">
-
-    <NavLink to="/about">
-      ABOUT US
-    </NavLink>
-
-    <ChevronDown size={13} strokeWidth={2} />
-
-  </div>
-
-  <ul className="dropdown-menu">
-
-    <li>
-      <Link to="/company#company">
-        About Company
-      </Link>
-    </li>
-
-    <li>
-      <Link to="/company#process">
-        Our Process
-      </Link>
-    </li>
-
-    <li>
-      <Link to="/company#faq">
-        FAQs
-      </Link>
-    </li>
-
-  </ul>
-
-</li>
-
-
-<li className="dropdown">
-
-  <div className="dropdown-title">
-
-    <NavLink to="/services">
-      SERVICES
-    </NavLink>
-
-    <ChevronDown size={13} strokeWidth={2} />
-
-  </div>
-
-  <ul className="dropdown-menu">
-
-    <li>
-      <Link to="/services#services">
-        All Services
-      </Link>
-    </li>
-
-    <li>
-      <Link to="/services#benefits">
-        Why Choose Us
-      </Link>
-    </li>
-
-    <li>
-      <Link to="/services#process">
-        Our Process
-      </Link>
-    </li>
-
-    <li>
-      <Link to="/services#industries">
-        Industries We Serve
-      </Link>
-    </li>
-
-    <li>
-      <Link to="/services#faq">
-        FAQs
-      </Link>
-    </li>
-
-  </ul>
-
-</li>
-
-<li className="dropdown">
-
-    <div className="dropdown-title">
-
-        <NavLink to="/projects">
-            PROJECTS
-        </NavLink>
-
-        <ChevronDown
-            size={13}
-            strokeWidth={2}
-        />
-
-    </div>
-
-    <ul className="dropdown-menu">
-
-        <li>
-            <Link to="/projects">
-                All Projects
-            </Link>
-        </li>
-
-        <li>
-            <Link to="/projects?category=Epoxy Flooring">
-                Epoxy Flooring
-            </Link>
-        </li>
-
-        <li>
-            <Link to="/projects?category=Concrete Polishing">
-                Concrete Polishing
-            </Link>
-        </li>
-
-        <li>
-            <Link to="/projects?category=Waterproofing">
-                Waterproofing
-            </Link>
-        </li>
-
-        <li>
-            <Link to="/projects?category=Decorative Finishes">
-                Decorative Finishes
-            </Link>
-        </li>
-
-    </ul>
-
-</li>
-<li>
-  <NavLink to="/contact">CONTACT US</NavLink>
-</li>
-
- </ul>
-  </nav>
-
-        <div className="nav-right">
-          <Link to="/contact" className="quote-btn">
-            GET A QUOTE
-          <ArrowRight size={14} />
-        </Link>
-
-          <div className="call-us">
-            
-
-            <div>
-              <span>CALL US NOW</span>
-              <a href="tel:+256780662557" className="phone-link">
-               +256 780 662 557
-              </a>
-              
-            </div>
-          </div>
+        <div className="nav__actions">
+          <a href={CONTACT.phoneHref} className="nav__phone">
+            <Phone size={16} aria-hidden="true" />
+            <span>{CONTACT.phone}</span>
+          </a>
+          <Link to="/contact#quote" className="btn btn--primary btn--sm">
+            Get a quote
+          </Link>
         </div>
-       
-      </header>
+
+        <button
+          className="nav__toggle"
+          type="button"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-navigation"
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          {menuOpen ? <X size={26} /> : <Menu size={26} />}
+        </button>
+      </div>
 
       {menuOpen && (
-  <nav className="mobile-menu" id="mobile-navigation" aria-label="Mobile navigation">
+        <nav className="mnav" id="mobile-navigation" aria-label="Mobile navigation">
+          <ul>
+            {NAV_ITEMS.map((item) => (
+              <li key={item.label}>
+                <NavLink to={item.to} end={item.end} className="mnav__link">
+                  {item.label}
+                </NavLink>
+                {item.children && item.label !== "Projects" && (
+                  <ul className="mnav__sub">
+                    {item.children.slice(item.label === "About" ? 1 : 0).map((child) => (
+                      <li key={child.to}>
+                        <Link to={child.to}>{child.label}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
 
-    <div className="mobile-menu-header">
-
-    <img
-        src={logo}
-        alt="Concrete Finisher"
-        className="mobile-logo"
-    />
-
-    <button
-        className="mobile-close"
-        type="button"
-        aria-label="Close navigation menu"
-        onClick={() => setMenuOpen(false)}
-    >
-        <X size={26} />
-    </button>
-
-</div>
-
-  
-    <NavLink to="/" end className={({ isActive }) => `mobile-nav-link${isActive ? " is-current" : ""}`} onClick={() => setMenuOpen(false)}>
-      HOME
-    </NavLink>
-
-    <NavLink to="/about" className={({ isActive }) => `mobile-nav-link${isActive ? " is-current" : ""}`} onClick={() => setMenuOpen(false)}>
-      ABOUT US
-    </NavLink>
-
-    <NavLink to="/services" className={({ isActive }) => `mobile-nav-link${isActive ? " is-current" : ""}`} onClick={() => setMenuOpen(false)}>
-      SERVICES
-    </NavLink>
-
-    <NavLink to="/projects" className={({ isActive }) => `mobile-nav-link${isActive ? " is-current" : ""}`} onClick={() => setMenuOpen(false)}>
-      PROJECTS
-    </NavLink>
-
-    <NavLink to="/contact" className={({ isActive }) => `mobile-nav-link${isActive ? " is-current" : ""}`} onClick={() => setMenuOpen(false)}>
-      CONTACT US
-    </NavLink>
-
-    <Link
-      to="/contact"
-      className="mobile-quote-btn"
-      onClick={() => setMenuOpen(false)}
-    >
-      GET A QUOTE
-    </Link>
-
-  </nav>
-)}
-      
-    </>
+          <div className="mnav__actions">
+            <Link to="/contact#quote" className="btn btn--primary btn--block">
+              Get a quote
+            </Link>
+            <a href={CONTACT.phoneHref} className="btn btn--outline btn--block">
+              Call {CONTACT.phone}
+            </a>
+          </div>
+        </nav>
+      )}
+    </header>
   );
 }
 

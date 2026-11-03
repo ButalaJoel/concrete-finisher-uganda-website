@@ -1,32 +1,21 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-
+import SiteShell from "../components/SiteShell";
 import ContactHero from "../components/ContactHero";
 import ContactInfo from "../components/ContactInfo";
 import ContactForm from "../components/ContactForm";
 import ContactMap from "../components/ContactMap";
-import ContactReasons from "../components/ContactReasons";
-
-import "../styles/Contact.css";
-import "../styles/ContactPage.css";
 
 function Contact() {
   return (
-    <div className="contact-page">
-      <Navbar />
-
+    <SiteShell>
       <ContactHero />
-
-      <ContactInfo />
-
-      <ContactForm />
-
+      <section className="section" id="quote">
+        <div className="wrap contact-layout">
+          <ContactForm />
+          <ContactInfo />
+        </div>
+      </section>
       <ContactMap />
-
-      <ContactReasons />
-
-      <Footer />
-    </div>
+    </SiteShell>
   );
 }
 

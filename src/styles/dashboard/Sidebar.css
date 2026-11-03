@@ -28,7 +28,7 @@
     box-sizing:border-box;
     overflow-y:auto;
 
-    background:#2E1B12;
+    background:#1e2023;
 
     color:#FFFFFF;
 
@@ -175,7 +175,7 @@
 
 .sidebar li a:hover{
 
-    background:#493025;
+    background:#2f3236;
 
     transform:translateX(6px);
 
@@ -190,7 +190,7 @@
 
 .sidebar li a.active{
 
-    background:#B87333;
+    background:#5b3716;
 
     color:#FFFFFF;
 
@@ -252,7 +252,7 @@
 
     border-radius:16px;
 
-    background:#B87333;
+    background:#5b3716;
 
     color:#FFFFFF;
 
@@ -269,7 +269,7 @@
 
 .sidebar-footer button:hover{
 
-    background:#C98445;
+    background:#6f4a26;
 
     transform:translateY(-2px);
 
@@ -588,7 +588,7 @@
 
     .sidebar-mobile-action:hover{
 
-        background:#493025;
+        background:#2f3236;
 
         color:#FFFFFF;
 
@@ -669,7 +669,7 @@
 
         border-radius:20px;
 
-        background:#B87333;
+        background:#5b3716;
 
         color:#FFFFFF;
 

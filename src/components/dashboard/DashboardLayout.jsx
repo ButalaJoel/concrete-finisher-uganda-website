@@ -33,6 +33,7 @@ import { getAuthHeaders } from "../../utils/auth";
 
 import "../../styles/dashboard/Dashboard.css";
 import "../../styles/dashboard/DashboardPolish.css";
+import "../../styles/dashboard/Theme.css";
 
 
 function DashboardLayout() {
@@ -225,6 +226,9 @@ function DashboardLayout() {
                 <Header
                     openSidebar={openSidebar}
                     newQuotationCount={newQuotationCount}
+                    newQuotations={quotations
+                        .filter((quotation) => quotation.status === "New")
+                        .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))}
                 />
 
 

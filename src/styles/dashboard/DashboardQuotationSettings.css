@@ -34,11 +34,11 @@
 
     margin-bottom: 20px;
 
-    background: #f4eee7;
+    background: #f1efec;
 
-    color: #a86527;
+    color: #432810;
 
-    border: 1px solid #e5d8ca;
+    border: 1px solid #dcdad4;
 
     border-radius: 9px;
 
@@ -96,9 +96,9 @@
 
     flex-shrink: 0;
 
-    background: #f4eee7;
+    background: #f1efec;
 
-    color: #b8732e;
+    color: #5b3716;
 
     border-radius: 14px;
 
@@ -115,7 +115,7 @@
 
     line-height: 1.2;
 
-    color: #1f2d3d;
+    color: #1e2023;
 
 }
 
@@ -160,7 +160,7 @@
 
     background: #ffffff;
 
-    border: 1px solid #e5e0da;
+    border: 1px solid #dddcd7;
 
     border-radius: 16px;
 
@@ -185,7 +185,7 @@
 
     padding-bottom: 20px;
 
-    border-bottom: 1px solid #eee9e3;
+    border-bottom: 1px solid #ecebe7;
 
 }
 
@@ -204,9 +204,9 @@
 
     flex-shrink: 0;
 
-    background: #f4eee7;
+    background: #f1efec;
 
-    color: #b8732e;
+    color: #5b3716;
 
     border-radius: 12px;
 
@@ -221,7 +221,7 @@
 
     font-weight: 700;
 
-    color: #1f2d3d;
+    color: #1e2023;
 
 }
 
@@ -300,7 +300,7 @@
 
     font-family: inherit;
 
-    color: #1f2d3d;
+    color: #1e2023;
 
     transition:
         border-color 0.2s ease,
@@ -344,10 +344,10 @@
 
 .quotation-settings-form-group textarea:focus {
 
-    border-color: #b8732e;
+    border-color: #5b3716;
 
     box-shadow:
-        0 0 0 3px rgba(184, 115, 46, 0.12);
+        0 0 0 3px rgba(91, 55, 22, 0.12);
 
 }
 
@@ -399,11 +399,11 @@
 
 .quotation-settings-cancel-button {
 
-    background: #f4eee7;
+    background: #f1efec;
 
     color: #344054;
 
-    border: 1px solid #e5d8ca;
+    border: 1px solid #dcdad4;
 
 }
 
@@ -430,9 +430,9 @@
 
 .quotation-settings-save-button:hover {
 
-    background: #6d4326;
+    background: #432810;
 
-    border-color: #6d4326;
+    border-color: #432810;
 
 }
 

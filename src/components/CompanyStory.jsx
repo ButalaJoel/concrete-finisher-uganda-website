@@ -1,57 +1,36 @@
+import teamPhoto from "../assets/about/team.jpg";
+import floorPhoto from "../assets/about/polished-floor.jpg";
+
 function CompanyStory() {
   return (
-    <section className="company-story">
-
-      <div className="container company-grid">
-
-
-        <div className="company-content">
-
-          <span className="section-tag">
-            WHO WE ARE
-          </span>
-
-          <h2>
-            Delivering Durable Floors
-            Built To Last
-          </h2>
-
-          <p>
-            Concrete Finisher Uganda is a professional
-            concrete finishing company specializing in
-            epoxy flooring, concrete polishing,
-            terrazzo flooring, waterproofing,
-            decorative concrete and surface preparation.
+    <section className="section">
+      <div className="wrap split">
+        <div className="prose">
+          <h2 className="h2">Floors built to carry real work</h2>
+          <p className="lede">
+            Concrete Finisher Uganda specialises in epoxy flooring, concrete polishing,
+            terrazzo, waterproofing, decorative concrete and surface preparation.
           </p>
-
           <p>
-            Since our inception, we have worked with
-            commercial facilities, industrial plants,
-            warehouses, retail spaces and residential
-            developments, delivering durable and
-            visually appealing flooring systems.
+            We have worked in commercial facilities, industrial plants, warehouses,
+            retail spaces and homes, delivering floors that stand up to traffic,
+            chemicals and daily cleaning while still looking good.
           </p>
-
           <p>
-            Our team combines technical expertise,
-            modern equipment and industry best
-            practices to ensure every project is
-            completed with precision and long-term
-            performance in mind.
+            Our crews combine technical training, professional grinding and polishing
+            equipment and tested installation methods, so each project is finished
+            with long-term performance in mind.
           </p>
-
           <p>
-            Whether it's a new installation, floor
-            restoration or surface preparation
-            project, we remain committed to providing
-            flooring solutions that meet the highest
-            standards of quality and reliability.
+            Whether it is a new installation, a floor restoration or preparation for
+            another trade, we hold every job to the same standard.
           </p>
-
         </div>
-
+        <div className="photo-stack">
+          <img src={teamPhoto} alt="Concrete Finisher team on site" loading="lazy" />
+          <img src={floorPhoto} alt="A finished polished concrete floor" loading="lazy" />
+        </div>
       </div>
-
     </section>
   );
 }

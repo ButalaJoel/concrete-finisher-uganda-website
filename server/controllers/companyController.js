@@ -23,6 +23,7 @@
 // ======================================================
 
 import Company from "../models/Company.js";
+import storeUploadedImage from "../utils/storeUploadedImage.js";
 
 
 // ======================================================
@@ -113,6 +114,11 @@ const updateCompanyProfile = async (req, res) => {
 
     try {
 
+        // Upload a new logo to Cloudinary first, if one was sent.
+        const uploadedLogoUrl = req.file
+            ? await storeUploadedImage(req.file, "company")
+            : "";
+
         // ==================================================
         // GET FORM DATA
         // ==================================================
@@ -192,9 +198,7 @@ const updateCompanyProfile = async (req, res) => {
                     // was included in the request.
 
                     logo:
-                        req.file
-                            ? `/uploads/company/${req.file.filename}`
-                            : "",
+                        uploadedLogoUrl,
 
                 });
 
@@ -275,7 +279,7 @@ const updateCompanyProfile = async (req, res) => {
             if (req.file) {
 
                 company.logo =
-                    `/uploads/company/${req.file.filename}`;
+                    uploadedLogoUrl;
 
             }
 

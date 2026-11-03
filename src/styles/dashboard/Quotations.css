@@ -45,7 +45,7 @@
 
     font-size: 32px;
 
-    color: #171717;
+    color: #1e2023;
 
 }
 
@@ -126,7 +126,7 @@
 
     font-size: 18px;
 
-    color: #171717;
+    color: #1e2023;
 
 }
 
@@ -175,7 +175,7 @@
 
     background: #F8EFE7;
 
-    color: #B56A2D;
+    color: #5b3716;
 
 }
 
@@ -263,7 +263,7 @@
 
 .quotation-detail strong {
 
-    color: #222222;
+    color: #1e2023;
 
     font-size: 13px;
 
@@ -304,7 +304,7 @@
 
 .quotation-contact strong {
 
-    color: #222222;
+    color: #1e2023;
 
 }
 
@@ -513,7 +513,7 @@
 
     border-radius: 8px;
 
-    color: #222222;
+    color: #1e2023;
 
     font-size: 13px;
 
@@ -537,9 +537,9 @@
 .pagination-button:hover:not(:disabled),
 .pagination-number:hover:not(.active) {
 
-    border-color: #B56A2D;
+    border-color: #5b3716;
 
-    color: #B56A2D;
+    color: #5b3716;
 
     transform: translateY(-1px);
 
@@ -552,9 +552,9 @@
 
 .pagination-number.active {
 
-    background: #B56A2D;
+    background: #5b3716;
 
-    border-color: #B56A2D;
+    border-color: #5b3716;
 
     color: #ffffff;
 
@@ -625,10 +625,10 @@
 
 .quotation-card-highlighted {
 
-    border-color: #B56A2D;
+    border-color: #5b3716;
 
     box-shadow:
-        0 0 0 3px rgba(181, 106, 45, 0.15),
-        0 8px 24px rgba(181, 106, 45, 0.12);
+        0 0 0 3px rgba(91, 55, 22, 0.15),
+        0 8px 24px rgba(91, 55, 22, 0.12);
 
 }

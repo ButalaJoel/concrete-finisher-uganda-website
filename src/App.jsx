@@ -73,9 +73,7 @@ import DashboardSecuritySettings from "./pages/DashboardSecuritySettings";
 import DashboardQuotationSettings from "./pages/DashboardQuotationSettings";
 import DashboardCreateQuotation from "./pages/DashboardCreateQuotation";
 import DashboardReceipts from "./pages/DashboardReceipts";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import "./App.css";
+import SiteShell from "./components/SiteShell";
 
 
 // ======================================================
@@ -84,18 +82,13 @@ import "./App.css";
 
 function NotFound() {
     return (
-        <>
-            <Navbar />
-            <main className="route-not-found">
-                <p className="route-not-found-label">PAGE NOT FOUND</p>
-                <h1>We can’t find that page.</h1>
-                <p>The address may have changed or the page may no longer be available.</p>
-                <Link to="/" className="route-not-found-link">
-                    Return to Home
-                </Link>
-            </main>
-            <Footer />
-        </>
+        <SiteShell>
+            <section className="not-found wrap">
+                <h1 className="h2">We can't find that page.</h1>
+                <p className="lede">The address may have changed or the page may have been removed.</p>
+                <Link to="/" className="btn btn--primary">Go to the home page</Link>
+            </section>
+        </SiteShell>
     );
 }
 

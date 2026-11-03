@@ -24,10 +24,10 @@
     padding: 9px 14px;
     margin-bottom: 20px;
 
-    background: #f4eee7;
-    color: #a86527;
+    background: #f1efec;
+    color: #432810;
 
-    border: 1px solid #e5d8ca;
+    border: 1px solid #dcdad4;
     border-radius: 9px;
 
     font-size: 14px;
@@ -60,8 +60,8 @@
 
     flex-shrink: 0;
 
-    background: #f4eee7;
-    color: #b8732e;
+    background: #f1efec;
+    color: #5b3716;
 
     border-radius: 14px;
 }
@@ -72,7 +72,7 @@
     font-size: 32px;
     font-weight: 700;
 
-    color: #1f2d3d;
+    color: #1e2023;
 }
 
 .create-quotation-title p {
@@ -105,7 +105,7 @@
 
     background: #ffffff;
 
-    border: 1px solid #e5e0da;
+    border: 1px solid #dddcd7;
     border-radius: 16px;
 
     box-shadow:
@@ -126,7 +126,7 @@
     margin-bottom: 24px;
     padding-bottom: 20px;
 
-    border-bottom: 1px solid #eee9e3;
+    border-bottom: 1px solid #ecebe7;
 }
 
 .quotation-builder-card-icon {
@@ -139,8 +139,8 @@
 
     flex-shrink: 0;
 
-    background: #f4eee7;
-    color: #b8732e;
+    background: #f1efec;
+    color: #5b3716;
 
     border-radius: 12px;
 }
@@ -151,7 +151,7 @@
     font-size: 20px;
     font-weight: 700;
 
-    color: #1f2d3d;
+    color: #1e2023;
 }
 
 .quotation-builder-card-header p {
@@ -214,7 +214,7 @@
     font-family: inherit;
     font-size: 14px;
 
-    color: #1f2d3d;
+    color: #1e2023;
 
     transition:
         border-color 0.2s ease,
@@ -244,10 +244,10 @@
 
 .quotation-builder-form-group input:focus,
 .quotation-builder-form-group textarea:focus {
-    border-color: #b8732e;
+    border-color: #5b3716;
 
     box-shadow:
-        0 0 0 3px rgba(184, 115, 46, 0.12);
+        0 0 0 3px rgba(91, 55, 22, 0.12);
 }
 
 
@@ -266,10 +266,10 @@
 
     background: #f8f4ef;
 
-    border: 1px solid #e5d8ca;
+    border: 1px solid #dcdad4;
     border-radius: 9px;
 
-    color: #1f2d3d;
+    color: #1e2023;
 }
 
 .quotation-auto-generated strong {
@@ -314,7 +314,7 @@
 }
 
 .quotation-edit-mode-bar strong {
-    color: #b8732e;
+    color: #5b3716;
 }
 
 .quotation-edit-mode-bar button {
@@ -325,7 +325,7 @@
     border: 1px solid #d8b28a;
     border-radius: 7px;
 
-    color: #a86527;
+    color: #432810;
 
     font-family: inherit;
     font-size: 13px;
@@ -415,7 +415,7 @@
 }
 
 .quotation-add-item-button:hover {
-    background: #6d4326;
+    background: #432810;
 }
 
 
@@ -440,7 +440,7 @@
     font-size: 14px;
     font-weight: 700;
 
-    color: #a86527;
+    color: #432810;
 }
 
 .quotation-item-grid {
@@ -460,15 +460,15 @@
 
     padding: 0 14px;
 
-    background: #f4eee7;
+    background: #f1efec;
 
-    border: 1px solid #e5d8ca;
+    border: 1px solid #dcdad4;
     border-radius: 9px;
 
     font-size: 14px;
     font-weight: 700;
 
-    color: #1f2d3d;
+    color: #1e2023;
 }
 
 
@@ -538,7 +538,7 @@
 
     font-size: 20px;
 
-    color: #1f2d3d;
+    color: #1e2023;
 }
 
 
@@ -580,10 +580,10 @@
 ========================================== */
 
 .create-quotation-cancel-button {
-    background: #f4eee7;
+    background: #f1efec;
     color: #344054;
 
-    border: 1px solid #e5d8ca;
+    border: 1px solid #dcdad4;
 }
 
 .create-quotation-cancel-button:hover {
@@ -598,7 +598,7 @@
 .create-quotation-pdf-button {
     background: #ffffff;
 
-    color: #a86527;
+    color: #432810;
 
     border: 1px solid #d8b28a;
 }
@@ -624,7 +624,7 @@
 }
 
 .create-quotation-save-button:hover {
-    background: #6d4326;
+    background: #432810;
 }
 
 .create-quotation-save-button:disabled,
@@ -667,7 +667,7 @@
     font-size: 24px;
     font-weight: 700;
 
-    color: #1f2d3d;
+    color: #1e2023;
 }
 
 .existing-quotations-header p {
@@ -705,7 +705,7 @@
 
     background: #ffffff;
 
-    border: 1px solid #e5e0da;
+    border: 1px solid #dddcd7;
     border-radius: 12px;
 
     box-shadow:
@@ -744,7 +744,7 @@
 
     padding-bottom: 15px;
 
-    border-bottom: 1px solid #eee9e3;
+    border-bottom: 1px solid #ecebe7;
 }
 
 .official-quotation-card-header h3 {
@@ -753,7 +753,7 @@
     font-size: 17px;
     font-weight: 700;
 
-    color: #b8732e;
+    color: #5b3716;
 }
 
 .official-quotation-card-header p {
@@ -762,7 +762,7 @@
     font-size: 15px;
     font-weight: 600;
 
-    color: #1f2d3d;
+    color: #1e2023;
 }
 
 
@@ -788,7 +788,7 @@
 }
 
 .status-draft {
-    background: #f4eee7;
+    background: #f1efec;
     color: #8a5a2b;
 }
 
@@ -876,7 +876,7 @@
 
     padding-top: 15px;
 
-    border-top: 1px solid #eee9e3;
+    border-top: 1px solid #ecebe7;
 }
 
 .edit-official-quotation-btn,
@@ -905,11 +905,11 @@
 ================================================== */
 
 .edit-official-quotation-btn {
-    background: #f4eee7;
+    background: #f1efec;
 
-    border: 1px solid #e5d8ca;
+    border: 1px solid #dcdad4;
 
-    color: #a86527;
+    color: #432810;
 }
 
 .edit-official-quotation-btn:hover {
@@ -934,9 +934,9 @@
 }
 
 .generate-official-quotation-btn:hover {
-    background: #6d4326;
+    background: #432810;
 
-    border-color: #6d4326;
+    border-color: #432810;
 }
 
 .generate-official-quotation-btn:disabled {
@@ -984,7 +984,7 @@
 
     background: #ffffff;
 
-    border: 1px solid #e5e0da;
+    border: 1px solid #dddcd7;
     border-radius: 12px;
 
     text-align: center;
@@ -1057,7 +1057,7 @@
 
     background: #ffffff;
 
-    border: 1px solid #e5e0da;
+    border: 1px solid #dddcd7;
     border-radius: 12px;
 
     text-align: center;
@@ -1134,7 +1134,7 @@
 
     border-radius: 8px;
 
-    color: #222222;
+    color: #1e2023;
 
     font-family: inherit;
 
@@ -1152,9 +1152,9 @@
 }
 
 .pagination-btn:hover:not(:disabled) {
-    border-color: #B56A2D;
+    border-color: #5b3716;
 
-    color: #B56A2D;
+    color: #5b3716;
 
     transform: translateY(-1px);
 }
@@ -1195,7 +1195,7 @@
 
     border-radius: 8px;
 
-    color: #222222;
+    color: #1e2023;
 
     font-family: inherit;
 
@@ -1213,9 +1213,9 @@
 }
 
 .pagination-number:hover:not(.active) {
-    border-color: #B56A2D;
+    border-color: #5b3716;
 
-    color: #B56A2D;
+    color: #5b3716;
 
     transform: translateY(-1px);
 }
@@ -1226,9 +1226,9 @@
 ========================================================== */
 
 .pagination-number.active {
-    background: #B56A2D;
+    background: #5b3716;
 
-    border-color: #B56A2D;
+    border-color: #5b3716;
 
     color: #ffffff;
 }

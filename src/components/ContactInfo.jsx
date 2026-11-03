@@ -1,79 +1,42 @@
-import {
-  Phone,
-  MessageCircleMore,
-  Mail,
-  MapPin
-} from "lucide-react";
+import { Clock3, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { CONTACT } from "../data/contact";
 
+// Contact details shown beside the quotation form.
 function ContactInfo() {
   return (
-    <section className="contact-info">
-
-      <div className="contact-info-container">
-
-        <a
-          href="tel:+256780662557"
-          className="contact-info-card"
-        >
-          <Phone size={24} />
-
-          <h3>CALL US</h3>
-
-          <p>+256 780 662 557</p>
-
-          <span>Speak directly with our team</span>
-
-        </a>
-
-        <a
-          href="https://wa.me/256780662557"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="contact-info-card"
-        >
-          <MessageCircleMore size={24} />
-
-          <h3>WHATSAPP US</h3>
-
-          <p>Chat Instantly</p>
-
-          <span>Send photos and project details</span>
-
-        </a>
-
-        <a
-          href="mailto:info@concretefinisherug.com"
-          className="contact-info-card"
-        >
-          <Mail size={24} />
-
-          <h3>EMAIL US</h3>
-
-          <p>info@concretefinisherug.com</p>
-
-          <span>Request quotations and enquiries</span>
-
-        </a>
-
-        <a
-          href="https://maps.google.com/?q=Plot+56+6th+Street+Industrial+Area+Kampala"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="contact-info-card"
-        >
-          <MapPin size={24} />
-
-          <h3>VISIT US</h3>
-
-          <p>Plot 56, 6th Street</p>
-
-          <span>Industrial Area, Kampala</span>
-
-        </a>
-
-      </div>
-
-    </section>
+    <aside className="contact-aside" aria-label="Contact details">
+      <h2>Prefer to talk?</h2>
+      <ul>
+        <li>
+          <a href={CONTACT.phoneHref}>
+            <Phone size={20} aria-hidden="true" />
+            <span><strong>{CONTACT.phone}</strong>Call our team directly</span>
+          </a>
+        </li>
+        <li>
+          <a href={CONTACT.whatsappHref} target="_blank" rel="noopener noreferrer">
+            <MessageCircle size={20} aria-hidden="true" />
+            <span><strong>WhatsApp</strong>Send photos and measurements</span>
+          </a>
+        </li>
+        <li>
+          <a href={CONTACT.emailHref}>
+            <Mail size={20} aria-hidden="true" />
+            <span><strong>{CONTACT.email}</strong>Quotations and enquiries</span>
+          </a>
+        </li>
+        <li>
+          <a href={CONTACT.mapsHref} target="_blank" rel="noopener noreferrer">
+            <MapPin size={20} aria-hidden="true" />
+            <span><strong>{CONTACT.addressLine1}</strong>{CONTACT.addressLine2}</span>
+          </a>
+        </li>
+        <li className="contact-aside__static">
+          <Clock3 size={20} aria-hidden="true" />
+          <span><strong>Site visits by appointment</strong>We reply to requests within one working day</span>
+        </li>
+      </ul>
+    </aside>
   );
 }
 

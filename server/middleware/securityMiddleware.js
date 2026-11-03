@@ -45,7 +45,13 @@ export const createCorsOptions = (environment = process.env) => {
 
     return {
         origin(origin, callback) {
-            callback(null, !origin || allowedOrigins.has(origin));
+            // In development, accept the site on any local port
+            // (Vite moves to 5174, 5175... when 5173 is busy).
+            const isLocalDevOrigin =
+                !production &&
+                /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin || "");
+
+            callback(null, !origin || allowedOrigins.has(origin) || isLocalDevOrigin);
         },
     };
 };

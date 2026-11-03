@@ -75,7 +75,7 @@
 
     margin: 0 0 7px;
 
-    color: #171717;
+    color: #1e2023;
 
     font-size: 34px;
 
@@ -135,11 +135,11 @@
 
 .cancel-edit-btn:hover {
 
-    border-color: #B56A2D;
+    border-color: #5b3716;
 
     background: #fdf7f2;
 
-    color: #B56A2D;
+    color: #5b3716;
 
 }
 
@@ -171,7 +171,7 @@
 
     border-bottom: 1px solid #eeeeee;
 
-    color: #222222;
+    color: #1e2023;
 
     font-size: 19px;
 
@@ -211,7 +211,7 @@
 
     background: #ffffff;
 
-    color: #222222;
+    color: #1e2023;
 
     font-family: inherit;
 
@@ -226,11 +226,11 @@
 
 .dashboard-projects-page form > input[type="text"]:focus {
 
-    border-color: #B56A2D;
+    border-color: #5b3716;
 
     box-shadow:
         0 0 0 3px
-        rgba(181, 106, 45, .10);
+        rgba(91, 55, 22, .10);
 
 }
 
@@ -273,7 +273,7 @@
 
     background: #ffffff;
 
-    color: #222222;
+    color: #1e2023;
 
     font-family: inherit;
 
@@ -290,11 +290,11 @@
 
 .dashboard-projects-page form > textarea:focus {
 
-    border-color: #B56A2D;
+    border-color: #5b3716;
 
     box-shadow:
         0 0 0 3px
-        rgba(181, 106, 45, .10);
+        rgba(91, 55, 22, .10);
 
 }
 
@@ -337,7 +337,7 @@
 
 .project-field label {
 
-    color: #222222;
+    color: #1e2023;
 
     font-size: 13px;
 
@@ -366,7 +366,7 @@
 
     background: #ffffff;
 
-    color: #222222;
+    color: #1e2023;
 
     font-family: inherit;
 
@@ -379,11 +379,11 @@
 
 .project-field select:focus {
 
-    border-color: #B56A2D;
+    border-color: #5b3716;
 
     box-shadow:
         0 0 0 3px
-        rgba(181, 106, 45, .10);
+        rgba(91, 55, 22, .10);
 
 }
 
@@ -415,11 +415,11 @@
 
 .currency-input:focus-within {
 
-    border-color: #B56A2D;
+    border-color: #5b3716;
 
     box-shadow:
         0 0 0 3px
-        rgba(181, 106, 45, .10);
+        rgba(91, 55, 22, .10);
 
 }
 
@@ -463,7 +463,7 @@
 
     background: transparent;
 
-    color: #222222;
+    color: #1e2023;
 
     font-family: inherit;
 
@@ -504,7 +504,7 @@
 
     border-bottom: 1px solid #eeeeee;
 
-    color: #222222;
+    color: #1e2023;
 
     font-size: 19px;
 
@@ -550,7 +550,7 @@
 
 .image-upload-box:hover {
 
-    border-color: #B56A2D;
+    border-color: #5b3716;
 
     background: #FCF7F2;
 
@@ -578,7 +578,7 @@
 
     margin-bottom: 6px;
 
-    color: #222222;
+    color: #1e2023;
 
     font-size: 15px;
 
@@ -850,7 +850,7 @@
 
     border-radius: 10px;
 
-    background: #B56A2D;
+    background: #5b3716;
 
     color: #ffffff;
 
@@ -878,7 +878,7 @@
 
     box-shadow:
         0 8px 20px
-        rgba(181, 106, 45, .25);
+        rgba(91, 55, 22, .25);
 
 }
 
@@ -930,7 +930,7 @@
 
     margin: 0 0 5px;
 
-    color: #222222;
+    color: #1e2023;
 
     font-size: 22px;
 
@@ -1315,18 +1315,18 @@
 
 .edit-project-btn {
 
-    border: 1px solid #B56A2D;
+    border: 1px solid #5b3716;
 
     background: #ffffff;
 
-    color: #B56A2D;
+    color: #5b3716;
 
 }
 
 
 .edit-project-btn:hover {
 
-    background: #B56A2D;
+    background: #5b3716;
 
     color: #ffffff;
 
@@ -1575,7 +1575,7 @@
 
     border-radius: 8px;
 
-    color: #222222;
+    color: #1e2023;
 
     font-family: inherit;
 
@@ -1618,7 +1618,7 @@
 
     border-radius: 8px;
 
-    color: #222222;
+    color: #1e2023;
 
     font-family: inherit;
 
@@ -1643,9 +1643,9 @@
 
 .pagination-btn:hover:not(:disabled) {
 
-    border-color: #B56A2D;
+    border-color: #5b3716;
 
-    color: #B56A2D;
+    color: #5b3716;
 
     transform: translateY(-1px);
 
@@ -1658,9 +1658,9 @@
 
 .pagination-number:hover:not(.active) {
 
-    border-color: #B56A2D;
+    border-color: #5b3716;
 
-    color: #B56A2D;
+    color: #5b3716;
 
     transform: translateY(-1px);
 
@@ -1673,9 +1673,9 @@
 
 .pagination-number.active {
 
-    background: #B56A2D;
+    background: #5b3716;
 
-    border-color: #B56A2D;
+    border-color: #5b3716;
 
     color: #ffffff;
 

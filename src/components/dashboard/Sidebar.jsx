@@ -24,6 +24,7 @@
 // IMPORTS
 // ======================================================
 
+import { mediaUrl } from "../../utils/mediaUrl";
 import {
     NavLink,
     useNavigate
@@ -187,7 +188,7 @@ function Sidebar({
 
         const profilePhotoUrl =
     admin?.profilePhoto
-        ? `${import.meta.env.VITE_API_URL}${admin.profilePhoto}`
+        ? mediaUrl(admin.profilePhoto)
         : null;
 
 

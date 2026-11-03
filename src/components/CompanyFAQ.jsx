@@ -1,57 +1,14 @@
+import Faq from "./Faq";
+
+const ITEMS = [
+  { q: "Which areas do you serve?", a: "We work across Uganda on residential, commercial and industrial projects. Our office is in Luzira Kirombe, Kampala." },
+  { q: "Do you offer site inspections?", a: "Yes. We inspect the site before recommending a flooring system, so the quotation matches the real condition of the slab." },
+  { q: "How long do epoxy floors last?", a: "With proper preparation, installation and maintenance, an epoxy floor lasts many years, even under forklift and foot traffic." },
+  { q: "Can you repair damaged concrete?", a: "Yes. We repair cracks, holes and uneven areas before applying any new finish." },
+];
+
 function CompanyFAQ() {
-  return (
-    <section className="company-faq">
-
-      <div className="company-container">
-
-        <p className="company-section-label">
-          FAQ
-        </p>
-
-        <h2>
-          Frequently Asked Questions
-        </h2>
-
-        <div className="faq-list">
-
-          <div className="faq-item">
-            <h3>Which areas do you serve?</h3>
-
-            <p>
-              We work across Uganda on residential, commercial and industrial projects.
-            </p>
-          </div>
-
-          <div className="faq-item">
-            <h3>Do you offer site inspections?</h3>
-
-            <p>
-              Yes. We inspect the site before recommending the best flooring system.
-            </p>
-          </div>
-
-          <div className="faq-item">
-            <h3>How long do epoxy floors last?</h3>
-
-            <p>
-              With proper installation and maintenance, epoxy flooring can last many years.
-            </p>
-          </div>
-
-          <div className="faq-item">
-            <h3>Can you repair damaged concrete?</h3>
-
-            <p>
-              Yes. We repair damaged surfaces before applying new finishes.
-            </p>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-  );
+  return <Faq items={ITEMS} />;
 }
 
 export default CompanyFAQ;

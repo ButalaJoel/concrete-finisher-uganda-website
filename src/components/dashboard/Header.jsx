@@ -24,6 +24,7 @@
 // IMPORTS
 // ======================================================
 
+import { mediaUrl } from "../../utils/mediaUrl";
 import {
     Search,
     Bell,
@@ -34,9 +35,39 @@ import {
 
 import { useState, useEffect, useRef } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import "../../styles/dashboard/Header.css";
+
+const SECTION_TITLES = [
+    ["/dashboard/quotations/create", "Create quotation"],
+    ["/dashboard/quotations", "Quotation requests"],
+    ["/dashboard/receipts", "Payment receipts"],
+    ["/dashboard/projects", "Projects"],
+    ["/dashboard/reports", "Reports"],
+    ["/dashboard/settings", "Settings"],
+];
+
+const getSectionTitle = (pathname) =>
+    SECTION_TITLES.find(([path]) => pathname.startsWith(path))?.[1] || "Overview";
+
+// "Today, 09:15" / "3 Nov, 14:02"
+const formatNotificationTime = (value) => {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
+    const time = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    const isToday = date.toDateString() === new Date().toDateString();
+    return isToday
+        ? `Today, ${time}`
+        : `${date.toLocaleDateString([], { day: "numeric", month: "short" })}, ${time}`;
+};
+
+const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 17) return "Good afternoon";
+    return "Good evening";
+};
 import { getAuthHeaders } from "../../utils/auth";
 
 
@@ -47,7 +78,8 @@ import { getAuthHeaders } from "../../utils/auth";
 function Header({
 
     openSidebar,
-    newQuotationCount
+    newQuotationCount,
+    newQuotations = []
 
 }) {
 
@@ -57,6 +89,9 @@ function Header({
     // ==================================================
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const sectionTitle = getSectionTitle(location.pathname);
+    const greeting = getGreeting();
 
     // ==================================================
     // GLOBAL DASHBOARD SEARCH
@@ -86,6 +121,35 @@ function Header({
     const [showSearchResults, setShowSearchResults] =
     useState(false);
     const searchContainerRef = useRef(null);
+
+    // Notification bell dropdown
+    const notificationRef = useRef(null);
+    const [showNotifications, setShowNotifications] = useState(false);
+
+    useEffect(() => {
+        if (!showNotifications) {
+            return undefined;
+        }
+
+        const handlePointerDown = (event) => {
+            if (!notificationRef.current?.contains(event.target)) {
+                setShowNotifications(false);
+            }
+        };
+        const handleEscape = (event) => {
+            if (event.key === "Escape") {
+                setShowNotifications(false);
+            }
+        };
+
+        document.addEventListener("pointerdown", handlePointerDown);
+        document.addEventListener("keydown", handleEscape);
+
+        return () => {
+            document.removeEventListener("pointerdown", handlePointerDown);
+            document.removeEventListener("keydown", handleEscape);
+        };
+    }, [showNotifications]);
 
     // ==================================================
     // SEARCH PROJECTS AND QUOTATIONS
@@ -306,7 +370,7 @@ function Header({
 
         admin?.profilePhoto
 
-            ? `${import.meta.env.VITE_API_URL}${admin.profilePhoto}`
+            ? mediaUrl(admin.profilePhoto)
 
             : null;
 
@@ -417,20 +481,15 @@ function Header({
 
                 <div className="header-title">
 
-
-                    <h1>
-
-                        Dashboard
-
-                    </h1>
-
-
-                    <p>
-
-                        Welcome back, {adminName}.
-
+                    <p className="header-greeting">
+                        {greeting}, {adminName.split(" ")[0]}
                     </p>
 
+                    {sectionTitle === "Overview" ? (
+                        <h1>Overview</h1>
+                    ) : (
+                        <p className="header-section">{sectionTitle}</p>
+                    )}
 
                 </div>
 
@@ -648,39 +707,79 @@ function Header({
                     NOTIFICATIONS
                 ===================================== */}
 
+                <div className="notification-menu" ref={notificationRef}>
+
                 <button
                     className="notification-wrapper"
                     type="button"
+                    aria-haspopup="true"
+                    aria-expanded={showNotifications}
+                    onClick={() => setShowNotifications((open) => !open)}
                     aria-label={
-
                         newQuotationCount > 0
-
-                            ? `${newQuotationCount} new quotations`
-
+                            ? `${newQuotationCount} new quotation requests`
                             : "Notifications"
-
                     }
                 >
-
-
-                    <Bell
-                        size={22}
-                        className="header-icon"
-                    />
-
-
+                    <Bell size={22} className="header-icon" />
                     {newQuotationCount > 0 && (
-
                         <span className="notification-badge">
-
                             {newQuotationCount}
-
                         </span>
-
                     )}
-
-
                 </button>
+
+                {showNotifications && (
+                    <div className="notification-panel" role="dialog" aria-label="Notifications">
+                        <div className="notification-panel-head">
+                            <strong>New quotation requests</strong>
+                            <span>{newQuotationCount}</span>
+                        </div>
+
+                        {newQuotations.length === 0 ? (
+                            <p className="notification-empty">
+                                You're all caught up. New requests from the website will appear here.
+                            </p>
+                        ) : (
+                            <ul>
+                                {newQuotations.slice(0, 6).map((quotation) => (
+                                    <li key={quotation._id}>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setShowNotifications(false);
+                                                handleQuotationClick(quotation._id);
+                                            }}
+                                        >
+                                            <strong>{quotation.fullName || "Website visitor"}</strong>
+                                            <span>
+                                                {[quotation.serviceRequired, quotation.projectLocation]
+                                                    .filter(Boolean)
+                                                    .join(", ")}
+                                            </span>
+                                            {quotation.createdAt && (
+                                                <small>{formatNotificationTime(quotation.createdAt)}</small>
+                                            )}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+
+                        <button
+                            type="button"
+                            className="notification-view-all"
+                            onClick={() => {
+                                setShowNotifications(false);
+                                navigate("/dashboard/quotations");
+                            }}
+                        >
+                            View all quotations
+                        </button>
+                    </div>
+                )}
+
+                </div>
 
 
                 {/* =====================================

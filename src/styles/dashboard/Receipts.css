@@ -16,7 +16,7 @@
 .receipt-form-heading h1,
 .receipt-detail-header h1 {
     margin: 0 0 6px;
-    color: #171717;
+    color: #1e2023;
     font-size: 29px;
     line-height: 1.2;
 }
@@ -50,7 +50,7 @@
 
 .receipt-primary-button {
     color: #fff;
-    background: #a86527;
+    background: #432810;
 }
 
 .receipt-primary-button:hover {
@@ -129,8 +129,8 @@
 .receipt-form input:focus,
 .receipt-form select:focus,
 .receipt-form textarea:focus {
-    outline: 2px solid rgba(184, 115, 46, 0.2);
-    border-color: #b8732e;
+    outline: 2px solid rgba(91, 55, 22, 0.2);
+    border-color: #5b3716;
 }
 
 .receipt-search-field {
@@ -286,8 +286,8 @@
     flex: 0 0 auto;
     align-items: center;
     justify-content: center;
-    color: #a86527;
-    background: #f4eee7;
+    color: #432810;
+    background: #f1efec;
     border-radius: 11px;
 }
 

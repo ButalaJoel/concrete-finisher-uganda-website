@@ -1,4 +1,4 @@
-import "../styles/ProjectDetail.css";
+import "../styles/site.css";
 
 import { useEffect, useState } from "react";
 
@@ -192,7 +192,7 @@ function ProjectDetail() {
 
     return (
       <>
-        <Navbar />
+        <div className="site"><Navbar />
         <main className="project-detail-page project-detail-loading" role="status" aria-label="Loading project" aria-busy="true">
           <div className="project-detail-skeleton-hero" aria-hidden="true">
             <div className="project-detail-skeleton-content">
@@ -206,7 +206,7 @@ function ProjectDetail() {
             <span className="project-detail-skeleton-line project-detail-skeleton-copy" />
           </div>
         </main>
-        <Footer />
+        <Footer /></div>
       </>
     );
 
@@ -221,7 +221,7 @@ function ProjectDetail() {
 
     return (
       <>
-        <Navbar />
+        <div className="site"><Navbar />
         <main className="project-detail-page project-detail-not-found">
           <div className="project-detail-not-found-content">
             <p className="project-detail-not-found-code">404</p>
@@ -233,7 +233,7 @@ function ProjectDetail() {
             </div>
           </div>
         </main>
-        <Footer />
+        <Footer /></div>
       </>
     );
 
@@ -242,7 +242,7 @@ function ProjectDetail() {
   if (error || !project) {
     return (
       <>
-        <Navbar />
+        <div className="site"><Navbar />
         <main className="project-detail-page project-detail-load-error">
           <div className="project-detail-container" role="alert">
             <h2>{error || "Unable to load this project."}</h2>
@@ -253,7 +253,7 @@ function ProjectDetail() {
             <Link to="/projects">Back to Projects</Link>
           </div>
         </main>
-        <Footer />
+        <Footer /></div>
       </>
     );
   }
@@ -274,7 +274,7 @@ function ProjectDetail() {
   return (
 
     <>
-    <Navbar />
+    <div className="site"><Navbar />
     <main className="project-detail-page">
 
 
@@ -293,14 +293,11 @@ function ProjectDetail() {
       >
 
         <div className="project-detail-container">
+          <Link to="/projects" className="project-detail-back">Back to all projects</Link>
 
           <div className="project-detail-overlay">
 
             <div className="project-detail-content">
-
-              <p className="section-label">
-                PROJECT
-              </p>
 
               <h1>
                 {project.title}
@@ -327,12 +324,8 @@ function ProjectDetail() {
 
         <div className="project-detail-container">
 
-          <p className="section-label">
-            PROJECT OVERVIEW
-          </p>
-
           <h2>
-            About This Project
+            About this project
           </h2>
 
           <p>
@@ -352,12 +345,8 @@ function ProjectDetail() {
 
         <div className="project-detail-container">
 
-          <p className="section-label">
-            PROJECT INFORMATION
-          </p>
-
           <h2>
-            Project Details
+            Project details
           </h2>
 
           <div className="project-info-grid">
@@ -407,12 +396,8 @@ function ProjectDetail() {
 
         <div className="project-detail-container">
 
-          <p className="section-label">
-            PROJECT APPROACH
-          </p>
-
           <h2>
-            Challenge & Solution
+            Challenge and solution
           </h2>
 
           <div className="project-detail-approach-grid">
@@ -420,7 +405,7 @@ function ProjectDetail() {
             <div className="project-detail-approach-card">
 
               <h3>
-                The Challenge
+                The challenge
               </h3>
 
               <p>
@@ -432,7 +417,7 @@ function ProjectDetail() {
             <div className="project-detail-approach-card">
 
               <h3>
-                Our Solution
+                Our solution
               </h3>
 
               <p>
@@ -459,12 +444,8 @@ function ProjectDetail() {
 
             <div className="project-detail-container">
 
-              <p className="section-label">
-                PRODUCTS USED
-              </p>
-
               <h2>
-                System Used
+                System used
               </h2>
 
               <div className="project-detail-products-grid">
@@ -507,12 +488,8 @@ function ProjectDetail() {
 
         <div className="project-detail-container">
 
-          <p className="section-label">
-            PROJECT GALLERY
-          </p>
-
           <h2>
-            Before & After Installation
+            Before and after
           </h2>
 
 
@@ -524,7 +501,7 @@ function ProjectDetail() {
               <div className="gallery-group">
 
                 <h3 className="gallery-title">
-                  Before Installation
+                  Before
                 </h3>
 
                 <div className="project-gallery-grid">
@@ -569,7 +546,7 @@ function ProjectDetail() {
               <div className="gallery-group">
 
                 <h3 className="gallery-title">
-                  After Installation
+                  After
                 </h3>
 
                 <div className="project-gallery-grid">
@@ -620,12 +597,8 @@ function ProjectDetail() {
 
           <div className="project-detail-container">
 
-            <p className="section-label">
-              RELATED PROJECTS
-            </p>
-
             <h2>
-              More Projects
+              More projects
             </h2>
 
             <div className="project-detail-related-grid">
@@ -689,7 +662,7 @@ function ProjectDetail() {
                 to="/projects"
                 className="project-detail-button"
               >
-                View All Projects
+                View all projects
               </Link>
 
             </div>
@@ -709,12 +682,8 @@ function ProjectDetail() {
 
         <div className="project-detail-container">
 
-          <p className="section-label">
-            START YOUR PROJECT
-          </p>
-
           <h2>
-            Need Professional Concrete Finishing?
+            Need a floor like this?
           </h2>
 
           <p>
@@ -727,7 +696,7 @@ function ProjectDetail() {
             to="/contact"
             className="project-detail-button"
           >
-            Request A Site Inspection
+            Request a site inspection
           </Link>
 
         </div>
@@ -756,6 +725,8 @@ function ProjectDetail() {
           >
 
             <button
+              type="button"
+              aria-label="Close image"
               className="project-lightbox-close"
               onClick={() =>
                 setSelectedImage(null)
@@ -777,7 +748,7 @@ function ProjectDetail() {
       )}
 
     </main>
-    <Footer />
+    <Footer /></div>
     </>
 
   );

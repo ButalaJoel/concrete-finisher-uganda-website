@@ -1,0 +1,414 @@
+/* ======================================================
+   DASHBOARD THEME
+   Loaded last by DashboardLayout. Selectors start with
+   .dashboard so they win over individual page styles.
+   Colours and font come from the tokens in src/index.css.
+====================================================== */
+
+.dashboard {
+  background: #f3f3f1;
+  color: var(--graphite);
+}
+
+.dashboard,
+.dashboard :is(input, select, textarea, button, h1, h2, h3, h4, p, span, a, label, td, th) {
+  font-family: var(--font);
+}
+
+.dashboard :is(h1, h2, h3) {
+  letter-spacing: -0.01em;
+}
+
+/* Page titles inside each dashboard page */
+.dashboard .dashboard-content :is(
+  .quotations-page-header h1,
+  .receipts-page-header h1,
+  .dashboard-projects-header h1,
+  .reports-heading h1,
+  .create-quotation-title h1,
+  .company-settings-title h1,
+  .profile-settings-title h1,
+  .settings-page h1,
+  .security-settings-page h1,
+  .system-preferences-page h1,
+  .quotation-settings-page h1
+) {
+  font-size: clamp(26px, 2.4vw, 34px);
+  font-weight: 750;
+  font-stretch: 112%;
+  color: var(--graphite);
+}
+
+/* ---------- Sidebar ---------- */
+
+.dashboard .sidebar {
+  background: var(--graphite);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dashboard .sidebar-logo {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dashboard .sidebar li a {
+  color: rgba(255, 255, 255, 0.72);
+  border-radius: 6px;
+  position: relative;
+  font-weight: 550;
+}
+
+.dashboard .sidebar li a svg {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.dashboard .sidebar li a:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.dashboard .sidebar li a.active {
+  background: rgba(255, 255, 255, 0.09);
+  color: #fff;
+  box-shadow: none;
+}
+
+.dashboard .sidebar li a.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--tan);
+}
+
+.dashboard .sidebar li a.active svg {
+  color: var(--tan);
+}
+
+.dashboard .sidebar-notification-badge {
+  background: var(--tan);
+  color: var(--graphite);
+  font-weight: 700;
+}
+
+.dashboard .sidebar-footer button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+}
+
+.dashboard .sidebar-footer button:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+/* ---------- Header ---------- */
+
+.dashboard .dashboard-header {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding-inline: 0;
+  padding-top: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  padding-bottom: 22px;
+  margin-bottom: 28px;
+}
+
+.dashboard .header-greeting {
+  font-size: 14px;
+  color: var(--slate);
+  margin: 0 0 2px;
+}
+
+.dashboard .header-title h1,
+.dashboard .header-section {
+  font-size: clamp(22px, 2vw, 28px);
+  font-weight: 750;
+  font-stretch: 112%;
+  line-height: 1.15;
+  color: var(--graphite);
+  margin: 0;
+}
+
+.dashboard .dashboard-header .search-box {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.dashboard .dashboard-header .search-box:focus-within {
+  border-color: var(--brown);
+  box-shadow: 0 0 0 3px rgba(196, 147, 95, 0.3);
+}
+
+.dashboard .new-project-btn {
+  background: var(--brown);
+  border-radius: 8px;
+}
+
+.dashboard .new-project-btn:hover {
+  background: var(--brown-700);
+  filter: none;
+}
+
+.dashboard .notification-badge {
+  background: var(--brown);
+}
+
+/* ---------- Cards, tables, forms ---------- */
+
+.dashboard .dashboard-content :is(
+  .stat-card,
+  .recent-quotations,
+  .activity-section,
+  .quotation-card,
+  .receipt-card,
+  .company-settings-card,
+  .profile-settings-card,
+  .settings-card,
+  .report-card,
+  .official-quotation-card,
+  .quotation-builder-card,
+  .dashboard-project-card,
+  .quotation-settings-card,
+  .report-stat-card,
+  .reports-table-card,
+  .status-report-card,
+  .project-highlight-card
+) {
+  border-radius: 10px;
+  border: 1px solid #e3e3de;
+  box-shadow: none;
+}
+
+.dashboard .stat-card {
+  border-top-width: 1px;
+}
+
+.dashboard .dashboard-content :is(button, a)[class*="primary"],
+.dashboard .dashboard-content button[type="submit"] {
+  background: var(--brown);
+  border-color: var(--brown);
+  color: #fff;
+  border-radius: 8px;
+}
+
+.dashboard .dashboard-content :is(button, a)[class*="primary"]:hover:not(:disabled),
+.dashboard .dashboard-content button[type="submit"]:hover:not(:disabled) {
+  background: var(--brown-700);
+  filter: none;
+}
+
+.dashboard .dashboard-content :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea) {
+  border-radius: 6px;
+  border-color: #d6d6d0;
+}
+
+.dashboard .dashboard-content :is(input, select, textarea):focus-visible {
+  outline: none;
+  border-color: var(--brown);
+  box-shadow: 0 0 0 3px rgba(196, 147, 95, 0.3);
+}
+
+.dashboard .dashboard-content th {
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  color: var(--slate);
+  background: #f6f6f4;
+}
+
+/* ---------- Project form ---------- */
+
+.dashboard .dp-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 20px;
+  margin-bottom: 12px;
+}
+
+.dashboard .dp-field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.dashboard .dp-field--full {
+  grid-column: 1 / -1;
+}
+
+.dashboard .dp-field label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--graphite);
+}
+
+.dashboard .dp-field :is(input, textarea) {
+  width: 100%;
+  margin: 0;
+  min-height: 46px;
+  padding: 11px 14px;
+  border: 1px solid #d6d6d0;
+  background: #fff;
+  font-size: 15px;
+}
+
+.dashboard .dp-field textarea {
+  min-height: 110px;
+}
+
+@media (max-width: 760px) {
+  .dashboard .dp-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Security settings messages ---------- */
+
+.dashboard .security-status {
+  margin: 4px 0 20px;
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-size: 14.5px;
+  font-weight: 550;
+}
+
+.dashboard .security-status--error {
+  background: #fbeceb;
+  color: var(--danger);
+  border-left: 4px solid var(--danger);
+}
+
+.dashboard .security-status--success {
+  background: #e9f4ee;
+  color: var(--success);
+  border-left: 4px solid var(--success);
+}
+
+/* ---------- Money values: always show the full amount ---------- */
+
+.dashboard .stat-content {
+  min-width: 0;
+}
+
+.dashboard .stat-content h2 {
+  font-size: clamp(20px, 1.9vw, 28px);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard .report-stat-card strong {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+  font-size: clamp(17px, 1.5vw, 21px);
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Notification bell dropdown ---------- */
+
+.dashboard .notification-menu {
+  position: relative;
+}
+
+.dashboard .notification-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 60;
+  width: min(340px, calc(100vw - 32px));
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 18px 40px rgba(30, 32, 35, 0.14);
+  overflow: hidden;
+}
+
+.dashboard .notification-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14.5px;
+}
+
+.dashboard .notification-panel-head span {
+  min-width: 24px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--brown);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.dashboard .notification-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.dashboard .notification-panel li + li {
+  border-top: 1px solid #ececea;
+}
+
+.dashboard .notification-panel li button {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 0;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dashboard .notification-panel li button:hover {
+  background: #f6f6f4;
+  filter: none;
+}
+
+.dashboard .notification-panel li strong {
+  font-size: 14.5px;
+  color: var(--graphite);
+}
+
+.dashboard .notification-panel li span {
+  font-size: 13.5px;
+  color: var(--slate);
+}
+
+.dashboard .notification-panel li small {
+  font-size: 12.5px;
+  color: #8a8f94;
+}
+
+.dashboard .notification-empty {
+  padding: 18px 16px;
+  font-size: 14px;
+  color: var(--slate);
+}
+
+.dashboard .notification-view-all {
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  background: #f6f6f4;
+  color: var(--brown);
+  font-weight: 650;
+  cursor: pointer;
+}

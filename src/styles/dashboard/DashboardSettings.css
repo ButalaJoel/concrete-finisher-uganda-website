@@ -24,8 +24,8 @@
     align-items: center;
     justify-content: center;
 
-    background: #f4eee7;
-    color: #b8732e;
+    background: #f1efec;
+    color: #5b3716;
 
     border-radius: 14px;
     margin-bottom: 14px;
@@ -38,7 +38,7 @@
        font-weight: 700;
     line-height: 1.2;
 
-    color: #1f2d3d;
+    color: #1e2023;
 }
 
 .settings-page-header p {
@@ -69,7 +69,7 @@
 .settings-card {
     background: #ffffff;
 
-    border: 1px solid #e5e0da;
+    border: 1px solid #dddcd7;
     border-radius: 16px;
 
     padding: 24px;
@@ -103,8 +103,8 @@
     align-items: center;
     justify-content: center;
 
-    background: #f4eee7;
-    color: #b8732e;
+    background: #f1efec;
+    color: #5b3716;
 
     border-radius: 14px;
 
@@ -127,7 +127,7 @@
     font-size: 20px;
     font-weight: 700;
 
-    color: #1f2d3d;
+    color: #1e2023;
 }
 
 .settings-card p {
@@ -152,8 +152,8 @@
     padding: 12px 20px;
     min-height: 44px;
 
-    background: #f4eee7;
-    color: #a86527;
+    background: #f1efec;
+    color: #432810;
 
     border: 1px solid transparent;
     border-radius: 9px;

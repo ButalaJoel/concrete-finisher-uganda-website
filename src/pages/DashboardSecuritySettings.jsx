@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import "../styles/dashboard/DashboardSecuritySettings.css";
+import { getAuthHeaders } from "../utils/auth";
 
 
 function DashboardSecuritySettings() {
@@ -29,7 +30,57 @@ function DashboardSecuritySettings() {
    };
 
 
+    const [saving, setSaving] = useState(false);
+    const [status, setStatus] = useState({ type: "", message: "" });
+
+    // Sends the change to PUT /api/auth/change-password.
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (saving) return;
+
+        if (newPassword.length < 8) {
+            setStatus({ type: "error", message: "The new password must be at least 8 characters." });
+            return;
+        }
+        if (newPassword !== confirmPassword) {
+            setStatus({ type: "error", message: "The new passwords don't match. Type the same password in both boxes." });
+            return;
+        }
+
+        setSaving(true);
+        setStatus({ type: "", message: "" });
+
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/auth/change-password`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        ...getAuthHeaders(),
+                    },
+                    body: JSON.stringify({ currentPassword, newPassword }),
+                }
+            );
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok) {
+                throw new Error(result.message || "Unable to update password.");
+            }
+
+            setCurrentPassword("");
+            setNewPassword("");
+            setConfirmPassword("");
+            setStatus({ type: "success", message: "Password updated. Use the new password next time you sign in." });
+        } catch (error) {
+            setStatus({ type: "error", message: error.message || "Unable to update password." });
+        } finally {
+            setSaving(false);
+        }
+    };
+
     const handleCancel = () => {
+        setStatus({ type: "", message: "" });
 
         setCurrentPassword("");
         setNewPassword("");
@@ -104,15 +155,21 @@ function DashboardSecuritySettings() {
 
                 </div>
 
-                <p className="password-helper-text" role="note">
-                    Password changes are not available in this portal yet.
-                    Contact the account administrator for a password reset.
-                </p>
+                {status.message && (
+                    <p
+                        className={`security-status security-status--${status.type}`}
+                        role={status.type === "error" ? "alert" : "status"}
+                    >
+                        {status.message}
+                    </p>
+                )}
 
                 {/* PASSWORD FORM */}
 
                 <form
                     className="security-password-form"
+                    onSubmit={handleSubmit}
+                    aria-busy={saving}
                 >
 
 
@@ -142,7 +199,6 @@ function DashboardSecuritySettings() {
                                 }
                                 placeholder="Enter your current password"
                                 value={currentPassword}
-                                disabled
                                 onChange={(event) =>
                                     setCurrentPassword(event.target.value)
                                 }
@@ -152,7 +208,6 @@ function DashboardSecuritySettings() {
                             <button
                                 type="button"
                                 className="password-toggle-button"
-                                disabled
                                 onClick={() =>
                                     setShowCurrentPassword(
                                         !showCurrentPassword
@@ -197,7 +252,6 @@ function DashboardSecuritySettings() {
                                 }
                                 placeholder="Enter your new password"
                                 value={newPassword}
-                                disabled
                                 onChange={(event) =>
                                     setNewPassword(event.target.value)
                                 }
@@ -207,7 +261,6 @@ function DashboardSecuritySettings() {
                             <button
                                 type="button"
                                 className="password-toggle-button"
-                                disabled
                                 onClick={() =>
                                     setShowNewPassword(!showNewPassword)
                                 }
@@ -255,7 +308,6 @@ function DashboardSecuritySettings() {
                                 }
                                 placeholder="Confirm your new password"
                                 value={confirmPassword}
-                                disabled
                                 onChange={(event) =>
                                     setConfirmPassword(event.target.value)
                                 }
@@ -265,7 +317,6 @@ function DashboardSecuritySettings() {
                             <button
                                 type="button"
                                 className="password-toggle-button"
-                                disabled
                                 onClick={() =>
                                     setShowConfirmPassword(
                                         !showConfirmPassword
@@ -300,9 +351,9 @@ function DashboardSecuritySettings() {
                         <button
                             type="submit"
                             className="update-password-button"
-                            disabled
+                            disabled={saving}
                         >
-                            Password Change Unavailable
+                            {saving ? "Updating password…" : "Update password"}
                         </button>
 
                     </div>

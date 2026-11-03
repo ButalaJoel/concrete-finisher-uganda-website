@@ -24,6 +24,7 @@
 // IMPORTS
 // ======================================================
 
+import { mediaUrl } from "../utils/mediaUrl";
 import {
     ArrowLeft,
     Building2,
@@ -248,7 +249,7 @@ function DashboardCompanySettings() {
                 if (company.logo) {
 
                     setLogoPreview(
-                        `${import.meta.env.VITE_API_URL}${company.logo}`
+                        mediaUrl(company.logo)
                     );
 
                 }
@@ -536,7 +537,7 @@ function DashboardCompanySettings() {
                 if (data.company.logo) {
 
                     setLogoPreview(
-                        `${import.meta.env.VITE_API_URL}${data.company.logo}`
+                        mediaUrl(data.company.logo)
                     );
 
                 }
