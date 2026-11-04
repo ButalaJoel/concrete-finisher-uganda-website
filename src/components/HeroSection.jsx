@@ -53,7 +53,7 @@ function HeroSection() {
         <li>
           <a href={CONTACT.mapsHref} target="_blank" rel="noopener noreferrer">
             <MapPin size={18} aria-hidden="true" />
-            <span><small>Office</small>Luzira, Kampala</span>
+            <span><small>Office</small>Mutungo, Kampala</span>
           </a>
         </li>
       </ul>

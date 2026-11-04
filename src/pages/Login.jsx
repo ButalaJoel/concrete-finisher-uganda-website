@@ -227,7 +227,7 @@ const handleSubmit = async (event) => {
 
 
         setError(
-            "Unable to connect to the server. Please try again."
+            "We couldn't reach the server. Check your internet connection and try again in a minute."
         );
 
 

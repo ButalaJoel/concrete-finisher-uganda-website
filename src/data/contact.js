@@ -9,10 +9,9 @@ export const CONTACT = {
   whatsappHref: "https://wa.me/256780662557",
   email: "info@concretefinisherug.com",
   emailHref: "mailto:info@concretefinisherug.com",
-  addressLine1: "Luzira Kirombe",
+  addressLine1: "Cecilia Rd, Mutungo",
   addressLine2: "Kampala, Uganda",
-  // TODO: replace with the exact pin-drop link once the client shares it
-  mapsHref: "https://maps.google.com/?q=Kirombe+Luzira+Kampala+Uganda",
-  mapsEmbed:
-    "https://www.google.com/maps?q=Kirombe+Luzira+Kampala+Uganda&output=embed",
+  // Exact office pin (Cecilia Rd, plus code 8J6X+FXH Kampala)
+  mapsHref: "https://www.google.com/maps/search/?api=1&query=0.311199,32.649992",
+  mapsEmbed: "https://www.google.com/maps?q=0.311199,32.649992&z=17&output=embed",
 };

@@ -829,3 +829,17 @@
     background: var(--tan-300);
     transform: none;
 }
+
+/* Error message shown above the form (was unstyled and invisible on the dark panel) */
+.cf-login-page .cf-login-error {
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: rgba(179, 38, 30, 0.16);
+    border: 1px solid rgba(240, 120, 110, 0.55);
+    border-left: 4px solid #f0786e;
+    color: #ffd9d5;
+    font-size: 14.5px;
+    font-weight: 550;
+    line-height: 1.45;
+}
